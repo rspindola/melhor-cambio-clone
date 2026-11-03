@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "skills": {
+    "define-hypothesis": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/define-hypothesis/SKILL.md",
+      "computedHash": "7b20bdc2dcb100ecfaf0b877a27adde79f39735bd0c7937dac46defaa41312d6"
+    },
+    "define-prioritization-framework": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/define-prioritization-framework/SKILL.md",
+      "computedHash": "8912d80305fd3aebcba4bb2df44f6b89b34d30f34d6bd11d8c3aa2c9a9be598f"
+    },
+    "define-problem-statement": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/define-problem-statement/SKILL.md",
+      "computedHash": "7b1b8f9dfdfba6b7e48e440819c32213afbddec85dbc36b549ebc48969900288"
+    },
+    "deliver-acceptance-criteria": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/deliver-acceptance-criteria/SKILL.md",
+      "computedHash": "4394a169c66855197d5512e3804c1e0eb9f9096eeca8df88be183be0d2da7dd9"
+    },
+    "deliver-edge-cases": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/deliver-edge-cases/SKILL.md",
+      "computedHash": "487d8eb14801d8ce902c662c249d7f52fab8995ce14e9c16cd4a95fe4e4ebf3a"
+    },
+    "deliver-launch-checklist": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/deliver-launch-checklist/SKILL.md",
+      "computedHash": "d0ca720a1fcde885da34e699a3a927be714ede7f62bcc42ee5eca49fb4eb84f9"
+    },
+    "deliver-prd": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/deliver-prd/SKILL.md",
+      "computedHash": "871fbf31698832466bfb3f0d43b19404785be731cc70ab5f9dc05f583abb7cb3"
+    },
+    "deliver-release-notes": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/deliver-release-notes/SKILL.md",
+      "computedHash": "a3a10621b716b73ba09972e970e3018aa6452147d3072f639f106de27380eb3a"
+    },
+    "deliver-user-stories": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/deliver-user-stories/SKILL.md",
+      "computedHash": "7fb5dd745bf2b3161c9cb233263a6f668cd06ce95b4e0d5a19c6b4856ec6b9d5"
+    },
+    "develop-adr": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/develop-adr/SKILL.md",
+      "computedHash": "6564baf4aa67590625f574eaf8a57c4d249658a74a7c03db44f5267842c296ab"
+    },
+    "foundation-lean-canvas": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/foundation-lean-canvas/SKILL.md",
+      "computedHash": "14440df2c3260124b6506c38dac03a99f77b752a5e7d5e3189a57b900e450df0"
+    },
+    "foundation-okr-writer": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/foundation-okr-writer/SKILL.md",
+      "computedHash": "4b3c688cbfd2ea232cfa3bc4d07774e4e3f74b56a9399f3a12aa618cf3ea6d15"
+    },
+    "foundation-persona": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/foundation-persona/SKILL.md",
+      "computedHash": "4d669a4dce1986afb5e00c3b7e4c6f0ee3171ee31756be820799db8b48126630"
+    },
+    "foundation-stakeholder-update": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/foundation-stakeholder-update/SKILL.md",
+      "computedHash": "1ea51f19bed8202e95b83eb90b45045951df393f9dd29464a4bd9ebcd8f76e5d"
+    },
+    "measure-okr-grader": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/measure-okr-grader/SKILL.md",
+      "computedHash": "63beb073023847f5d11ec20cb25bee26a8e787efcbef550e1325ca5884b09262"
+    },
+    "utility-mermaid-diagrams": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/utility-mermaid-diagrams/SKILL.md",
+      "computedHash": "f6774872156fea73daa865c726b6d7e404823738679f91767f81191df9cfa852"
+    },
+    "utility-pm-critic": {
+      "source": "product-on-purpose/pm-skills",
+      "sourceType": "github",
+      "skillPath": "skills/utility-pm-critic/SKILL.md",
+      "computedHash": "c3e75028b7b17891111de85b00d13f0f1075c4a706688ac8b4f112a71f27744b"
+    }
+  }
+}
