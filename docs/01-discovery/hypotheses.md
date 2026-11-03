@@ -1,12 +1,13 @@
 ---
 artifact: hypothesis
-version: "1.0"
+version: "1.5.1"
 created: 2026-11-02
 status: draft
 ---
 
-<!-- Três hipóteses fundacionais para o marketplace de câmbio Melhor Câmbio.
-     H1 = Desejabilidade · H2 = Viabilidade · H3 = Negócio -->
+<!-- Sete hipóteses estruturantes para a plataforma de comunicação e aproximação cambial.
+     H1 = Desejabilidade · H2 = Viabilidade Operacional · H3 = Negócio / WTP
+     H4 = Neutralidade e Migração · H5 = Multi-Homing e Liquidez · H6 = Canais GTM / SEO · H7 = Automação de Taxas -->
 
 ---
 
@@ -418,3 +419,438 @@ Casas de câmbio de pequeno e médio porte enfrentam alto custo de aquisição d
 | Proposta comercial e conversão (Fase 3) | [HIPÓTESE – A VALIDAR] | 2-4 semanas |
 | Análise de conversão e unit economics | [HIPÓTESE – A VALIDAR] | 1 semana |
 | Decisão go/no-go modelo de monetização | [HIPÓTESE – A VALIDAR] | — |
+
+---
+
+# H4 — Hipótese de Neutralidade e Migração: Casas buscam alternativa independente ao incumbente
+
+## Hypothesis Statement
+
+**We believe that** posicionar a plataforma como uma alternativa estritamente neutra e independente (sem produto cambial próprio nem conta global concorrente)
+
+**for** casas de câmbio autorizadas pelo Banco Central parceiras históricas do ecossistema do Melhor Câmbio (adquirido pela Nomad) em RJ e SP
+
+**will** motivar a adesão ao piloto e a assinatura de termos de intenção de migração ou diversificação de canal para mitigar riscos de conflito de interesses
+
+**as measured by** percentual de casas de câmbio qualificadas entrevistadas que assinam Carta de Intenção (LOI) ou termo de pré-adesão ao piloto citando a neutralidade como motivador primário
+
+## Background & Rationale
+
+### Problem Context
+
+O incumbente histórico (Melhor Câmbio) foi adquirido pela fintech Nomad. A Nomad opera diretamente produtos de conta internacional, cartão de débito global e remessas de câmbio comercial/turismo. Essa verticalização cria um potencial conflito de interesses estrutural: o canal de agregação de leads pertence a um player que compete diretamente pelos mesmos clientes que as casas de câmbio independentes tentam atender.
+
+Relatos de mercado e do fundador indicam que, embora o produto do incumbente operasse com poucas reclamações de usabilidade, diversas mesas de câmbio sentem desconforto com a governança da plataforma sob controle de um concorrente direto e procuram ativamente um canal tecnológico neutro para diversificar sua captação.
+
+### Supporting Evidence
+
+- Aquisições de agregadores de mercado por participantes verticais em outros setores (ex.: aquisição de comparadores de seguros por seguradoras ou portais imobiliários por grandes incorporadoras) historicamente aceleram a busca de fornecedores independentes por plataformas alternativas que assegurem tratamento isonômico de leads.
+- O fundador relata que casas de câmbio já manifestaram informalmente o interesse em uma alternativa neutra de software, desde que mantenha a facilidade operacional do formato consagrado.
+- A neutralidade só constitui proposta de valor válida se for **rigorosamente verdadeira** (a nova plataforma não comercializa produtos cambiais próprios) e respaldada juridicamente [VALIDAR COM ADVOGADO].
+
+### Alternative Hypotheses Considered
+
+- **Concorrência baseada em menores taxas de comissão:** As casas migrariam puramente por preço de software mais baixo. Rejeitada como tese única porque, no câmbio de varejo, a preservação do canal de distribuição e a confiabilidade dos dados superam pequenas variações no custo de software.
+- **Indiferença das casas quanto ao proprietário do canal:** As casas continuariam no incumbente independentemente do controle societário, desde que o volume de leads continue existindo. Essa hipótese nula será expressamente testada na entrevista de validação.
+
+## Target User Segment
+
+### Definition
+
+- **Proprietários (Owners), Diretores Comerciais e Gerentes de Mesa** de casas de câmbio autorizadas pelo Banco Central que utilizam ou já utilizaram o Melhor Câmbio.
+- **Localização:** Praças piloto de São Paulo e Rio de Janeiro.
+- **Perfil de Risco:** Casas independentes sem vínculo societário com grandes bancos ou corretoras multinacionais.
+
+### Segment Size
+
+- Universo estimado de casas parceiras ativas do incumbente em SP e RJ: [HIPÓTESE – A VALIDAR: 40 a 60 instituições autorizadas].
+- Amostra-alvo para validação de H4: 10 a 15 casas entrevistadas no screening inicial.
+
+### Current Behavior
+
+- As casas mantêm seus perfis ativos no Melhor Câmbio para capturar leads passivos, mas monitoram com apreensão o direcionamento de tráfego para a conta Nomad.
+- Não dispõem atualmente de outra plataforma relevante de cotação com a mesma mecânica de pregão de ofertas.
+
+## Success Metrics
+
+### Primary Metric
+
+| Métrica | Baseline Atual | Meta | Efeito Mínimo Detectável |
+|---------|---------------|------|--------------------------|
+| % de casas entrevistadas que assinam Carta de Intenção (LOI) para o piloto neutro | 0% | ≥ 60% das casas abordadas no screening [HIPÓTESE – A VALIDAR] | 20% |
+
+### Secondary Metrics
+
+| Métrica | Baseline Atual | Direção Esperada |
+|---------|---------------|------------------|
+| % de casas que citam espontaneamente "independência / conflito Nomad" na entrevista | N/A | ≥ 50% das casas [HIPÓTESE – A VALIDAR] |
+| Disposição para alocar ao menos 1 operador dedicado no piloto | 0% | ≥ 70% das casas aderentes [HIPÓTESE – A VALIDAR] |
+
+### Guardrail Metrics
+
+| Métrica | Valor Atual | Faixa Aceitável |
+|---------|------------|-----------------|
+| Risco de litígio ou quebra de confidencialidade com o incumbente | Zero | Zero tolerância — sem uso de cadastros proprietários de terceiros [VALIDAR COM ADVOGADO] |
+| Veracidade jurídica da alegação de neutralidade | N/A | 100% comprovada no contrato social e modelo de negócios |
+
+## Validation Approach
+
+### Method
+
+**Entrevistas estruturadas de descoberta com roteiro padronizado:**
+- Conduzir entrevistas em profundidade (30 a 45 min) com base no [Roteiro de Validação com Casas](interview-guide-casas.md).
+- Apresentar a tese de neutralidade e avaliar a reação espontânea e assistida do proprietário/gerente da mesa.
+- Ofertar assinatura de Carta de Intenção (LOI) não vinculante de participação no piloto gratuito da Fase 1.
+
+### Sample Size & Duration
+
+- Amostra: 10 a 15 casas de câmbio em SP e RJ.
+- Duração: 2 semanas de entrevistas de campo.
+
+### Pass/Fail Criteria
+
+- **Validada se:** ≥ 60% das casas entrevistadas assinarem LOI e declararem que a neutralidade é um fator determinante ou muito importante para adesão.
+- **Invalidada se:** < 30% demonstrarem preocupação com o controle societário do incumbente, preferindo permanecer exclusivamente onde já operam.
+- **Inconclusiva se:** As casas manifestarem interesse verbal genérico, mas recusarem formalizar a carta de intenção sem dados comprovados de audiência prévia.
+
+## Risks & Assumptions
+
+### Key Assumptions
+
+- A aquisição pela Nomad realmente incomoda os operadores e proprietários das casas independentes.
+- A postura de neutralidade é sustentável a longo prazo pelos fundadores (sem planos secretos de abrir corretora própria).
+- As casas têm autonomia para adotar novos softwares sem barreiras corporativas intransponíveis.
+
+### Risks
+
+- **Risco de "falso desconforto":** As casas podem reclamar retoricamente da Nomad, mas não terem incentivo econômico real para dedicar tempo de operador a uma nova plataforma. Mitigação: exigir compromisso formal via LOI.
+- **Risco de retaliação comercial:** Casas temem ser descredenciadas pelo incumbente caso descubram sua adesão a outra plataforma. Mitigação: sigilo total e onboarding sob estrita confidencialidade durante o piloto [VALIDAR COM ADVOGADO].
+
+## Timeline
+
+| Fase | Datas | Duração |
+|------|-------|---------|
+| Agendamento de entrevistas via sócio comercial | [HIPÓTESE – A VALIDAR] | 1 semana |
+| Condução das 10-15 entrevistas estruturadas | [HIPÓTESE – A VALIDAR] | 2 semanas |
+| Tabulação de LOIs e análise de discurso | [HIPÓTESE – A VALIDAR] | 3 dias |
+| Decisão go/no-go do posicionamento de neutralidade | [HIPÓTESE – A VALIDAR] | — |
+
+---
+
+# H5 — Hipótese de Multi-Homing e Priorização por Densidade de Ofertas
+
+## Hypothesis Statement
+
+**We believe that** casas de câmbio operam simultaneamente em múltiplas plataformas de cotação e canais de atendimento (regime de multi-homing com o incumbente e balcão próprio)
+
+**for** operadores de mesa de câmbio em RJ e SP
+
+**will** priorizar ativamente o tempo de tela e a velocidade de resposta (abaixo de 15 minutos) na plataforma que entregar maior densidade semanal de ofertas qualificadas
+
+**as measured by** correlação direta entre o volume semanal de ofertas recebidas por casa e a taxa de ofertas respondidas tempestivamente durante o piloto
+
+## Background & Rationale
+
+### Problem Context
+
+Casas de câmbio não trocam de software de forma exclusiva no "dia 1". Elas adicionam a nova ferramenta como mais uma aba no navegador ao lado do Melhor Câmbio, do WhatsApp Business e do sistema legado de caixa. 
+
+Se a nova plataforma gerar poucas ofertas (gargalo de demanda), o operador naturalmente deixará a aba em segundo plano ou a esquecerá, criando um círculo vicioso de abandono por falta de liquidez. Para vencer o multi-homing, o produto precisa atingir uma densidade mínima de ofertas por semana que mantenha o operador alerta.
+
+### Supporting Evidence
+
+- Teoria econômica de plataformas de dois lados (Evans & Schmalensee; Rochet & Tirole): em mercados com multi-homing no lado do fornecedor, o engajamento migra assintoticamente para o lado com maior liquidez e conversão de demanda.
+- Entrevistas com operadores de mesa indicam que notificações com som alto e alertas multicanal ajudam no curto prazo, mas apenas a perspectiva concreta de fechar negócios sustenta a prontidão operacional ao longo das semanas.
+
+### Alternative Hypotheses Considered
+
+- **Exclusividade exigida pela plataforma:** Forçar as casas a assinarem exclusividade com a nossa plataforma. Descartada categoricamente: criaria fricção inaceitável de adoção para uma plataforma nova sem volume comprovado.
+- **Engajamento puramente por gamificação/reputação:** Operadores responderiam por badges ou ranking. Descartada: operadores de mesa são remunerados por volume transacionado e comissão; apenas dinheiro e liquidez geram comportamento sustentado.
+
+## Target User Segment
+
+### Definition
+
+- **Operadores de Mesa e Atendentes de Câmbio** das casas participantes do piloto em SP e RJ.
+- Profissionais que operam diretamente na ponta de negociação respondendo a ligações, mensagens e ferramentas web.
+
+### Segment Size
+
+- Cerca de 15 a 30 operadores nas 10 casas piloto.
+
+### Current Behavior
+
+- Mantêm abertas as telas do Melhor Câmbio, WhatsApp Web, terminal Bloomberg/Broadcast de taxas e ERP interno.
+- Dão prioridade ao canal que apita com cliente quente com ticket fechável.
+
+## Success Metrics
+
+### Primary Metric
+
+| Métrica | Baseline Atual | Meta | Efeito Mínimo Detectável |
+|---------|---------------|------|--------------------------|
+| Média semanal de ofertas recebidas por casa ativa para manter taxa de resposta > 70% | 0 | ≥ 3 a 5 ofertas por casa por semana [HIPÓTESE – A VALIDAR] | 1 oferta/semana |
+
+### Secondary Metrics
+
+| Métrica | Baseline Atual | Direção Esperada |
+|---------|---------------|------------------|
+| Tempo mediano de resposta em semanas com ≥ 5 ofertas vs. semanas com < 2 ofertas | N/A | Redução de ≥ 50% no tempo de resposta em semanas de alto volume |
+| Taxa de operadores que realizam login diário espontâneo às 10h | 0% | ≥ 75% dos operadores cadastrados [HIPÓTESE – A VALIDAR] |
+
+### Guardrail Metrics
+
+| Métrica | Valor Atual | Faixa Aceitável |
+|---------|------------|-----------------|
+| Fadiga de alertas (taxa de desativação de som/notificação pelo operador) | 0% | ≤ 10% [HIPÓTESE – A VALIDAR] |
+| Erros de precificação em decorrência de pressa do operador | 0% | ≤ 1% das propostas [HIPÓTESE – A VALIDAR] |
+
+## Validation Approach
+
+### Method
+
+**Acompanhamento quantitativo e testes de sensibilidade de demanda no piloto:**
+- Monitorar a taxa de resposta e tempo mediano segregados por faixas semanais de volume de ofertas injetadas por cidade.
+- Aplicar testes de sensibilidade: injetar lotes controlados de ofertas reais e verificar se a prontidão do operador aumenta nos dias subsequentes.
+- Entrevistar os operadores semanalmente para mapear se estão priorizando a aba da plataforma em relação aos concorrentes.
+
+### Sample Size & Duration
+
+- 10 casas piloto com 20 a 30 operadores ativos.
+- Duração: 4 a 6 semanas de piloto transacional.
+
+### Pass/Fail Criteria
+
+- **Validada se:** Casas que recebem ≥ 3 a 5 ofertas semanais mantêm taxa de resposta superior a 70% em menos de 15 minutos, enquanto casas com < 2 ofertas semanais degradam o tempo de resposta em mais de 100%.
+- **Invalidada se:** Mesmo com injeção de 5+ ofertas semanais, as casas mantiverem tempo de resposta > 30 minutos ou priorizarem outros canais.
+- **Inconclusiva se:** O volume total de ofertas no piloto for insuficiente para criar semanas comparativas de alta e baixa densidade.
+
+## Risks & Assumptions
+
+### Key Assumptions
+
+- Operadores têm tempo ocioso suficiente na mesa para atender uma ferramenta adicional.
+- A notificação sonora e o digest multicanal conseguem recapturar a atenção do operador que está atendendo no balcão físico.
+
+### Risks
+
+- **Risco de abandono silencioso:** A casa se cadastra com entusiasmo, mas nas primeiras 48h sem ofertas, o operador fecha a aba e nunca mais faz login. Mitigação: alinhamento de GTM prévio para concentrar demanda nas praças do piloto.
+
+## Timeline
+
+| Fase | Datas | Duração |
+|------|-------|---------|
+| Instrumentação de telemetria de operador e ofertas | [HIPÓTESE – A VALIDAR] | 1 semana |
+| Medição contínua durante o piloto | [HIPÓTESE – A VALIDAR] | 4 semanas |
+| Análise de cohort e elasticidade de resposta | [HIPÓTESE – A VALIDAR] | 1 semana |
+
+---
+
+# H6 — Hipótese de Aquisição de Demanda / GTM: Clientes chegam por SEO local e canais das casas
+
+## Hypothesis Statement
+
+**We believe that** clientes pessoa física que pretendem comprar ou vender moeda turismo entram na plataforma estritamente através de buscas locais com intenção imediata ("câmbio turismo sp", "dólar rj") e por links disponibilizados pelas próprias casas parceiras (base própria e landing pages locais)
+
+**for** viajantes e clientes de câmbio de varejo em São Paulo e Rio de Janeiro
+
+**will** gerar mais de 80% do volume inicial de intenções de oferta no piloto sem depender de campanhas pagas de branding nacional ou de apelo por funcionalidades avançadas de software
+
+**as measured by** proporção de ofertas publicadas originadas de tráfego orgânico de SEO geolocalizado e canais de parceiros vs. tráfego direto descontextualizado
+
+## Background & Rationale
+
+### Problem Context
+
+O marketplace não dispõe do orçamento de marketing da Nomad nem da presença de marca de 10 anos do Melhor Câmbio. Uma suposição ingênua de que "clientes virão sozinhos porque o software é moderno" destruiria o piloto.
+
+A demanda de câmbio turismo é caracterizada por intenção hiperlocal e utilitária: o cliente não procura "uma plataforma moderna com WebSocket"; ele digita no Google *"onde comprar dólar em são paulo"* ou *"melhor cotação euro barra da tijuca"*, ou clica em uma cotação recomendada por um correspondente ou agência. O GTM deve apoiar-se nesse comportamento real.
+
+### Supporting Evidence
+
+- Análise de dados de busca (Google Search Trends): mais de 85% das pesquisas com intenção de câmbio físico no Brasil possuem modificadores geográficos de cidade ou bairro.
+- O sucesso histórico do Melhor Câmbio foi construído primordialmente em cima de páginas de SEO municipal ("melhorcambio.com/dolar-hoje/sao-paulo"), e não de downloads de aplicativos em app stores.
+
+### Alternative Hypotheses Considered
+
+- **Crescimento via campanhas pagas de performance (Google Ads / Meta Ads):** Investir verba paga para capturar o cliente. Descartada como estratégia principal do piloto gratuito: o CAC de palavras-chave como "comprar dólar" é proibitivo para uma plataforma que ainda não monetiza na Fase 1.
+- **Aquisição via parcerias com influenciadores de viagem:** Estratégia válida para a Fase 2/3, mas lenta e descalibrada para a densidade hiperlocal exigida nas primeiras 4 semanas de SP e RJ.
+
+## Target User Segment
+
+### Definition
+
+- **Consumidores Finais (Pessoas Físicas):** Viajantes a lazer ou negócios, estudantes de intercâmbio e familiares enviando recursos, com necessidade de retirada ou delivery nas capitais de SP e RJ.
+
+### Segment Size
+
+- Volume estimado de buscas mensais com termos transacionais de câmbio em SP e RJ: [HIPÓTESE – A VALIDAR: > 200.000 buscas/mês].
+
+### Current Behavior
+
+- Utilizam o Google Search como ponto de partida; comparam as primeiras 2 a 3 páginas que exibem taxas locais claras e clicam nas opções que transmitem confiabilidade e proximidade.
+
+## Success Metrics
+
+### Primary Metric
+
+| Métrica | Baseline Atual | Meta | Efeito Mínimo Detectável |
+|---------|---------------|------|--------------------------|
+| % de ofertas publicadas originadas de SEO local e canais de referência das casas parceiras | 0% | ≥ 80% das ofertas válidas no piloto [HIPÓTESE – A VALIDAR] | 15% |
+
+### Secondary Metrics
+
+| Métrica | Baseline Atual | Direção Esperada |
+|---------|---------------|------------------|
+| Custo de Aquisição de Oferta Ativa (CAC por oferta) | N/A | R$ 0,00 de mídia paga no piloto (100% orgânico e co-distribuído) |
+| Taxa de conversão de visitante da landing local em oferta publicada | N/A | ≥ 8% [HIPÓTESE – A VALIDAR] |
+
+### Guardrail Metrics
+
+| Métrica | Valor Atual | Faixa Aceitável |
+|---------|------------|-----------------|
+| Qualidade da oferta (taxa de ofertas com intenção real vs spam/testes de curiosos) | N/A | ≥ 85% de ofertas legítimas [HIPÓTESE – A VALIDAR] |
+
+## Validation Approach
+
+### Method
+
+**Implementação e teste de páginas piloto de SEO local e landing pages para casas parceiras:**
+- Criar páginas focadas em SEO local para SP (Capital, Jardins, Faria Lima, Moema) e RJ (Centro, Barra, Zona Sul).
+- Fornecer links parametrizados e widgets leves para 3 casas piloto divulgarem em seus canais de atendimento e sites.
+- Rastrear via UTM e analytics a origem de cada oferta publicada durante o período de 4 a 8 semanas.
+
+### Sample Size & Duration
+
+- 100 a 200 ofertas geradas durante o piloto.
+- Duração: 4 a 8 semanas.
+
+### Pass/Fail Criteria
+
+- **Validada se:** ≥ 80% das ofertas legítimas vierem de buscas orgânicas locais e canais de casas parceiras, com CAC de mídia próximo a zero.
+- **Invalidada se:** O tráfego orgânico local não gerar intenções suficientes (< 2 ofertas por semana por praça), demonstrando dependência inevitável de mídia de performance paga.
+
+## Risks & Assumptions
+
+### Key Assumptions
+
+- Google indexa com rapidez satisfatória as novas páginas estruturadas de cotação por praça.
+- Casas parceiras têm interesse em usar as landing pages ou links da plataforma para receber ofertas de seus próprios clientes (testando a viabilidade futura do "Modo Oferta Privada").
+
+### Risks
+
+- **Tempo de maturação do SEO:** O ranqueamento orgânico do Google pode demorar semanas ou meses para atingir as primeiras posições. Mitigação: apoiar o piloto inicial na divulgação ativa das casas parceiras e correspondentes locais captados pelo sócio comercial.
+
+## Timeline
+
+| Fase | Datas | Duração |
+|------|-------|---------|
+| Publicação da estrutura técnica de SEO local | [HIPÓTESE – A VALIDAR] | 2 semanas |
+| Indexação e monitoramento de tráfego inicial | [HIPÓTESE – A VALIDAR] | 3 semanas |
+| Validação da proporção de origens de oferta | [HIPÓTESE – A VALIDAR] | 4 semanas |
+
+---
+
+# H7 — Hipótese de Automação de Taxas: Atualização em lote é requisito eliminatório para migração
+
+## Hypothesis Statement
+
+**We believe that** disponibilizar mecanismos automatizados de atualização de taxas de balcão (via importação de arquivo CSV/planilha ou integração simplificada via API/webhook)
+
+**for** mesas de câmbio e operadores de casas de câmbio de médio e grande porte em RJ e SP
+
+**will** eliminar o atrito de manter taxas duplicadas manualmente e constituir requisito indispensável para a migração efetiva e retenção no piloto
+
+**as measured by** percentual de casas de câmbio entrevistadas que condicionam sua adesão e atividade diária contínua à existência de atualização em lote/automatizada de taxas
+
+## Background & Rationale
+
+### Problem Context
+
+Casas de câmbio alteram seus spreads e taxas de balcão múltiplas vezes ao longo do dia conforme as oscilações da PTAX e do mercado interbancário. No modelo do MVP inicial, o cadastro de taxas da Vitrine Informativa foi desenhado como formulário manual por moeda e produto ([US-021](../03-product/user-stories.md#us-021-cadastro-de-taxas-de-balcão-na-vitrine)).
+
+Se a casa tiver que preencher manualmente 10 a 15 moedas várias vezes ao dia em mais um sistema, a probabilidade de manter taxas defasadas ou simplesmente abandonar a vitrine é altíssima. A capacidade de importar planilhas ou integrar uma API simples pode ser a diferença entre uma casa ativa e uma conta fantasma.
+
+### Supporting Evidence
+
+- No incumbente (Melhor Câmbio), as maiores redes parceiras operam via rotinas automáticas de envio de taxas ou scripts internos que consomem suas planilhas de mesa.
+- Entrevistas com operadores de tesouraria apontam que redigitar taxas é a principal reclamação operacional quando se avalia um novo canal digital.
+
+### Alternative Hypotheses Considered
+
+- **Manutenção puramente manual no MVP:** Assumir que o operador preencherá manualmente porque são apenas moedas principais (USD e EUR). Risco alto de desatualização; precisa ser testado com urgência nas entrevistas de validação.
+- **Raspagem automática das taxas no site da casa:** A plataforma capturaria as taxas da casa sem intervenção dela. Rejeitada categoricamente por insegurança jurídica, fragilidade técnica e risco de violar termos de uso.
+
+## Target User Segment
+
+### Definition
+
+- **Gerentes de Mesa, Operadores de Tesouraria e Técnicos de TI** de corretoras e casas de câmbio parceiras que operam com mais de 3 moedas ativas.
+
+### Segment Size
+
+- Cerca de 8 a 12 das 15 casas do universo piloto em SP e RJ.
+
+### Current Behavior
+
+- Mantêm uma planilha Excel central na tesouraria que calcula as taxas do dia a partir da PTAX + margens e disparam para suas lojas e canais digitais via CSV ou integração direta.
+
+## Success Metrics
+
+### Primary Metric
+
+| Métrica | Baseline Atual | Meta | Efeito Mínimo Detectável |
+|---------|---------------|------|--------------------------|
+| % de casas entrevistadas que classificam importação por CSV/API como "Requisito Obrigatório" para adesão sustentada | N/A | ≥ 50% das casas de médio/grande porte [HIPÓTESE – A VALIDAR] | 20% |
+
+### Secondary Metrics
+
+| Métrica | Baseline Atual | Direção Esperada |
+|---------|---------------|------------------|
+| Frequência de atualização de taxas de balcão quando há importação por planilha vs digitação manual | N/A | Aumento de ≥ 3x na frequência de atualização diária |
+| Taxa de erro ou discrepância de taxas entre vitrine e proposta | N/A | Redução para menos de 0,5% |
+
+### Guardrail Metrics
+
+| Métrica | Valor Atual | Faixa Aceitável |
+|---------|------------|-----------------|
+| Complexidade técnica do importador (tempo de desenvolvimento de engenharia) | N/A | Máximo de 1 sprint para suporte a CSV básico |
+
+## Validation Approach
+
+### Method
+
+**Perguntas de validação técnica nas entrevistas de screening (Questão 4 do Roteiro):**
+- Investigar exatamente como a casa publica suas taxas hoje (manual, planilha, sistema próprio de ERP cambial, API).
+- Apresentar o conceito de upload rápido de planilha CSV e perguntar se isso atende ou se exigem API/webhook em tempo real.
+- Avaliar se a falta da importação de planilha impediria a casa de participar do piloto no primeiro mês.
+
+### Sample Size & Duration
+
+- 10 a 15 casas entrevistadas nas primeiras 2 semanas.
+
+### Pass/Fail Criteria
+
+- **Validada se:** ≥ 50% das casas declararem que a digitação manual é inviável para a rotina diária e que a importação de planilha (CSV) ou API é condição para permanência. Nesse caso, a importação por CSV/planilha deve subir imediatamente para a Fase 1 do Roadmap.
+- **Invalidada se:** As casas piloto informarem que no início pretendem apenas responder a ofertas de USD e EUR e que atualizar manualmente 2 taxas uma vez por dia é perfeitamente tolerável.
+- **Inconclusiva se:** Casas pequenas aceitarem manual e casas grandes exigirem API complexa — recomendando segmentar por porte.
+
+## Risks & Assumptions
+
+### Key Assumptions
+
+- As casas utilizam formatos de planilha relativamente padronizados (colunas com Moeda, Tipo, Compra, Venda).
+- O operador tem permissão para subir arquivos de planilha no navegador web da plataforma.
+
+### Risks
+
+- **Incompatibilidade de formatos de planilha:** Cada casa usa um layout de colunas diferente, exigindo múltiplos parsers customizados. Mitigação: fornecer modelo padrão baixável de CSV/Excel.
+
+## Timeline
+
+| Fase | Datas | Duração |
+|------|-------|---------|
+| Inclusão da questão técnica no roteiro de entrevistas | [HIPÓTESE – A VALIDAR] | Concluído |
+| Mapeamento de formatos de planilha das 10 casas piloto | [HIPÓTESE – A VALIDAR] | 2 semanas |
+| Decisão de priorização de escopo no backlog | [HIPÓTESE – A VALIDAR] | Imediato pós-entrevistas |
+

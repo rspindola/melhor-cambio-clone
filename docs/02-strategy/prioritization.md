@@ -1,9 +1,9 @@
 ---
 artifact: prioritization-framework
-version: "1.0"
+version: "1.5.1"
 created: 2026-11-03
 status: draft
-context: "Definição de escopo MVP para marketplace de câmbio com lançamento em RJ e SP"
+context: "Definição de escopo MVP para marketplace de câmbio com lançamento em RJ e SP (Revisão v1.5.1 com reavaliação de automação de taxas e landing pages)"
 ---
 
 # Priorização: Definição de Escopo MVP — Marketplace de Câmbio (RJ/SP)
@@ -271,3 +271,34 @@ Validar este ranking com a equipe de engenharia para calibrar Ease/Effort e com 
 5. **Viés de supply-side vs. demand-side.** Esta análise prioriza funcionalidades do marketplace como plataforma, mas não avalia separadamente as necessidades de cada lado do mercado. Casas de câmbio (supply) e clientes (demand) podem ter prioridades divergentes que uma análise unificada mascara. Exemplo: Vitrine de taxas pode ser Won't para clientes e Must para casas.
 
 6. **Kano e RICE estão ausentes.** A ausência de frameworks centrados em satisfação do cliente (Kano) e alcance quantitativo (RICE) significa que itens com alto valor percebido mas baixo volume, ou vice-versa, podem estar mal posicionados. Desbloquear esses frameworks é o investimento de pesquisa mais importante antes da próxima rodada de priorização.
+
+---
+
+## 10. Reavaliação Estratégica v1.5.1: Automação de Taxas e Landing Pages das Casas
+
+Com base no novo contexto estratégico do fundador (casas buscando ativamente uma alternativa neutra ao Melhor Câmbio / Nomad) e na formulação das hipóteses estruturantes [H6](hypotheses.md#h6--hipótese-de-aquisição-de-demanda--gtm-clientes-chegam-por-seo-local-e-canais-das-casas) e [H7](hypotheses.md#h7--hipótese-de-automação-de-taxas-atualização-em-lote-é-requisito-eliminatório-para-migração), reavaliou-se formalmente o posicionamento de dois itens que originalmente estavam classificados como Won't / Post-MVP:
+
+### 10.1 Reavaliação 1: Atualização Automática de Taxas de Balcão (CSV / Planilha / API)
+- **Classificação Original:** Subsumida no Item #8 (*Vitrine de taxas*, MoSCoW: Could / ICE: 280) com cadastro estritamente manual via formulário web ([US-021](../03-product/user-stories.md#us-021-cadastro-de-taxas-de-balcão-na-vitrine)), e no Item #14 (*API pública*, MoSCoW: Won't / ICE: 80 / Fase 3).
+- **Novo Fator Estratégico:** A hipótese H7 postula que redigitar taxas manualmente múltiplas vezes ao dia em mais um sistema gera abandono operacional imediato. Casas parceiras consolidadas já operam com planilhas de tesouraria; sem importação em lote, a vitrine fica defasada.
+- **Grau de Incerteza e Risco:** **Alto.** Não há confirmação empírica se as casas piloto do Rio e São Paulo exigirão isso logo nas primeiras semanas de operação gratuita, ou se o upload manual de apenas 2 moedas principais (USD e EUR) seria tolerado. Além disso, o esforço de engenharia para suportar múltiplos layouts de arquivo consome capacidade crítica do MVP.
+- **Decisão e Recomendação de Movimentação:**
+  - **Importação Básica de Planilha (CSV Padronizado):** Movida de **Won't (Post-MVP)** para **Should Condicional (MVP+ / Fast-Follow da Fase 1)**. Condição de disparo: se ≥ 50% das casas na entrevista de validação ([Questão 4](interview-guide-casas.md)) apontarem a digitação manual como dealbreaker de permanência, o desenvolvimento de um endpoint de upload de CSV simples deve entrar imediatamente após a estabilização do core do leilão.
+  - **API Pública / Webhooks:** Mantida estritamente na **Fase 2 / Fase 3**, pois a sobrecarga de homologação e suporte a sistemas legados heterogêneos de terceiros inviabilizaria os prazos do piloto.
+
+### 10.2 Reavaliação 2: Landing Page / Widget da Casa (com "Modo Oferta Privada")
+- **Classificação Original:** Item #15 (*Landing pages white-label*, MoSCoW: Won't / ICE: 64 / WS: 4.0 / Fase 3 no Roadmap).
+- **Novo Fator Estratégico:** A hipótese H6 demonstra que a demanda de clientes não surge organicamente sem canais de distribuição bem definidos. Se as casas parceiras puderem divulgar um link próprio parametrizado ou widget em seus sites/WhatsApp, elas mesmas alimentam a liquidez do sistema com sua base existente. Abre-se também a possibilidade conceitual do **"Modo Oferta Privada"** (oferta enviada diretamente para a casa titular da página, sem concorrência aberta).
+- **Grau de Incerteza e Risco:** **Muito Alto.** A construção de um ecossistema multi-tenant completo com subdomínios, personalização visual e gestão de DNS ([ADR-0011](../04-architecture/adr/adr-0011-landing-pages-multi-tenant.md)) é tecnicamente onerosa e desvia o time da validação da liquidez do pregão. Ademais, muitas casas pequenas têm presença digital rudimentar e tráfego próprio insignificante.
+- **Decisão e Recomendação de Movimentação:**
+  - **Landing Page White-Label Completa Multi-Tenant:** Mantida na **Fase 3** conforme planejamento original.
+  - **Página Pública Básica da Casa com Link Parametrizado (Modo Privado Experimental):** Sobe de **Fase 3** para a **Fase 2 (Exploração Estratégica pós-MVP)**. No MVP da Fase 1, não haverá desenvolvimento de software para isso; se o [Roteiro de Entrevistas](interview-guide-casas.md) (Questão 7) comprovar forte tração e demanda das casas, um teste de conceito leve (landing estática manual) será prototipado antes do início formal da Fase 2.
+
+---
+
+## 11. Histórico de Revisão
+
+| Versão | Data | Autor | Mudanças |
+|--------|------|-------|----------|
+| 1.0 | 2026-11-03 | Equipe de Produto | Priorização inicial multi-framework (ICE, MoSCoW e Weighted Scoring) para 16 funcionalidades candidatas. |
+| 1.5.1 | 2026-11-03 | Equipe de Produto | Reavaliação estratégica (Seção 10) baseada nas hipóteses H6 e H7: elevação da importação de taxas por CSV para Should Condicional (MVP+ da Fase 1, condicionado a confirmação nas entrevistas de casas) e antecipação do teste conceitual de landing pages/modo oferta privada para a Fase 2, documentando justificativas e incertezas. |

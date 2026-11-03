@@ -1,68 +1,80 @@
 ---
 artifact: adr
-version: "1.0"
-created: 2026-11-02
+version: "1.5"
+created: 2026-11-03
 status: proposed
 ---
 
-# ADR-0010: Posicionamento como Camada de Tecnologia e Intermediação sem Custódia de Fundos
+# ADR-0010: Plataforma de Comunicação sem Participação no Pagamento ou Liquidação Financeira
 
 ## Status
 
-Proposed (Dependente de Parecer Jurídico Especializado)
+Proposed (Dependente de Parecer Jurídico Especializado [VALIDAR COM ADVOGADO])
 
-**Date:** 2026-11-02
+**Date:** 2026-11-03  
 **Deciders:** Equipe fundadora e assessoria jurídica regulatória (a contratar)
 
 ## Context
 
-A legislação financeira brasileira, sob supervisão rigorosa do Banco Central do Brasil (BACEN) e do Conselho Monetário Nacional (CMN), impõe barreiras regulatórias severas para qualquer entidade que realize a intermediação de câmbio com custódia de valores ou liquidação financeira de moeda estrangeira:
-- Exigência de licença como Instituição Financeira, Corretora de Câmbio, DTVM ou contratação formal como Correspondente Cambial credenciado (Resolução BCB nº 277/2022);
-- Exigências estritas de capital social mínimo, governança corporativa, compliance de PLD/FTP (Prevenção à Lavagem de Dinheiro e Financiamento do Terrorismo);
-- Obrigações tributárias e operacionais acessórias de reporte direto via Sisbacen para cada contrato de câmbio emitido.
+A plataforma é concebida como uma evolução tecnológica de mensageria e aproximação inspirada no modelo do Melhor Câmbio (`melhorcambio.com`), conectando clientes interessados em moeda estrangeira a casas de câmbio autorizadas pelo Banco Central do Brasil (BACEN).
 
-Se a plataforma tentasse receber pagamentos em Reais dos clientes (via Pix/TED), reter valores em conta gráfica (escrow) e transferir para as casas de câmbio (ou vice-versa), ela estaria praticando **intermediação financeira não autorizada**, o que constitui crime contra o sistema financeiro nacional (Lei nº 7.492/1986).
+A legislação financeira brasileira, sob a supervisão do BACEN e do Conselho Monetário Nacional (CMN) — notadamente a Lei nº 14.286/2021 (Novo Marco Legal do Câmbio) e a Resolução BCB nº 277/2022 —, estabelece que a contratação de operações de câmbio, a identificação cadastral formal dos clientes (KYC cambial), a liquidação financeira de moeda estrangeira e o reporte regulatório ao Sisbacen são atos privativos de instituições autorizadas a operar no mercado de câmbio.
+
+Qualquer atuação tecnológica que receba recursos de clientes (via Pix, TED ou cartão), retenha valores em contas gráficas (*escrow*), gerencie pagamentos, efetue a entrega física de numerário ou execute a liquidação financeira das operações incorreria no risco severo de caracterização como instituição de pagamento não autorizada ou exercício irregular de atividade financeira privativa (Lei nº 7.492/1986).
 
 ## Decision
 
-Propõe-se que a plataforma atue **estritamente como camada de tecnologia e facilitação de negócios (Software as a Service / Marketplace Ponto de Encontro)**, com as seguintes premissas invioláveis de desenho:
+Determina-se formalmente que a plataforma atuará **EXCLUSIVAMENTE COMO PLATAFORMA DE COMUNICAÇÃO, MENSAGERIA E APROXIMAÇÃO TECNOLÓGICA ENTRE AS PARTES**, com as seguintes premissas operacionais e jurídicas [VALIDAR COM ADVOGADO]:
 
-1. **Ausência Absoluta de Custódia Financeira:** A plataforma **nunca** custodia, recebe, retém, movimenta ou liquida moeda nacional (BRL) nem moeda estrangeira (USD, EUR, etc.). Nenhuma conta de escrow ou liquidação financeira passará pelos balanços da empresa proprietária do software.
-2. **Titularidade da Operação Cambial:** O contrato de câmbio, a identificação formal do cliente (KYC cambial), a emissão do boleto/contrato no Banco Central e a entrega física ou eletrônica da moeda são de **responsabilidade jurídica e operacional exclusiva da Casa de Câmbio autorizada**.
-3. **Ponto de Encontro Tecnológico:** O software limita-se a conectar a intenção de negociação (oferta) à disponibilidade das casas (aceite/contraproposta). Ao haver o match, o sistema apenas fornece às partes as informações necessárias para que celebrem a operação diretamente entre si (balcão da loja ou delivery próprio da casa).
-4. **Isolamento de Responsabilidade e Avisos Contratuais:** Os Termos de Uso e todas as telas da aplicação conterão avisos explícitos e destacados reiterando a ausência de intermediação bancária pela plataforma e orientando o cliente a realizar pagamentos apenas para contas de titularidade da instituição autorizada cadastrada.
-5. **Recomendação Mandatória:** A decisão permanece como `Proposed` até a emissão formal de **parecer jurídico especializado em regulação cambial e bancária**, atestando a regularidade do modelo e confirmando se a atividade não se enquadra compulsoriamente como correspondente no país ou arranjo de pagamento.
+1. **Ausência Absoluta de Participação no Pagamento e na Custódia:**
+   A plataforma **NÃO recebe**, **NÃO custodia**, **NÃO transaciona**, **NÃO processa** e **NÃO liquida** quaisquer valores monetários, sejam em Reais (BRL) ou em moedas estrangeiras. Nenhuma conta gráfica, conta de pagamento ou mecanismo de custódia (*escrow*) existe ou existirá na infraestrutura do software.
+2. **Pagamento e Entrega Diretos entre as Partes:**
+   Todo o pagamento (dinheiro em espécie, Pix ou TED diretamente para a conta bancária da instituição autorizada), a conferência documental e a entrega física ou eletrônica da moeda acontecem **DIRETAMENTE ENTRE A CASA DE CÂMBIO E O CLIENTE**, fora do ambiente da plataforma. A plataforma não gerencia logística de entrega, motoboys, retiradas em loja ou confirmações financeiras de liquidação bancária.
+3. **Compromisso Comercial de Atendimento (Não Executado pela Plataforma):**
+   Ao ocorrer o match (por aceite direto ou escolha de contraproposta), a plataforma limita-se a gerar um registro de **Atendimento Comercial** (`EM_ATENDIMENTO`), disponibilizando às partes os dados necessários para contato direto durante uma janela comercial informada (conforme parâmetro configurável). O cumprimento da taxa e a formalização do negócio são obrigações de trato direto entre cliente e casa autorizada.
+4. **Relato Qualitativo de Desfecho sem Mediação Financeira:**
+   A plataforma não realiza mediação de valores nem impõe sanções financeiras em caso de desacordo. As partes apenas informam o desfecho qualitativo do atendimento (`CONCLUÍDO`, `NÃO_CONCLUÍDO` com motivo, ou `SEM_RETORNO`), servindo estritamente para moderação e reputação de mercado na plataforma.
+5. **Termos de Uso e Isenção de Responsabilidade:**
+   Os Termos de Uso e todas as telas do sistema conterão avisos destacados ressaltando a natureza de canal de comunicação e orientando os clientes a efetuarem pagamentos exclusivamente para a titularidade jurídica da casa de câmbio autorizada informada no Sisbacen [VALIDAR COM ADVOGADO].
 
 ## Consequences
 
 ### Positive
 
-- **Eliminação de barreira regulatória inicial:** Permite o lançamento ágil do MVP sem a necessidade de obter autorização prévia ou processos burocráticos de homologação no Banco Central que durariam anos.
-- **Redução drástica do custo operacional:** Não exige contratação de estruturas pesadas de tesouraria, custódia bancária especializada, seguros de valores ou sistemas legados de conexão direta ao Sisbacen.
-- **Risco de fraude financeira minimizado:** Se a plataforma não toca no dinheiro, ataques cibernéticos ou invasões de conta não conseguem desviar fundos monetários diretamente do software.
+- **Enquadramento Regulatório Seguro:** Ao atuar estritamente como canal de comunicação e aproximação (mensageria tecnológica similar ao modelo estabelecido do Melhor Câmbio), mitiga-se expressivamente o risco de enquadramento como instituição financeira ou arranjo de pagamento não autorizado [VALIDAR COM ADVOGADO].
+- **Agilidade e Simplicidade Operacional no MVP:** Elimina a necessidade de integrar gateways de pagamento bancários, estruturas de conciliação de faturamento no piloto, custódia e risco de chargeback no MVP.
+- **Isolamento de Risco Cibernético:** O software não armazena dados de contas bancárias de clientes, chaves Pix transacionais ou dados de cartão de crédito.
 
 ### Negative
 
-- **Risco de Vazamento (Disintermediation / Leakage):** Como as partes precisam se comunicar e liquidar a transação fora do software (na loja física ou via contato direto), existe incentivo para que cliente e casa fechem negócios futuros diretamente sem retornar à plataforma.
-- **Impossibilidade de Garantia Financeira Direta (Escrow):** A plataforma não pode oferecer garantias monetárias automáticas caso a casa atrase a entrega ou o cliente desista após o match.
-- **Insegurança Jurídica Residual:** Mesmo sem custódia, o regulador pode avaliar se a apresentação de taxas e o fechamento do match caracterizam atividade de correspondente cambial por meio eletrônico.
+- **Risco de Vazamento Comercial (Desintermediação):** Como a comunicação, o pagamento e o cumprimento ocorrem fora do software, as partes podem negociar diretamente em operações futuras sem retornar à plataforma.
+- **Ausência de Garantia Financeira:** A plataforma não pode estornar dinheiro ou garantir a entrega caso a casa descumpra o combinado, dependendo do relato de desfecho e de moderação de cadastro para manter a integridade da rede.
+- **Necessidade de Parecer Formal Específico:** Permanece necessária a emissão de parecer jurídico regulatório atestando que a aproximação e o anúncio de lances não exigem credenciamento como correspondente no país [VALIDAR COM ADVOGADO].
 
 ### Neutral
 
-- A mitigação do risco de vazamento depende de estratégias de produto (retenção de dados até o match, sistema de reputação pós-MVP e comodidade da plataforma).
+- A monetização futura da plataforma (Fase 2 / ADR-0012) migra para cobrança por lead/atendimento aceito ou plano de assinatura SaaS das casas, mantendo a ausência de participação na liquidação das moedas.
 
 ## Alternatives Considered
 
-### Atuação como Correspondente Cambial Oficial
-Requer celebração de contrato de correspondente formal e exclusivo com uma única instituição financeira, eliminando o modelo de marketplace multi-casas competitivo.
+### Atuação como Correspondente Cambial Credenciado
+Exigiria vínculo contratual formal e exclusivo com uma única instituição autorizada no Banco Central, inviabilizando o marketplace multi-casas competitivo.
 
-### Plataforma com Conta Escrow Integrada
-Descartada liminarmente no estágio atual por exigir licença de Instituição de Pagamento ou parceria de Banking as a Service (BaaS) complexa e de alto custo, além de potencial ilegalidade sem autorização de câmbio.
+### Plataforma com Custódia ou Escrow Integrado
+Descartada terminantemente por configurar intermediação financeira privativa e exigir licenças bancárias/regulatórias incompatíveis com a proposta de valor do produto.
 
 ## References
 
 - Lei nº 14.286/2021 (Novo Marco Legal do Câmbio)
-- Resolução BCB nº 277/2022 (Regulamentação do Mercado de Câmbio)
-- Lei nº 7.492/1986 (Crimes contra o Sistema Financeiro Nacional)
-- [PRD - Seção de Riscos Regulatórios](../03-product/prd.md)
+- Resolução BCB nº 277/2022 (Regulamentação Cambial)
+- [Contexto Competitivo: Análise do Melhor Câmbio](../../01-discovery/competitive-context.md)
+- [PRD - Seção de Posicionamento e Solução](../../03-product/prd.md)
 
+---
+
+## Histórico de Revisão
+
+| Versão | Data | Autor | Mudanças |
+|--------|------|-------|----------|
+| 1.0 | 2026-11-02 | Equipe de Arquitetura | Versão inicial focada em modelo sem custódia |
+| 1.5 | 2026-11-03 | Equipe de Arquitetura | Revisão completa v1.5: reposicionamento estrito como plataforma de comunicação e mensageria entre casa e cliente; explicitação de que pagamento, entrega e acordo ocorrem diretamente entre as partes fora do software; substituição de "negociação" por "atendimento comercial" e relato qualitativo sem mediação financeira [VALIDAR COM ADVOGADO]. |

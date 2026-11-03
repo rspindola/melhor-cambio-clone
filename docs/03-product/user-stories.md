@@ -1,13 +1,13 @@
 ---
 artifact: user-story
-version: "1.4"
+version: "1.5"
 created: 2026-11-03
 status: draft
 ---
 
-# User Stories: Marketplace de Câmbio por Melhor Oferta (MVP)
+# User Stories: Marketplace de Câmbio por Melhor Oferta (MVP — Versão 1.5)
 
-Este documento consolida as User Stories do MVP, estruturadas por Épico e Perfil de Usuário, seguindo a especificação do [PRD](prd.md) e o formato da skill `deliver-user-stories`.
+Este documento consolida as 30 User Stories do MVP, estruturadas por Épico e Perfil de Usuário, seguindo a especificação do [PRD](prd.md) (versão 1.5) e o formato da skill `deliver-user-stories`.
 
 ---
 
@@ -30,11 +30,11 @@ Este documento consolida as User Stories do MVP, estruturadas por Épico e Perfi
 | US-013 | Visualização e Comparação de Contrapropostas | Cliente | P0 | Épico 4: Aceite e Contrapropostas |
 | US-014 | Aceite de Contraproposta pelo Cliente | Cliente | P0 | Épico 4: Aceite e Contrapropostas |
 | US-015 | Recusa de Contraproposta pelo Cliente | Cliente | P1 | Épico 4: Aceite e Contrapropostas |
-| US-016 | Resolução Transacional de Concorrência de Aceite | Sistema | P0 | Épico 5: Match e Negociação |
-| US-017 | Encerramento em Cascata de Propostas Concorrentes | Sistema | P0 | Épico 5: Match e Negociação |
-| US-018 | Acompanhamento do Fluxo de Negociação | Cliente / Casa | P0 | Épico 5: Match e Negociação |
-| US-019 | Conclusão da Negociação e Gestão de No-Show | Casa (Operador) / Cliente | P0 | Épico 5: Match e Negociação |
-| US-020 | Abertura de Disputa em Negociação | Cliente / Casa | P1 | Épico 5: Match e Negociação |
+| US-016 | Resolução Transacional de Concorrência de Aceite | Sistema | P0 | Épico 5: Match e Atendimento Comercial |
+| US-017 | Encerramento em Cascata de Propostas Concorrentes | Sistema | P0 | Épico 5: Match e Atendimento Comercial |
+| US-018 | Acompanhamento do Atendimento Comercial e Revelação Segura de Contatos | Cliente / Casa | P0 | Épico 5: Match e Atendimento Comercial |
+| US-019 | Relato de Desfecho do Atendimento Comercial e Conclusão / Sem Retorno | Casa (Operador) / Cliente | P0 | Épico 5: Match e Atendimento Comercial |
+| US-020 | Relato de Problema à Moderação da Plataforma (Qualidade sem Mediação Financeira) | Cliente / Casa | P1 | Épico 5: Match e Atendimento Comercial |
 | US-021 | Cadastro de Taxas de Balcão na Vitrine | Casa (Owner/Operador) | P1 | Épico 6: Vitrine Informativa |
 | US-022 | Consulta da Vitrine de Taxas | Cliente | P1 | Épico 6: Vitrine Informativa |
 | US-023 | Notificações em Tempo Real via WebSocket | Cliente / Casa | P0 | Épico 7: Notificações |
@@ -44,7 +44,7 @@ Este documento consolida as User Stories do MVP, estruturadas por Épico e Perfi
 | US-027 | Log de Auditoria de Ações Transacionais | Admin / Sistema | P0 | Épico 8: Gestão e Governança |
 | US-028 | Autenticação Multifator (MFA) Obrigatória para Casas de Câmbio | Casa (Owner/Operador) | P0 | Épico 1: Onboarding e Autenticação |
 | US-029 | Confirmação Pré-Aceite com Resumo Financeiro Vinculante | Cliente / Casa (Operador) | P0 | Épico 4: Aceite e Contrapropostas |
-| US-030 | Controle de Teto de Valor por Oferta e Monitoramento de Fracionamento (PLD) | Sistema / Admin | P0 | Épico 3: Ofertas |
+| US-030 | Controle de Teto de Valor por Oferta no Piloto | Sistema / Admin | P0 | Épico 3: Ofertas |
 
 ---
 
@@ -261,10 +261,10 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
   - **Given** uma oferta no status `ABERTA`,
   - **When** o cliente clica em "Cancelar Oferta" e confirma,
   - **Then** o status da oferta muda para `CANCELADA`, o job de expiração no BullMQ é removido, todas as contrapropostas pendentes existentes mudam para `ENCERRADA` (com motivo `OFERTA_CANCELADA` registrado em auditoria) e as casas são notificadas.
-- **AC-2 (Bloqueio de cancelamento se match em andamento):**
+- **AC-2 (Bloqueio de cancelamento pré-match se atendimento já iniciado):**
   - **Given** que uma casa acabou de efetuar o match no mesmo milissegundo,
-  - **When** a requisição de cancelamento chega ao banco,
-  - **Then** a transação detecta o status `FECHADA` e rejeita o cancelamento com status HTTP 422 Unprocessable Entity (`OFFER_ALREADY_CLOSED`) e mensagem padronizada: *"A oferta já foi aceita e gerou uma negociação em andamento."*.
+  - **When** a requisição de cancelamento pré-match chega ao banco,
+  - **Then** a transação detecta o status `FECHADA` e rejeita o cancelamento com status HTTP 422 Unprocessable Entity (`OFFER_ALREADY_CLOSED`) e mensagem padronizada: *"Esta oferta já foi aceita e resultou em um atendimento comercial em andamento. Para desistir do atendimento, acesse a tela de atendimento e selecione 'Desistir'."*.
 
 ---
 
@@ -309,8 +309,8 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 **Acceptance Criteria:**
 - **AC-1 (Match imediato na primeira aceitação com modal de confirmação):**
   - **Given** uma oferta com status `ABERTA`,
-  - **When** o operador preenche a decomposição informada pela casa (taxa de câmbio pura, IOF e tarifas para fins de transparência; IOF e demais encargos: valor informado pela casa; alíquotas variam por operação e produto e mudam com frequência [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]. O sistema não calcula nem fixa alíquotas), revisa no modal de confirmação ([US-029]) e clica em "Confirmar Aceite Vinculante",
-  - **Then** o backend executa transação atômica serializada conforme [ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md), valida cumulativamente que `status = 'ABERTA'`, `expires_at > clock_timestamp()` no relógio em tempo real do banco de dados e casa `APROVADA`, transiciona a Oferta para `FECHADA`, gera o registro de Negociação no status `AGUARDANDO_PAGAMENTO_ENTREGA`, encerra as contrapropostas concorrentes pendentes com motivo `MATCH_OUTRA_CASA` e notifica cliente e casa.
+  - **When** o operador preenche a decomposição informada pela casa (taxa de câmbio pura, IOF e tarifas para fins de transparência; IOF e demais encargos: valor informado pela casa; alíquotas variam por operação e produto e mudam com frequência [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]. O sistema não calcula nem fixa alíquotas), revisa no modal de confirmação ([US-027]) e clica em "Confirmar Aceite Vinculante",
+  - **Then** o backend executa transação atômica serializada conforme [ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md), valida cumulativamente que `status = 'ABERTA'`, `expires_at > clock_timestamp()` no relógio em tempo real do banco de dados e casa `APROVADA`, transiciona a Oferta para `FECHADA`, gera o registro de Atendimento Comercial no status `EM_ATENDIMENTO`, encerra as contrapropostas concorrentes pendentes com motivo `MATCH_OUTRA_CASA` e revela bilateralmente os contatos diretos (telefone e e-mail) para cliente e casa.
 - **AC-2 (Perda da disputa concorrente):**
   - **Given** que outro operador de outra casa enviou o aceite antes,
   - **When** minha requisição é avaliada pela transação,
@@ -377,14 +377,14 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 
 **Statement:**
 > **Como** cliente,
-> **quero** aceitar uma das contrapropostas recebidas da lista,
-> **para que** o match seja consolidado com aquela casa específica e iniciemos a negociação.
+> **quero** aceitar uma das contrapropostas recebidas da lista com revisão prévia em modal vinculante ([US-027]),
+> **para que** o match seja consolidado com aquela casa específica e iniciemos o atendimento comercial com acesso aos contatos diretos.
 
 **Acceptance Criteria:**
 - **AC-1 (Consolidação do Match via Contraproposta):**
   - **Given** uma contraproposta no status `PENDENTE` com prazo não expirado,
-  - **When** clico em "Aceitar Esta Proposta",
-  - **Then** a transação atômica serializada ([ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)) valida `expires_at > clock_timestamp()`, muda a Proposta selecionada para `ACEITA`, a Oferta para `FECHADA`, todas as demais propostas para `ENCERRADA` e gera a Negociação `AGUARDANDO_PAGAMENTO_ENTREGA`.
+  - **When** clico em "Aceitar Esta Proposta" e confirmo no modal pré-aceite,
+  - **Then** a transação atômica serializada ([ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)) valida `expires_at > clock_timestamp()`, muda a Proposta selecionada para `ACEITA`, a Oferta para `FECHADA`, todas as demais propostas para `ENCERRADA` com motivo `MATCH_OUTRA_CASA` e gera o Atendimento Comercial `EM_ATENDIMENTO` com revelação bilateral de contatos.
 - **AC-2 (Tentativa de aceite em proposta expirada):**
   - **Given** que a contraproposta acabou de atingir seu prazo limite de validade,
   - **When** o cliente tenta aceitar,
@@ -416,14 +416,14 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 
 ---
 
-## Épico 5: Match e Negociação
+## Épico 5: Match e Atendimento Comercial
 
 ### US-016: Resolução Transacional de Concorrência de Aceite
 **Story Header:**
 - **ID:** US-016
 - **Título:** Controle de Concorrência Transacional no Match Simultâneo
 - **Persona:** Sistema
-- **Prioridade:** P0 | **Estimativa:** M | **Épico:** Match e Negociação
+- **Prioridade:** P0 | **Estimativa:** M | **Épico:** Match e Atendimento Comercial
 
 **Statement:**
 > **Como** arquitetura de dados do sistema,
@@ -434,11 +434,11 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 - **AC-1 (Concorrência simultânea controlada com validação no banco):**
   - **Given** duas casas A e B disparando requisição de aceite para a mesma oferta no mesmo milissegundo,
   - **When** o backend executa a transação serializada ([ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)), validando cumulativamente que `status = 'ABERTA'`, `expires_at > clock_timestamp()` no relógio em tempo real do banco de dados e casa operadora `APROVADA`,
-  - **Then** apenas a primeira transação comita com sucesso (HTTP 200/201 OK com ID da Negociação) e a segunda é abortada com status HTTP 409 Conflict (`OFFER_ALREADY_ACCEPTED`), sem alterar o estado do registro da oferta na requisição rejeitada.
-- **AC-2 (Garantia de unicidade de Negociação):**
-  - **Given** a tabela `negotiations`,
-  - **When** consultada para uma oferta concluída,
-  - **Then** existe exatamente 1 registro de negociação associado ao `offer_id` (garantido por controle de concorrência e constraint `UNIQUE (offer_id)` no schema).
+  - **Then** apenas a primeira transação comita com sucesso (HTTP 200/201 OK gerando atendimento no status `EM_ATENDIMENTO`) e a segunda é abortada com status HTTP 409 Conflict (`OFFER_ALREADY_ACCEPTED`), sem alterar o estado do registro da oferta na requisição rejeitada.
+- **AC-2 (Garantia de unicidade de Atendimento Comercial):**
+  - **Given** a tabela de atendimentos (`atendimentos` / `negotiations`),
+  - **When** consultada para uma oferta com match,
+  - **Then** existe exatamente 1 registro de atendimento associado ao `offer_id` (garantido por controle de concorrência e constraint `UNIQUE (offer_id)` no schema).
 
 ---
 
@@ -447,7 +447,7 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 - **ID:** US-017
 - **Título:** Finalização Automática de Propostas Concorrentes após Match, Expiração ou Cancelamento
 - **Persona:** Sistema
-- **Prioridade:** P0 | **Estimativa:** S | **Épico:** Match e Negociação
+- **Prioridade:** P0 | **Estimativa:** S | **Épico:** Match e Atendimento Comercial
 
 **Statement:**
 > **Como** sistema,
@@ -466,79 +466,83 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 
 ---
 
-### US-018: Acompanhamento da Negociação e Revelação Segura de Dados
+### US-018: Acompanhamento do Atendimento Comercial e Revelação Segura de Contatos
 **Story Header:**
 - **ID:** US-018
-- **Título:** Painel da Negociação com Revelação de Dados de Contato e Endereço Pós-Match
+- **Título:** Painel de Atendimento Comercial com Revelação Bilateral de Contatos Pós-Match
 - **Persona:** Cliente / Casa (Operador)
-- **Prioridade:** P0 | **Estimativa:** M | **Épico:** Match e Negociação
+- **Prioridade:** P0 | **Estimativa:** M | **Épico:** Match e Atendimento Comercial
 
 **Statement:**
-> **Como** cliente ou operador participante de um match recém-formado,
-> **quero** visualizar na tela da negociação os dados essenciais da contraparte (endereço para entrega ou retirada, instruções de liquidação e telefone/contato),
-> **para que** possamos cumprir a transação cambial com segurança e clareza.
+> **Como** cliente ou operador de casa participante de um match recém-formado,
+> **quero** visualizar na tela de atendimento os canais diretos de contato da contraparte (telefone, WhatsApp, e-mail e endereço da loja ou de entrega),
+> **para que** possamos estabelecer contato imediato e concluir a operação cambial diretamente fora da plataforma durante a janela informada.
 
 **Acceptance Criteria:**
-- **AC-1 (Liberação bidirecional de dados exclusivamente pós-match):**
-  - **Given** que o match foi confirmado transacionalmente e o status é `AGUARDANDO_PAGAMENTO_ENTREGA`,
-  - **When** cliente e operador abrem a tela da negociação,
-  - **Then** os dados de contato bilateral e o endereço completo de entrega (se modalidade delivery) ou endereço da loja física (se retirada) são disponibilizados mutuamente apenas para as partes envolvidas no match (conforme regra bidirecional FR-46).
-- **AC-2 (Aviso explícito de não-custódia):**
-  - **Given** a tela de negociação,
+- **AC-1 (Liberação bilateral de dados de contato exclusivamente pós-match):**
+  - **Given** que o match foi confirmado transacionalmente e o status é `EM_ATENDIMENTO`,
+  - **When** cliente e operador acessam a tela de atendimento,
+  - **Then** os canais de contato mútuos são revelados: telefone/WhatsApp e e-mail do cliente para a casa vencedora; e telefone, WhatsApp, e-mail institucional e endereço da loja física da casa (ou área de entrega acordada) para o cliente.
+- **AC-2 (Aviso explícito de plataforma de comunicação sem custódia):**
+  - **Given** a tela de atendimento,
   - **When** visualizada por qualquer das partes,
-  - **Then** é exibido aviso legal destacado: *"A plataforma não custodia valores [A VALIDAR COM ADVOGADO]. O pagamento e a entrega da moeda ocorrem diretamente entre o cliente e a instituição autorizada."*
+  - **Then** é exibido aviso legal destacado: *"A plataforma atua estritamente como canal de comunicação e aproximação tecnológica [VALIDAR COM ADVOGADO]. O pagamento, a entrega do dinheiro e a formalização do contrato cambial ocorrem diretamente entre o cliente e a instituição autorizada."*
+- **AC-3 (Janela comercial informada):**
+  - **Given** a tela de atendimento ativa,
+  - **When** consultada,
+  - **Then** a interface indica a Janela Comercial de Atendimento (`JANELA_ATENDIMENTO_HORAS`, padrão: 24h úteis) para que as partes entrem em contato direto, informando que a plataforma não realiza a execução do câmbio.
 
 ---
 
-### US-019: Conclusão da Negociação, Gestão de No-Show e Timeout
+### US-019: Relato de Desfecho do Atendimento Comercial e Conclusão / Sem Retorno
 **Story Header:**
 - **ID:** US-019
-- **Título:** Confirmação de Conclusão da Negociação, Gestão de No-Show e Timeout de Inatividade
+- **Título:** Relato Bilateral de Desfecho do Atendimento Comercial e Encerramento
 - **Persona:** Casa (Operador) e Cliente
-- **Prioridade:** P0 | **Estimativa:** S | **Épico:** Match e Negociação
+- **Prioridade:** P0 | **Estimativa:** S | **Épico:** Match e Atendimento Comercial
 
 **Statement:**
-> **Como** operador ou cliente participante de uma negociação cambial pós-match,
-> **quero** registrar a conclusão do câmbio ou relatar o não comparecimento da contraparte ao fim da janela acordada,
-> **para que** a transação seja concluída ou cancelada com registro de ausências e auditoria, sem retenção indevida da operação.
+> **Como** operador de casa de câmbio ou cliente participante de um atendimento comercial pós-match,
+> **quero** relatar voluntariamente à plataforma se o atendimento foi concluído com sucesso ou se houve insucesso/desistência,
+> **para que** o histórico operacional seja encerrado de forma transparente e alimente as métricas qualitativas da rede.
 
 **Acceptance Criteria:**
-- **AC-1 (Confirmação bilateral normal e janela de execução):**
-  - **Given** uma negociação no status `AGUARDANDO_PAGAMENTO_ENTREGA`,
-  - **When** a casa e o cliente confirmam a operação dentro da janela de execução acordada ([Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma)), ou confirmação da casa sem contestação do cliente em até 24 horas úteis,
-  - **Then** o status da negociação passa para `CONCLUÍDA` e a data de finalização é registrada em auditoria.
-- **AC-2 (Checkpoint de No-Show, contestação e acúmulo de strikes):**
-  - **Given** uma negociação que atingiu o término da janela de execução física acordada sem confirmação prévia,
-  - **When** o sistema aciona o checkpoint bilateral e a casa de câmbio seleciona a opção "Não compareceu" (No-Show),
-  - **Then** o sistema registra a declaração em auditoria (com operador, timestamp e IP contra risco de declaração abusiva), notifica o cliente e abre prazo de 24 horas úteis para contestação; se o cliente não contestar, a negociação transiciona para `CANCELADA` por ausência (motivo `CANCELADA_NO_SHOW`) e o cliente recebe 1 strike (sujeito a restrição caso atinja o limite parametrizado); se contestar, transiciona imediatamente para `DISPUTA`.
-- **AC-3 (Timeout de confirmação por inatividade):**
-  - **Given** uma negociação sem qualquer atualização após o período de inatividade parametrizado (5 dias úteis),
-  - **When** o job de verificação de inatividade executa,
-  - **Then** o sistema envia notificação de alerta às partes concedendo 48 horas adicionais para manifestação antes de cancelar automaticamente por inatividade com status `CANCELADA`. (Nota de Escopo: No MVP gratuito da Fase 1, não há faturamento nem estorno financeiro de tarifas; regras de cobrança pertencem exclusivamente à Fase 2 / ADR-0012).
+- **AC-1 (Relato de conclusão com sucesso):**
+  - **Given** um atendimento no status `EM_ATENDIMENTO`,
+  - **When** cliente e casa selecionam o desfecho "Concluído", ou uma das partes confirma e a outra não manifesta divergência dentro do prazo da janela,
+  - **Then** o atendimento transiciona para o status `CONCLUÍDO`, com registro de timestamp em log de auditoria.
+- **AC-2 (Relato de insucesso ou desistência voluntária com motivo):**
+  - **Given** um atendimento no status `EM_ATENDIMENTO`,
+  - **When** qualquer uma das partes seleciona "Não Concluído" ou aciona "Desistir do Atendimento",
+  - **Then** o sistema exige a seleção de um motivo padronizado (`CLIENTE_DESISTIU`, `CASA_NAO_ATENDEU`, `TAXA_NAO_MANTIDA` ou `OUTRO`), notifica a contraparte imediatamente e transiciona o status para `NÃO_CONCLUÍDO`, gravando os detalhes em auditoria.
+- **AC-3 (Timeout automático por ausência de manifestação bilateral):**
+  - **Given** um atendimento que atinja o timeout limite de inatividade (`TIMEOUT_RELATO_DESFECHO_DIAS`, padrão: 5 dias úteis com aviso prévio de 48h) sem que nenhuma parte tenha registrado desfecho,
+  - **When** o job periódico de varredura do BullMQ executa,
+  - **Then** o sistema transiciona o atendimento automaticamente para `SEM_RETORNO`, arquivando o histórico sem bloqueios ou penalidades financeiras.
 
 ---
 
-### US-020: Abertura e Resolução de Disputa em Negociação
+### US-020: Relato de Problema à Moderação da Plataforma (Qualidade sem Mediação Financeira)
 **Story Header:**
 - **ID:** US-020
-- **Título:** Registro e Mediação de Disputa pelo Suporte/Admin
+- **Título:** Relato de Irregularidade para Moderação de Cadastro pelo Admin
 - **Persona:** Cliente / Casa (Operador) / Admin
-- **Prioridade:** P1 | **Estimativa:** M | **Épico:** Match e Negociação
+- **Prioridade:** P1 | **Estimativa:** M | **Épico:** Match e Atendimento Comercial
 
 **Statement:**
-> **Como** cliente ou operador, caso haja descumprimento de prazos, taxas ou valores acordados na negociação,
-> **quero** registrar uma disputa para que a equipe de suporte e moderação intervenha,
-> **para que** haja mediação estruturada com desfechos claros.
+> **Como** cliente ou operador, caso identifique descumprimento injustificado de taxa, contato fraudulento ou conduta inadequada da contraparte,
+> **quero** acionar a funcionalidade "Relatar Problema" para notificar a equipe de suporte e governança da plataforma,
+> **para que** a administração aplique moderação sobre o cadastro dos envolvidos, sem envolver mediação financeira ou custódia de valores.
 
 **Acceptance Criteria:**
-- **AC-1 (Transição para DISPUTA):**
-  - **Given** uma negociação `AGUARDANDO_PAGAMENTO_ENTREGA`,
-  - **When** uma das partes clica em "Relatar Problema / Abrir Disputa" e informa o motivo e evidências,
-  - **Then** o status muda para `DISPUTA`, ambas as partes e o painel Admin são alertados imediatamente.
-- **AC-2 (Desfechos de mediação pela moderação):**
-  - **Given** uma negociação em `DISPUTA`,
-  - **When** o Admin analisa o caso (com SLA de primeiro atendimento em até 24h úteis e resolução em até 5 dias úteis [HIPÓTESE – A VALIDAR]),
-  - **Then** o Admin pode concluir a mediação aplicando um dos 3 desfechos: (a) Acordo mútuo (transita para `CONCLUÍDA`), (b) Cancelamento amigável (transita para `CANCELADA`), ou (c) Sanção/suspensão preventiva da parte infratora em caso de má conduta.
+- **AC-1 (Envio de relato de problema):**
+  - **Given** um atendimento com status `EM_ATENDIMENTO` ou recém-finalizado,
+  - **When** o usuário clica em "Relatar Problema" e submete uma descrição objetiva do ocorrido (ex.: "casa recusou a taxa combinada na loja", "cliente informou telefone inexistente"),
+  - **Then** o relato é gravado em auditoria vinculado ao atendimento e uma notificação de alta prioridade é enviada à fila de moderação do painel Admin.
+- **AC-2 (Ações de governança administrativa):**
+  - **Given** a fila de relatos no painel Admin,
+  - **When** o administrador revisa a reincidência de relatos de uma casa ou cliente,
+  - **Then** o Admin pode: (a) Manter advertência interna, (b) Suspender preventivamente a casa parceira (`SUSPENSA`) caso haja quebra reiterada de taxas combinadas, ou (c) Limitar a publicação de novas ofertas do cliente caso haja padrão de contatos falsos ou desistências abusivas, resguardando a qualidade da rede sem praticar qualquer mediação ou retenção financeira.
 
 ---
 
@@ -752,27 +756,49 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 
 ---
 
-### US-030: Controle de Teto de Valor por Oferta e Monitoramento de Fracionamento (PLD)
+### US-030: Controle de Teto de Valor por Oferta no Piloto
 **Story Header:**
 - **ID:** US-030
-- **Título:** Aplicação de Teto de Valor por Oferta e Detecção Preventiva de Fracionamento de Câmbio
-- **Persona:** Sistema / Admin (Compliance)
-- **Prioridade:** P0 | **Estimativa:** M | **Épico:** Ofertas
+- **Título:** Aplicação de Teto de Valor Máximo por Oferta no Piloto
+- **Persona:** Sistema / Admin
+- **Prioridade:** P0 | **Estimativa:** S | **Épico:** Ofertas
 
 **Statement:**
-> **Como** responsável por conformidade regulatória e PLD da plataforma,
-> **quero** que o sistema limite o montante máximo transacionável por oferta no piloto e detecte automaticamente padrões de ofertas fracionadas estruturadas abaixo do limite,
-> **para que** o marketplace atenda às melhores práticas de prevenção à lavagem de dinheiro e financiamento ao terrorismo (PLD/FT).
+> **Como** administrador da plataforma,
+> **quero** que o sistema limite o montante máximo transacionável por oferta durante a fase piloto,
+> **para que** o marketplace controle o perfil de risco operacional nas praças de teste (RJ e SP).
 
 **Acceptance Criteria:**
 - **AC-1 (Rejeição de ofertas acima do teto do piloto):**
   - **Given** um cliente tentando criar uma oferta,
-  - **When** o valor pretendido em Reais ultrapassar o teto parametrizado (`OFFER_MAX_VALUE_BRL` conforme [Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma)),
+  - **When** o valor pretendido em Reais ultrapassar o teto parametrizado (`OFFER_MAX_VALUE_BRL`, padrão: R$ 50.000,00 conforme [Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma)),
   - **Then** a criação é imediatamente rejeitada com HTTP 422 Unprocessable Entity (`OFFER_VALUE_LIMIT_EXCEEDED`) e mensagem: *"Valor da oferta excede o teto máximo permitido para o piloto."*.
-- **AC-2 (Geração de alerta administrativo de fracionamento):**
-  - **Given** um cliente (mesmo CPF ou CNPJ) que publique ofertas sequenciais abaixo do teto na mesma janela de 24 horas (`PLD_STRUCTURING_WINDOW_HOURS`),
-  - **When** o somatório dessas ofertas atingir o limiar de agregação para monitoramento,
-  - **Then** o sistema gera automaticamente uma notificação de alta prioridade na fila de conformidade do painel Admin para análise da equipe de compliance, sem alertar o usuário nem interromper o leilão prematuramente.
+- **AC-2 (Validação em moeda estrangeira equivalente):**
+  - **Given** a taxa informada na oferta pelo cliente,
+  - **When** o produto entre o valor em moeda estrangeira e a taxa resultar em montante em reais superior ao teto,
+  - **Then** o sistema bloqueia a submissão no frontend e valida o limite na API antes da gravação do registro.
+
+---
+
+## Future Considerations / Removido do MVP na v1.5
+
+Os fluxos abaixo foram removidos do escopo do MVP na versão 1.5 e arquivados para consideração futura:
+
+1. **Disputa Formal com Mediação Financeira e SLAs:**
+   - *Texto original (v1.4 US-020):* Previa intervenção do Admin para decidir devoluções financeiras e cumprimento de contratos cambiais com SLA de 24h a 5 dias.
+   - *Razão da remoção:* A plataforma não é intermediadora financeira nem custodia valores; o acordo e o pagamento são diretos entre as partes. Foi substituída pela funcionalidade de "Relatar Problema" para moderação de cadastro.
+2. **Sistema de Strikes, Checkpoint de No-Show e Contestação de 24h:**
+   - *Texto original (v1.4 US-019 AC-2):* Previa disparo de checkpoint às 18h / fim da janela com contadores de ausências e sanções a clientes.
+   - *Razão da remoção:* Desnecessário no piloto sem custódia monetária. Substituído pelo relato de desfecho voluntário pelas partes (`CONCLUÍDO` vs. `NÃO_CONCLUÍDO` com motivo padronizado).
+3. **Extensão Automática de Oferta nos Minutos Finais ("Janela de Decisão"):**
+   - *Texto original (v1.4 FR-24 / ADR-0006):* Previa prorrogação de 5 minutos da oferta caso chegasse contraproposta no fim.
+   - *Razão da remoção:* Simplificação do motor de concorrência e eliminação de prorrogações especulativas.
+4. **Bloqueio Rígido de Cancelamento Pós-Match:**
+   - *Texto original (v1.4 US-008 AC-2 / AC-08):* Bloqueava unilateralmente o cancelamento com HTTP 422.
+   - *Razão da remoção:* Substituído pela opção de "Desistir do Atendimento" com motivo informado e notificação bilateral.
+5. **Alerta Automatizado de Fracionamento PLD:**
+   - *Texto original (v1.4 US-030 AC-2):* Algoritmo de agregação de ofertas em janela de 24h para compliance.
+   - *Razão da remoção:* Convertido em pergunta em aberto para parecer jurídico regulatório.
 
 ---
 
@@ -785,4 +811,5 @@ Câmbio é atividade regulada pelo Banco Central do Brasil. Somente instituiçõ
 | 1.2 | 2026-11-03 | Equipe de Produto | Inclusão de US-024 (notificações multicanal offline); atualização de US-001 (validação OTP/identidade); US-006 (limite de 3 ofertas e alerta de taxa discrepante); US-010 (oferta anônima pré-match); US-012/US-013 (contraproposta estruturada e ranking por valor total em reais); US-016 (concorrência com lock_timeout e NOW() do banco); US-017 (cascata para ENCERRADA em expiração e cancelamento com auditoria); US-018 (endereço liberado somente pós-match); US-019/US-020 (timeout e resolução de disputas). |
 | 1.3 | 2026-11-03 | Equipe de Produto | Revisão ampla v1.3: sincronização completa com o PRD; substituição de NOW() por clock_timestamp() via ADR-0006 e remoção de detalhes SQL das stories (US-007, US-011, US-016, US-017); validação cadastral para PF (CPF) ou PJ (CNPJ) em US-001; oferta anônima com Região/Bairro em US-006 e US-010; comportamento sem bloqueio para ausência de cotação em US-006; registro de que no aceite direto o cliente não escolhe a casa (US-011); atendimento integral obrigatório no MVP, prazo_validade_minutos, VET discriminado, teto de 3 revisões com cooldown de 30s em US-012; reenvio após recusa em US-015; ordenação condicional de contrapropostas (compra ASC, venda DESC em US-013); revelação segura bidirecional pós-match em US-018; regra de conclusão unificada bilateral, janela de execução e timeout de 5 dias úteis com política de estorno em aberto (US-019); throttling de WhatsApp em digest e opt-in obrigatório (US-024); isolamento de permissões do perfil Financeiro com bloqueio de operação (US-025); e suspensão de casa com estado isolado SUSPENSAO_PARCEIRO e mensagem neutra ao cliente [VALIDAR COM JURÍDICO] em US-026. |
 | 1.4 | 2026-11-03 | Equipe de Produto | Revisão ampla v1.4: correção do erro em US-008 AC-2 para HTTP 422 OFFER_ALREADY_CLOSED (alinhado à Tabela Unificada de Erros); remoção de qualquer alíquota fixa de IOF em US-006, US-011 e US-012, adotando valor informado pela casa [VALIDAR COM ESPECIALISTA TRIBUTÁRIO] e recomendação de valor total final VET (Decisão nº 1); adequação de limites operacionais para referenciar a Tabela de Parâmetros Configuráveis; atualização de US-019 com checkpoint de no-show, prazo de 24h úteis para contestação, gestão de strikes por ausência e nota de gratuidade no MVP (Fase 1 / ADR-0012); inclusão de 3 novas User Stories: US-028 (MFA obrigatório para Owner e Operador com HTTP 403 MFA_REQUIRED), US-029 (modal de confirmação pré-aceite com resumo vinculante decomposto), e US-030 (controle de teto de valor por oferta no piloto e monitoramento preventivo de fracionamento PLD); totalizando 30 User Stories sincronizadas com o PRD. |
+| 1.5 | 2026-11-03 | Equipe de Produto | Revisão ampla v1.5: reposicionamento para PLATAFORMA DE COMUNICAÇÃO inspirada no Melhor Câmbio (Nomad); substituição de "negociação" por "Atendimento Comercial" em Épico 5 e em US-016, US-017 e US-018; atualização de US-019 com relato de desfecho bilateral (CONCLUÍDO vs NÃO_CONCLUÍDO com motivo) e timeout SEM_RETORNO; reescrita de US-020 como Relato de Problema à Moderação da Plataforma (qualidade sem mediação financeira); ajuste em US-030 focando no teto de valor por oferta no piloto; e migração de disputas mediadas financeiras, strikes/no-show, extensão de oferta e alertas de PLD para Future Considerations. Total de 30 User Stories sincronizadas. |
 
