@@ -1,106 +1,94 @@
 ---
 artifact: problem-statement
 version: "1.0"
-created: 2026-11-02
-status: draft
+created: 2026-11-03
+status: complete
+context: Canal neutro de demanda para casas de câmbio autorizadas em SP e RJ, depois da compra do Melhor Câmbio pela Nomad
 ---
 
-# Problem Statement: Falta de Transparência e Eficiência no Mercado de Câmbio para Pessoas Físicas e Jurídicas
+# Problem Statement: Casas autorizadas ficaram sem canal neutro de demanda
 
 ## Problem Summary
 
-Pessoas físicas e jurídicas que precisam comprar ou vender moeda estrangeira no Brasil enfrentam um processo opaco, fragmentado e ineficiente. Não existe uma forma simples de comparar taxas entre casas de câmbio, forçando o cliente a ligar ou visitar múltiplas casas presencialmente — o que consome tempo e elimina poder de barganha. Do outro lado do balcão, casas de câmbio autorizadas perdem oportunidades de negócio por dependerem de fluxo de porta e indicações, enquanto enfrentam crescente concorrência de bancos digitais e fintechs sem ter ferramentas acessíveis de aquisição digital de clientes.
+Donos e gerentes de casas de câmbio físicas, autorizadas pelo Banco Central, em São Paulo e no Rio de Janeiro, perderam um canal cuja única função era levar o cliente até eles. Desde 18 de junho de 2024, esse canal pertence à Nomad, fintech de conta internacional. A Nomad declarou, na época, que usaria o tráfego para apresentar a própria conta. A casa continua podendo atender o viajante, e o viajante pessoa física continua precisando de papel-moeda para viagem internacional, mas o lugar onde a demanda aparece também vende um produto que compete com a casa.
 
 ## User Impact
 
 ### Who is affected?
 
-Dois segmentos são diretamente impactados:
+Dono ou gerente comercial de casa de câmbio com loja física em São Paulo ou no Rio de Janeiro, autorizada a operar câmbio pelo Banco Central, que dependia de um comparador público para receber viajantes em busca de papel-moeda.
 
-1. **Cliente de câmbio (pessoa física ou jurídica):** viajantes, expatriados, importadores/exportadores, estudantes com gastos no exterior e qualquer pessoa que precise converter moeda — inicialmente nas regiões metropolitanas do Rio de Janeiro e São Paulo.
-
-2. **Casa de câmbio autorizada pelo Banco Central:** operadores de pequeno e médio porte que possuem autorização regulatória para operar câmbio mas não têm escala digital para competir com grandes bancos e fintechs.
+O lado da demanda é a pessoa física, com viagem internacional, que precisa comprar papel-moeda na mesma praça. Cartão pré-pago fica em segundo plano: a dor prioritária é papel-moeda, modalidade em que a conta global da Nomad atende mal o viajante que precisa de espécie.
 
 ### How are they affected?
 
-**Clientes:**
+A casa deixa de receber, num só lugar, o viajante que já escolheu cidade, moeda e disposição de preço. Para repor essa demanda ela volta ao balcão, ao telefone e ao anúncio próprio, sem saber quem está pronto para fechar hoje.
 
-- **Falta de comparabilidade:** não há ferramenta consolidada que permita comparar taxas de câmbio praticadas por diferentes casas em tempo real. O cliente precisa consultar fontes dispersas (sites individuais, telefone, visita presencial).
-- **Processo de negociação custoso:** para conseguir uma taxa competitiva, o cliente precisa ligar ou visitar várias casas de câmbio, repetindo suas necessidades a cada contato — um processo que pode consumir horas.
-- **Assimetria de informação:** o cliente não tem visibilidade sobre o spread real aplicado em relação à cotação de referência (PTAX ou interbancário), dificultando a avaliação de uma oferta como justa ou abusiva.
-- **Ausência de poder de barganha individual:** sem volume significativo ou capacidade de comparação imediata, o cliente aceita a taxa oferecida sem contrapartida.
+O viajante encontra um comparador cujo dono tem incentivo para oferecer conta global no lugar da casa. A cotação da casa e o produto do dono do canal passam a disputar a mesma atenção.
 
-**Casas de câmbio:**
-
-- **Captação dependente de localização física:** a maioria dos clientes vem por fluxo de porta ou indicação pessoal, limitando o raio de alcance geográfico e o volume de operações.
-- **Concorrência assimétrica:** bancos digitais e fintechs oferecem câmbio com experiência 100% digital, enquanto casas de câmbio tradicionais ainda operam predominantemente offline.
-- **Ociosidade operacional:** em horários e dias de baixo movimento, a estrutura operacional (equipe, sistemas, caixa) fica subutilizada, elevando o custo por operação.
-- **Alto custo de aquisição de clientes:** investimento em marketing digital (Google Ads, redes sociais) é caro e pouco eficiente sem marca reconhecida ou diferencial digital claro.
+A liquidação continua com a casa e o viajante. Contrato cambial, IOF, tarifas e entrega do numerário acontecem fora de qualquer software de aproximação. O que falta é a aproximação neutra.
 
 ### Scale of impact
 
-- O mercado de câmbio manual (turismo + remessas de PF) no Brasil movimenta [HIPÓTESE – A VALIDAR] bilhões de reais por ano.
-- Existem [HIPÓTESE – A VALIDAR] casas de câmbio autorizadas pelo Banco Central operando nas regiões de São Paulo e Rio de Janeiro.
-- [HIPÓTESE – A VALIDAR] % das operações de câmbio de turismo ainda são realizadas presencialmente ou por telefone, sem comparação prévia de taxas.
-- O tempo médio que um cliente gasta para pesquisar e fechar uma operação de câmbio é de [HIPÓTESE – A VALIDAR] horas.
+A base da plataforma hoje é zero. Nenhuma casa está ativa, nenhuma oferta foi registrada, nenhum contato foi trocado. O suprimento começa do zero, com abordagem fria sustentada pela tese de neutralidade diante da Nomad.
+
+Referência de mercado, não medição nossa. Em 17 e 18 de junho de 2024, Estadão e Valor reportaram que o Melhor Câmbio tinha cerca de 1 milhão de usuários únicos por mês, cerca de 4 milhões de pageviews por mês e perto de R$ 1 milhão por dia em compra de moeda. O Estadão descreveu a mecânica clássica: o cliente vê as casas da cidade e da moeda, faz uma oferta, e se uma casa aceita, conclui a negociação direto com ela. Não há fonte pública, nesta pesquisa, do quanto disso ainda vale em novembro de 2026, nem de quantas casas de SP e RJ ainda anunciam lá.
 
 ## Business Context
 
 ### Strategic Alignment
 
-A plataforma se posiciona como **camada de tecnologia e intermediação** entre clientes e casas de câmbio autorizadas, criando um marketplace de "melhor oferta" (modelo de leilão reverso). Essa estratégia está alinhada com:
-
-- **Tendência de desintermediação digital** em serviços financeiros no Brasil.
-- **Regulamentação favorável:** a plataforma não executa operações de câmbio — conecta as partes. A operação cambial permanece com a casa autorizada pelo Banco Central.
-- **Modelo de negócio baseado em rede (network effects):** quanto mais casas de câmbio e clientes na plataforma, maior o valor para ambos os lados.
+A empresa existe para ser o canal neutro das casas autorizadas pelo Banco Central. O sucesso é a casa receber a demanda de papel-moeda e o viajante pessoa física chegar numa casa autorizada. Conta internacional própria, custódia e contrato cambial ficam fora do negócio.
 
 ### Business Impact
 
-- **Receita potencial:** modelo de monetização a ser definido (comissão por match, assinatura da casa de câmbio, ou modelo híbrido) — [HIPÓTESE – A VALIDAR].
-- **Volume potencial:** se capturar [HIPÓTESE – A VALIDAR] % do mercado de câmbio manual em RJ e SP, o volume transacionado pode atingir [HIPÓTESE – A VALIDAR] por mês.
-- **Retenção:** experiência superior de comparação e negociação pode gerar alta recorrência entre viajantes e empresas com operações internacionais regulares.
-- **Efeito de rede:** cada nova casa de câmbio atrai mais clientes (mais ofertas = melhor preço) e vice-versa, criando barreira competitiva orgânica.
+Para a casa, o prejuízo é demanda qualificada de viajante que deixa de chegar sem que o dono do canal dispute o cliente. Não temos o GMV perdido por casa, nem a receita que o canal antigo retinha. O R$ 1 milhão por dia citado na imprensa de 2024 é compra de moeda nas casas, não receita de plataforma.
+
+No piloto, o canal é gratuito para a casa e para o viajante. Cobrança fica fora desta fase para não criar atrito antes de provar que a aproximação acontece. Receita futura, assinatura ou taxa por lead, continua em aberto e não é premissa deste problema.
 
 ### Why Now?
 
-- **Parceiro comercial com acesso a casas de câmbio:** o founder possui parceiro com relacionamento direto com casas de câmbio, permitindo bootstrap do lado da oferta (cold-start problem) sem investimento massivo em vendas.
-- **Digitalização acelerada pós-pandemia:** clientes e casas de câmbio estão mais dispostos a adotar canais digitais para serviços financeiros.
-- **Consolidação do mercado:** fintechs e bancos digitais estão capturando marketshare de câmbio; casas tradicionais precisam urgentemente de ferramentas digitais para competir — a plataforma oferece esse caminho sem exigir que elas desenvolvam tecnologia própria.
-- **Janela competitiva:** não há marketplace dominante de câmbio por leilão reverso no Brasil. Plataformas existentes de comparação são passivas (listagem de taxas) e não oferecem negociação ativa (oferta → match → contraproposta).
+A compra foi anunciada em 17 e 18 de junho de 2024, por cerca de R$ 3 milhões, segundo o Estadão. A urgência em novembro de 2026 é o conflito estrutural.
+
+Eduardo Baer, então diretor operacional da Nomad, disse ao Valor em 18 de junho de 2024 que o tráfego serviria para apresentar o que a Nomad oferece em conta internacional. No mesmo período, a Nomad anunciou spread zero promocional no canal. O dono do comparador passou a ser, ao mesmo tempo, um concorrente de produto das casas que o abastecem.
+
+Quem construir o substituto neutro enquanto essas casas ainda procuram para onde mandar o viajante de papel-moeda ocupa o lugar que o canal antigo deixou de ocupar. A medição que falta é conversa com casas de SP e RJ e com viajantes reais.
 
 ## Success Criteria
 
-| Metric | Current Baseline | Target | Timeline |
-|--------|-----------------|--------|----------|
-| Número de casas de câmbio ativas na plataforma (RJ + SP) | 0 | [HIPÓTESE – A VALIDAR] | 6 meses pós-lançamento |
-| Número de ofertas criadas por clientes / mês | 0 | [HIPÓTESE – A VALIDAR] | 6 meses pós-lançamento |
-| Taxa de match (oferta → negociação aceita) | N/A [HIPÓTESE – A VALIDAR] | [HIPÓTESE – A VALIDAR] % | 6 meses pós-lançamento |
-| Tempo médio para o cliente receber a primeira resposta | N/A | [HIPÓTESE – A VALIDAR] minutos | 6 meses pós-lançamento |
-| NPS do cliente após operação concluída | N/A | ≥ 50 [HIPÓTESE – A VALIDAR] | 6 meses pós-lançamento |
-| Spread médio obtido pelo cliente vs. cotação de referência | [HIPÓTESE – A VALIDAR] % (mercado off-line) | Redução de [HIPÓTESE – A VALIDAR] % vs. mercado | 6 meses pós-lançamento |
-| Custo de aquisição de cliente (CAC) para casas de câmbio | [HIPÓTESE – A VALIDAR] | [HIPÓTESE – A VALIDAR] | 12 meses pós-lançamento |
+Baselines nossos são zero porque o canal ainda não existe. Os alvos abaixo foram cravados para o piloto de 90 dias em SP e RJ.
+
+Casa ativa, neste piloto: casa credenciada que aceitou ao menos uma oferta no período. Ela é autorizada pelo Banco Central, com loja em São Paulo ou no Rio de Janeiro, e recebe de graça ofertas de papel-moeda de viajante pessoa física.
+
+| Métrica | Baseline atual | Alvo | Prazo |
+| --- | --- | --- | --- |
+| Casas ativas em SP ou RJ | 0 | 10 a 15 | 90 dias de piloto |
+| Ofertas de viajante que terminam em aceite de uma casa e troca de contato | 0 | 30 | os mesmos 90 dias |
+| Reais sob custódia da plataforma, Pix recebido ou contrato cambial emitido por nós | 0 | 0 | contínuo |
+| Vezes em que a plataforma calcula IOF ou publica preço final no lugar da casa | 0 | 0 | contínuo |
+
+A métrica primária é a segunda linha: oferta que vira aceite e contato. Casa credenciada que não aceitou nenhuma oferta no período não conta como ativa. Aceite sem troca de contato não conta como sucesso.
+
+Os limiares menores que antecedem o código estão na hipótese do piloto. Eles não substituem esta meta de 90 dias.
 
 ## Constraints & Considerations
 
-- **Regulação do Banco Central (RISCO CRÍTICO):** câmbio é atividade regulada. A plataforma **não executa operações de câmbio** e **não custodia dinheiro**. Toda operação cambial deve ser realizada por casa de câmbio devidamente autorizada pelo Banco Central do Brasil. O enquadramento jurídico da plataforma como intermediadora tecnológica precisa ser validado com assessoria jurídica especializada antes do lançamento.
-- **Compliance e KYC:** casas de câmbio são obrigadas a cumprir normas de prevenção à lavagem de dinheiro (PLD/FT). A plataforma precisa definir até onde vai sua responsabilidade em coleta e verificação de dados do cliente vs. o que fica com a casa de câmbio.
-- **Modelo de monetização indefinido:** o modelo de receita (comissão, assinatura, freemium) ainda não foi decidido. Isso impacta o posicionamento de preço e a proposta de valor para as casas.
-- **Cold-start problem (marketplace):** é necessário ter casas de câmbio e clientes simultaneamente para gerar valor. A estratégia de bootstrap via parceiro comercial mitiga parcialmente esse risco no lado da oferta.
-- **Escopo geográfico inicial:** Rio de Janeiro e São Paulo. Expansão para outras regiões depende de validação do modelo e capacidade operacional.
-- **Moedas suportadas:** todas as moedas disponíveis para câmbio manual, mas o volume se concentrará inicialmente em USD, EUR, GBP e ARS [HIPÓTESE – A VALIDAR].
-- **Produtos de câmbio:** papel-moeda e cartão pré-pago (VTM). Outros produtos (remessa, câmbio comercial) podem ser adicionados futuramente.
-- **Modalidades de entrega:** retirada na loja e entrega (delivery). Logística de delivery de papel-moeda envolve questões de segurança e seguro que precisam ser endereçadas.
-- **Dependência de dados em tempo real:** cotações de referência e taxas praticadas mudam ao longo do dia. A plataforma precisa de mecanismo de expiração de ofertas e atualização de cotações.
+- A plataforma aproxima. Quem liquida é a casa autorizada, com o viajante, fora da plataforma.
+- Não há Pix, saldo, entrega de numerário nem cálculo de IOF do nosso lado. O valor final com encargos é informado pela casa.
+- Só entra casa autorizada pelo Banco Central. A lista oficial é dependência de cadastro.
+- O piloto cobre São Paulo e Rio de Janeiro. A dor prioritária é papel-moeda. Cartão pré-pago fica em segundo plano e fora da validação inicial.
+- O cliente do piloto é somente pessoa física que precisa de papel-moeda para viagem internacional.
+- O piloto é gratuito para casas e para viajantes.
+- Não há produto próprio de conta internacional.
+- A arquitetura do piloto, quando houver código, é assíncrona e simples. Pregão e leilão contínuos ficam fora desta fase, assim como KYB automatizado complexo. Um som curto e pontual de nova oferta no painel web, só quando o operador habilita o alerta, faz parte do MVP.
+- Stack prevista para o produto: NestJS, PostgreSQL, Redis, React/Next.js.
+- Contatos trocados entre viajante e casa são dado pessoal. LGPD vale no desenho do produto.
+- Regulamentação de câmbio e identificação do cliente na operação formal permanecem com a instituição autorizada.
+- O suprimento inicial é zero. A entrada das casas depende de abordagem fria com a tese de neutralidade.
 
 ## Open Questions
 
-- [ ] Qual o enquadramento jurídico correto da plataforma perante o Banco Central? É necessário algum tipo de registro ou autorização específica para operar como intermediador tecnológico de câmbio?
-- [ ] Qual a responsabilidade da plataforma em relação a KYC/PLD (Know Your Customer / Prevenção à Lavagem de Dinheiro)? A coleta de dados do cliente é feita pela plataforma ou delegada integralmente à casa de câmbio?
-- [ ] Qual modelo de monetização é mais adequado para o momento (comissão por match, assinatura mensal para casas, freemium com funcionalidades premium)?
-- [ ] Qual o volume mínimo de casas de câmbio necessário por região para que o marketplace gere valor perceptível ao cliente (liquidez mínima)?
-- [ ] Como lidar com a validade temporal das ofertas, dado que a cotação do câmbio oscila ao longo do dia?
-- [ ] A plataforma deve intermediar o pagamento (escrow) ou apenas conectar as partes e a transação financeira ocorre diretamente entre cliente e casa?
-- [ ] Quais são os requisitos de segurança e seguro para a modalidade de entrega (delivery) de papel-moeda?
-- [ ] Existe risco regulatório de a plataforma ser interpretada como "correspondente cambial" ou outra figura regulada?
-- [ ] Como validar a qualidade e confiabilidade das casas de câmbio listadas (rating, reclamações, status da autorização no BC)?
-- [ ] Qual a estratégia de lançamento: iniciar com foco em uma cidade (ex.: SP) ou lançar simultaneamente em RJ e SP?
+- [ ] Quantas casas de SP e RJ ainda publicam cotação no Melhor Câmbio em novembro de 2026?
+- [ ] O volume e a audiência de junho de 2024 ainda descrevem esse canal?
+- [ ] Qual canal o fundador usará para encontrar viajantes pessoa física antes de existir produto? A escolha precisa estar feita antes do concierge descrito nas hipóteses.
+- [ ] Cartão pré-pago entra em alguma fase posterior, e com qual evidência de dor separada da do papel-moeda?

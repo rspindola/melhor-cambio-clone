@@ -1,338 +1,996 @@
 ---
 artifact: acceptance-criteria
-version: "1.5"
+version: "1.0"
 created: 2026-11-03
 status: draft
+context: Critérios Given/When/Then das 13 histórias do MVP. Concorrência do aceite e fronteiras de expiração estão em US-9 e US-3.
 ---
 
-# Acceptance Criteria: Mecanismo de Atendimento Comercial e Cenários Críticos de Borda (MVP — Versão 1.5)
+# Acceptance Criteria: MVP de aproximação para papel-moeda
+
+Cada bloco abaixo é o conjunto de QA de uma história de [`user-stories.md`](user-stories.md). O PRD vence em conflito. Um cenário prova um resultado. Concorrência do primeiro aceite vive em US-9. O relógio de 4 horas úteis vive em US-3. As outras histórias apontam para esses blocos em vez de repetir o caso.
+
+Relógio usado em todos os horários: America/Sao_Paulo. Janela aprovada: segunda a sexta, início inclusive às 9h00, fim exclusive às 18h00. Quantia aprovada: inteiro de 100 a 10.000.
+
+---
+
+# US-1: Ver cotações de balcão
 
 ## Story Context
 
-Este documento define os 30 critérios de aceitação executáveis (em formato `Given/When/Then`) para o motor central de aproximação, leilão e atendimento comercial do marketplace de câmbio, integrando os requisitos do [PRD](prd.md) (versão 1.5), das [User Stories](user-stories.md) e as decisões técnicas de concorrência do [ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md) e de não-intermediação financeira do [ADR-0010](../04-architecture/adr/adr-0010-plataforma-sem-custodia.md).
+O viajante escolhe São Paulo ou Rio de Janeiro e USD, EUR ou GBP, e vê só nome, cidade e cotação de balcão. O contato da casa fica para depois do aceite.
 
-O produto é concebido formalmente como uma **plataforma tecnológica de comunicação e mensageria** inspirada no modelo do Melhor Câmbio (`melhorcambio.com`), sem recebimento, custódia, intermediação ou liquidação de valores financeiros pelas partes. Todo pagamento e entrega de numerário ocorrem diretamente entre a casa de câmbio e o cliente.
+## Happy Path
 
----
+### US-1-AC-1: Lista ordenada com três campos
 
-## Tabela Unificada de Códigos de Erro e Status HTTP
+**Given** duas casas ativas em São Paulo publicaram cotação de USD há menos de 24 horas, a 5,5012 e a 5,4800
 
-Todas as respostas de falha da API da plataforma seguem rigorosamente a padronização abaixo, com payload no formato `{ "error_code": string, "message": string, "details"?: object }`:
+**When** o viajante seleciona São Paulo e USD
 
-| Código de Erro (`error_code`) | HTTP Status | Mensagem Padrão / Comportamento |
-|-------------------------------|-------------|----------------------------------|
-| `OFFER_NOT_FOUND` | 404 Not Found | "Oferta não encontrada." |
-| `OFFER_ALREADY_ACCEPTED` | 409 Conflict | "Esta oferta acabou de ser aceita por outra casa de câmbio." |
-| `OFFER_CANCELED` | 409 Conflict | "Esta oferta foi cancelada pelo cliente e não aceita mais ações." |
-| `OFFER_EXPIRED` | 410 Gone | "Esta oferta expirou e não aceita mais propostas ou aceites." |
-| `OFFER_ALREADY_CLOSED` | 422 Unprocessable Entity | "Esta oferta já foi aceita e resultou em um atendimento comercial em andamento." |
-| `OFFER_LIMIT_REACHED` | 422 Unprocessable Entity | "Limite de ofertas abertas simultâneas atingido. Cancele uma oferta ativa ou aguarde seu encerramento." |
-| `PROPOSAL_NOT_FOUND` | 404 Not Found | "Contraproposta não encontrada." |
-| `PROPOSAL_EXPIRED` | 400 Bad Request | "Esta contraproposta expirou e a casa não está mais vinculada a esta taxa." |
-| `PROPOSAL_SUPERSEDED` | 409 Conflict | "Esta contraproposta foi substituída por uma versão mais recente da casa de câmbio." |
-| `PROPOSAL_REVISION_LIMIT_REACHED` | 422 Unprocessable Entity | "Limite de 3 revisões de contraproposta para esta oferta foi atingido." |
-| `PROPOSAL_COOLDOWN_ACTIVE` | 429 Too Many Requests | "Aguarde o intervalo de 30 segundos antes de submeter uma nova contraproposta." |
-| `LOCK_TIMEOUT` | 503 Service Unavailable | "O sistema está processando alta demanda concorrente nesta oferta. Tente novamente." |
-| `MFA_REQUIRED` | 403 Forbidden | "Autenticação multifator (MFA) obrigatória para este perfil." |
-| `INSUFFICIENT_PERMISSIONS` | 403 Forbidden | "Seu perfil de usuário não possui permissão para executar esta operação." |
-| `EXCHANGE_NOT_ELIGIBLE` | 403 Forbidden | "Casa de câmbio não elegível para a moeda, produto ou localidade informada." |
-| `EXCHANGE_NOT_APPROVED` | 403 Forbidden | "Casa de câmbio não está aprovada para operar na plataforma." |
-| `EXCHANGE_SUSPENDED` | 403 Forbidden | "Operações suspensas temporariamente para esta casa de câmbio." |
-| `OFFER_VALUE_LIMIT_EXCEEDED` | 422 Unprocessable Entity | "Valor da oferta excede o teto máximo permitido para o piloto." |
-| `PARTIAL_VALUE_NOT_SUPPORTED` | 422 Unprocessable Entity | "O montante da contraproposta deve atender integralmente o valor solicitado na oferta." |
-| `VALIDATION_ERROR` | 400 Bad Request | "Dados da requisição inválidos ou incompletos." |
+**Then** a lista mostra primeiro a casa de 5,4800 e depois a de 5,5012, e cada item contém somente nome, cidade e cotação
 
----
+## Edge Cases
 
-## 1. Happy Path (Fluxos Principais de Sucesso)
+### US-1-AC-2: Cidade e moeda sem cotação fresca
 
-### AC-01: Publicação de Oferta Válida pelo Cliente
-- **Given** que um cliente autenticado possui telefone verificado via OTP, CPF (PF) ou CNPJ (PJ) validado e quantidade de ofertas ativas inferior ao limite parametrizado ([Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma)),
-- **When** preenche todos os campos obrigatórios: Moeda = "USD", Operação = "COMPRA" (perspectiva do cliente), Valor = 1000.00 (abaixo do teto parametrizado de R$ 50k), Taxa Desejada = R$ 5,40 por USD (expressa em valor total final tudo incluso, conforme recomendação em aberto nº 1; IOF e demais encargos: valor informado pela casa; alíquotas variam por operação e produto e mudam com frequência [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]. O sistema não calcula nem fixa alíquotas), Produto = "PAPEL_MOEDA", Modalidade = "RETIRADA", Cidade = "SP", Região/Bairro = "Zona Sul - Moema", e Prazo = 30 minutos, e clica em "Publicar Oferta",
-- **Then** o sistema:
-  1. Cria o registro da oferta com status `ABERTA`;
-  2. Agenda um job assíncrono de expiração no BullMQ sincronizado com o campo `expires_at` no banco;
-  3. Dispara o evento WebSocket `offer:new` como oferta anônima para as casas elegíveis da praça contendo apenas Moeda, Operação, Valor, Taxa Desejada (VET), Produto, Cidade, Região/Bairro e Modalidade (sem dados de identificação pessoal nem logradouro/CEP);
-  4. Retorna status HTTP 201 Created com o payload da oferta e URL de acompanhamento.
+**Given** a única cotação de GBP no Rio de Janeiro foi atualizada há 24 horas e 1 minuto
 
-### AC-02: Aceite Direto por Casa Elegível com Match Automático e Abertura de Atendimento
-- **Given** uma oferta com status `ABERTA` visível no painel da Casa A (status `APROVADA`, elegível para a praça e com operador autenticado via MFA [AC-26]),
-- **When** o operador da Casa A preenche a decomposição informada pela casa (taxa de câmbio pura, IOF e eventuais tarifas informados apenas para transparência [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]), confirma no modal de resumo vinculante ([AC-27]) e clica em "Confirmar Aceite Vinculante",
-- **Then** o sistema:
-  1. Executa a operação sob controle de concorrência transacional no backend conforme [ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md);
-  2. Valida cumulativamente que o status da oferta é `ABERTA`, que `expires_at > clock_timestamp()` no relógio atômico do banco e que a casa operadora possui status `APROVADA`;
-  3. Atualiza o status da oferta para `FECHADA`;
-  4. Cria o registro na entidade de atendimento (`atendimentos` / `negotiations`) com status inicial `EM_ATENDIMENTO`;
-  5. Atualiza todas as outras contrapropostas pendentes daquela oferta para `ENCERRADA` registrando o motivo auditado `MATCH_OUTRA_CASA`;
-  6. Registra a trilha imutável no log de auditoria dentro da mesma transação e efetua o commit;
-  7. Pós-commit: despacha evento WebSocket `match:confirmed` liberando os dados de contato bilaterais para o cliente e para a Casa A, indica a Janela Comercial de Atendimento (`JANELA_ATENDIMENTO_HORAS`, padrão: 24h úteis) e exibe o aviso destacado de não-custódia [VALIDAR COM ADVOGADO]; e emite `offer:closed` para as demais casas.
+**When** o viajante seleciona Rio de Janeiro e GBP
 
-### AC-03: Envio e Aceite de Contraproposta Estruturada
-- **Given** uma oferta `ABERTA` do cliente (operação COMPRA de 1.000 USD) e a Casa B elegível (operador com MFA ativo),
-- **When** a Casa B submete contraproposta estruturada com valor idêntico ao montante da oferta (1.000 USD - atendimento integral obrigatório no MVP), taxa de R$ 5,45 por USD, `prazo_validade_minutos` conforme parametrização, ponto/local de atendimento (loja física de Moema), e campos discriminados informados pela casa: IOF e eventuais tarifas da casa, totalizando o VET final em reais (sem alíquotas fixas pelo sistema [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]), e o cliente clica subsequentemente em "Aceitar Contraproposta da Casa B" confirmando no modal de resumo vinculante ([AC-27]),
-- **Then** o sistema:
-  1. No envio: persiste a proposta com status `PENDENTE`, define a validade efetiva como $\min(\text{validade\_proposta}, \text{tempo restante da oferta})$, emite WebSocket `proposal:new` para o cliente e mantém a oferta `ABERTA`;
-  2. Na visualização: exibe a lista de contrapropostas ordenada condicionalmente pelo valor total em reais:
-     - Operação `COMPRA`: ordenação **ascendente** (`ASC`, menor desembolso total em reais no topo);
-     - Operação `VENDA`: ordenação **descendente** (`DESC`, maior valor total recebido em reais no topo);
-  3. No aceite do cliente: abre transação atômica serializada conforme [ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md), valida que a proposta B está `PENDENTE` e com `expires_at > clock_timestamp()`, atualiza a proposta B para `ACEITA`, transiciona a oferta para `FECHADA`, transiciona todas as outras propostas ativas daquela oferta para `ENCERRADA` (motivo auditado `MATCH_OUTRA_CASA`), cria o atendimento no status `EM_ATENDIMENTO`, revela os contatos mútuos e notifica todas as partes após o commit.
+**Then** a lista fica vazia, a página diz que não há cotação no momento, e o caminho para criar oferta continua disponível
 
-### AC-04: Relato Bilateral de Desfecho do Atendimento Comercial
-- **Given** um atendimento comercial com status `EM_ATENDIMENTO` dentro da janela comercial acordada,
-- **When** o cliente e a casa de câmbio acessam a tela de atendimento e selecionam a opção "Concluído" (ou uma das partes relata a conclusão e a outra não manifesta divergência dentro do prazo),
-- **Then** o sistema:
-  1. Atualiza o status do atendimento para `CONCLUÍDO`;
-  2. Registra o timestamp de encerramento e o ator no log de auditoria;
-  3. Encerra o ciclo operacional do atendimento na plataforma, alimentando as métricas de conversão da rede.
+### US-1-AC-3: Casa de outra cidade
+
+**Given** uma casa do Rio de Janeiro tem cotação fresca de EUR
+
+**When** o viajante seleciona São Paulo e EUR
+
+**Then** essa casa não aparece
+
+## Error States
+
+### US-1-AC-4: Vitrine indisponível
+
+**Given** a consulta da vitrine falha
+
+**When** o viajante pede a lista
+
+**Then** ele vê um erro dizendo para tentar de novo, e nenhuma casa parcial é exibida como se fosse a lista completa
+
+## Non-Functional Criteria
+
+### US-1-AC-5: Resposta pública sem contato
+
+**Given** qualquer casa com telefone, WhatsApp, bairro e endereço cadastrados
+
+**When** a vitrine dessa cidade e moeda é consultada, inclusive por quem não está logado
+
+**Then** a resposta não contém telefone, WhatsApp, bairro nem endereço
+
+## Notes
+
+- A cotação velha continua permitindo oferta se houver casa ativa na praça. A recusa por falta de casa é US-2.
 
 ---
 
-## 2. Edge Cases e Concorrência Transacional
+# US-2: Criar oferta
 
-### AC-05: Teste de Carga e Concorrência de Aceite Direto ($N$ Requisições Paralelas)
-- **Given** uma oferta `#OF-100` com status `ABERTA`, e $N$ requisições paralelas concorrentes (ex.: $N \ge 10$) submetidas no mesmo milissegundo por operadoras de casas distintas,
-- **When** as requisições de aceite direto atingem o backend simultaneamente,
-- **Then** o sistema garante observavelmente:
-  1. **Validação de Habilitação:** Cada requisição valida que a respectiva casa operadora possui status `APROVADA` e elegibilidade geográfica e de produto (qualquer casa inabilitada é imediatamente rejeitada com HTTP 403 `EXCHANGE_NOT_APPROVED` ou `EXCHANGE_NOT_ELIGIBLE`);
-  2. **Exatamente 1 Vencedor:** Exatamente 1 (uma) requisição comita com sucesso (HTTP 200/201 OK), transicionando a oferta para `FECHADA` e gerando 1 registro em `atendimentos` (`EM_ATENDIMENTO`);
-  3. **$N-1$ Conflitos Tratados:** Exatamente $N-1$ requisições concorrentes são abortadas e retornam status HTTP 409 Conflict com código `OFFER_ALREADY_ACCEPTED` e mensagem "Esta oferta acabou de ser aceita por outra casa de câmbio.";
-  4. **Unicidade de Atendimento:** É criado exatamente 1 (um) registro na tabela de atendimentos vinculado à oferta `#OF-100` (assegurado por controle de concorrência e constraint `UNIQUE (offer_id)` no banco);
-  5. **Idempotência de Retry:** Se a casa vencedora retransmitir a mesma requisição com a mesma chave de idempotência (`Idempotency-Key`), o sistema responde com a mesma confirmação de sucesso sem duplicar registros nem emitir erro 409;
-  6. **Tratamento de Timeout de Espera de Conexão (`lock_timeout`):** Caso o tempo de espera na fila de serialização atinja o teto de timeout configurado na sessão do banco (conforme [ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)), a transação excedente é abortada de forma limpa, liberando recursos do pool e retornando HTTP 503 Service Unavailable com código `LOCK_TIMEOUT` e mensagem padronizada.
+## Story Context
 
-### AC-06: Tentativa de Aceite em Oferta Expirada (Race Condition com Worker Assíncrono)
-- **Given** uma oferta `#OF-200` cujo prazo limite de 30 minutos vence às `14:30:00.000` no relógio do banco de dados,
-- **When** um operador clica em "Aceitar" às `14:30:00.100` enquanto o worker assíncrono do BullMQ está em fila de execução,
-- **Then** o sistema:
-  1. Na transação de aceite, avalia atômica e diretamente a condição contra o relógio em tempo real do banco de dados (`clock_timestamp()`);
-  2. Detecta que o horário corrente já ultrapassou o `expires_at`, rejeitando imediatamente a requisição com HTTP 410 Gone, código `OFFER_EXPIRED` e mensagem "Esta oferta expirou e não aceita mais propostas ou aceites.";
-  3. **Comportamento sem alteração de estado na rejeição:** A requisição rejeitada **NÃO altera estado** no banco de dados;
-  4. A efetiva transição da oferta para `EXPIRADA` e de suas propostas para `ENCERRADA` é processada pelo worker idempotente do BullMQ ou pela rotina de varredura periódica de segurança no banco de dados;
-  5. Sob nenhuma hipótese uma oferta expirada transiciona para `FECHADA`.
+O viajante registra a intenção de compra. A casa ainda não vê nome nem WhatsApp.
 
-### AC-07: Tentativa de Aceite de Contraproposta Expirada pelo Cliente
-- **Given** que a Casa A submeteu a contraproposta `#PR-50` com `prazo_validade_minutos` = 10 minutos (vencimento às `10:15:00.000`),
-- **When** o cliente tenta aceitar a proposta às `10:15:00.500` (tela mantida aberta sem refresh),
-- **Then** o sistema:
-  1. Na avaliação transacional de aceite, verifica a condição contra `clock_timestamp()` do banco;
-  2. Identifica que a proposta atingiu o prazo de validade;
-  3. **Comportamento sem alteração de estado na rejeição:** A requisição rejeitada **NÃO altera o estado** da proposta diretamente, abortando a transação;
-  4. Retorna HTTP 400 Bad Request com código `PROPOSAL_EXPIRED` e mensagem "Esta contraproposta expirou e a casa não está mais vinculada a esta taxa.";
-  5. Mantém a oferta principal do cliente no status `ABERTA`, permitindo que ele continue aguardando outras contrapropostas ou novos aceites;
-  6. A proposta é posteriormente marcada como `EXPIRADA` pelo worker ou job de varredura.
+## Happy Path
 
-### AC-08: Desistência Voluntária do Atendimento Comercial pós-Match
-- **Given** um atendimento comercial no status `EM_ATENDIMENTO`,
-- **When** o cliente ou a casa de câmbio decide não prosseguir com a operação direta e clica no botão "Desistir do Atendimento",
-- **Then** o sistema:
-  1. Exibe modal exigindo a seleção obrigatória de um motivo: `CLIENTE_DESISTIU`, `CASA_NAO_ATENDEU`, `TAXA_NAO_MANTIDA` ou `OUTRO` (com campo de observações livres);
-  2. Atualiza o status do atendimento para `NÃO_CONCLUÍDO`, registrando o autor, o motivo e o timestamp em `audit_logs`;
-  3. Notifica a contraparte imediatamente via push notification e e-mail informando sobre a desistência comercial registrada;
-  4. Encerra o ciclo de atendimento sem aplicar bloqueios rígidos ou travas no autoatendimento.
+### US-2-AC-1: Oferta com taxa desejada
 
-### AC-09: Casa de Câmbio Suspensa pelo Admin com Atendimento em Curso
-- **Given** um atendimento ativo no status `EM_ATENDIMENTO` entre um Cliente e a Casa C,
-- **When** o Administrador altera o status da Casa C para `SUSPENSA` no painel de governança,
-- **Then** o sistema:
-  1. Imediatamente invalida todas as propostas `PENDENTE` da Casa C em outras ofertas ativas (motivo auditado `CASA_SUSPENSA`) e desconecta seus operadores dos canais em tempo real;
-  2. Para o atendimento em curso: retém o atendimento em estado de pausa preventiva com flag própria `parceiro_suspenso: true` e motivo de auditoria `SUSPENSAO_PARCEIRO`;
-  3. Apresenta ao cliente uma mensagem institucional neutra e preventiva: *"A parceria comercial com esta instituição foi suspensa preventivamente pela plataforma para verificação de conformidade. Não realize transferências caso a operação ainda não tenha sido concluída."* [VALIDAR COM JURÍDICO];
-  4. Abre notificação de alta prioridade no painel administrativo para análise de governança.
+**Given** há casa ativa de USD em São Paulo, e o viajante informa 500, taxa 5,4321, bairro, nome, e-mail válido, WhatsApp válido e o consentimento
 
-### AC-10: Indisponibilidade Total das APIs de Cotação de Referência (AwesomeAPI + Fallback)
-- **Given** que a AwesomeAPI está fora do ar (retornando HTTP 503 ou Timeout > 3s) e a API de fallback secundário também falha consecutivamente,
-- **When** um cliente ou operador acessa a tela de cotações ou o backend roda a rotina periódica de coleta,
-- **Then** o sistema:
-  1. Consulta a última cotação persistida no cache Redis;
-  2. Se os dados existirem no Redis (mesmo com TTL vencido, servindo via stale-while-revalidate): entrega a cotação com a propriedade `is_stale: true` e a indicação de timestamp da última leitura válida;
-  3. Exibe na interface um badge visual informativo: *"Cotação de referência desatualizada devido a instabilidade no provedor financeiro. Horário de referência: [timestamp]"*;
-  4. Se o cache estiver completamente vazio (cold start): exibe banner alertando sobre a indisponibilidade momentânea da cotação de mercado, mas **não bloqueia** o cliente de preencher livremente a taxa desejada em sua oferta;
-  5. Dispara alerta nos logs estruturados para monitoramento da equipe técnica.
+**When** ele envia o formulário
 
-### AC-11: Queda e Reconexão de Conexão WebSocket Durante o Leilão
-- **Given** um cliente conectado aguardando contrapropostas com socket ativo no canal da oferta,
-- **When** ocorre uma perda de pacote ou oscilação de rede do cliente (socket desconectado temporariamente),
-- **Then** o sistema:
-  1. Detecta o evento de reconexão do cliente Socket.IO;
-  2. Reautentica a sessão do cliente e reinscreve automaticamente o cliente nos rooms das suas ofertas ativas;
-  3. O cliente web dispara imediatamente chamada REST de sincronização para recuperar o estado total das propostas recebidas durante o período offline;
-  4. Renderiza as novas propostas sem duplicar elementos visuais e sem necessidade de reload de página pelo usuário.
+**Then** existe uma oferta `ABERTA` e a tela de confirmação abre
 
-### AC-12: Tentativa de Envio de Contraproposta com Atendimento Parcial do Valor
-- **Given** uma oferta `ABERTA` com valor de 2.000 USD,
-- **When** um operador tenta submeter uma contraproposta informando valor diferente (ex.: 1.000 USD),
-- **Then** o sistema bloqueia a requisição no schema de validação com HTTP 422 Unprocessable Entity, código `PARTIAL_VALUE_NOT_SUPPORTED` e mensagem: *"O montante da contraproposta deve atender integralmente o valor solicitado na oferta."*.
+### US-2-AC-2: Melhor taxa
 
-### AC-13: Contraproposta com Variação Expressiva em Relação à Taxa de Mercado
-- **Given** a submissão de uma contraproposta por um operador de casa de câmbio,
-- **When** a taxa digitada apresentar desvio superior a 15% em relação à cotação de referência do momento ([Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma)),
-- **Then** a interface do operador exibe modal de confirmação em destaque com aviso visual (alerta amarelo) exigindo clique ativo de confirmação antes do envio para evitar erros de digitação.
+**Given** os mesmos dados, com "quero a melhor taxa disponível" marcado e a taxa em branco
 
-### AC-14: Tentativa de Obtenção de Dados Pessoais do Cliente antes do Match
-- **Given** uma oferta no status `ABERTA`,
-- **When** um operador ou terceiro consulta o endpoint público ou autenticado de listagem de ofertas (`GET /offers` ou `GET /offers/:id`),
-- **Then** o payload retornado omite categoricamente nome, e-mail, telefone, CPF/CNPJ e dados de logradouro/número/CEP do cliente, entregando apenas: ID, moeda, operação, valor, taxa desejada, produto, modalidade, cidade e região/bairro macro.
+**When** ele envia
 
-### AC-15: Throttling e Limitação de Frequência de Alertas no WhatsApp
-- **Given** um operador de casa de câmbio offline que habilitou notificações via WhatsApp (opt-in ativo),
-- **When** 5 novas ofertas compatíveis são publicadas em um intervalo de 10 minutos na sua praça,
-- **Then** o sistema dispara no máximo 1 mensagem digest via WhatsApp no intervalo de 30 minutos (`WHATSAPP_ALERT_THROTTLING_MINUTES`), consolidando os avisos em um único template aprovado pela Meta.
+**Then** a oferta `ABERTA` existe sem taxa desejada
 
-### AC-16: Limite de Revisões de Contraproposta e Cooldown entre Envios
-- **Given** uma casa que já enviou 3 contrapropostas para a mesma oferta (atingindo o teto parametrizado),
-- **When** o operador tenta submeter uma 4ª versão de contraproposta,
-- **Then** o sistema rejeita a operação com HTTP 422 Unprocessable Entity, código `PROPOSAL_REVISION_LIMIT_REACHED`;
-- **And** se uma nova submissão ocorrer antes de decorridos 30 segundos da proposta anterior, o backend rejeita com HTTP 429 Too Many Requests, código `PROPOSAL_COOLDOWN_ACTIVE`.
+## Edge Cases
 
-### AC-17: Cancelamento de Oferta pelo Cliente vs. Aceite Direto Simultâneos
-- **Given** uma oferta `ABERTA`, o cliente submetendo o cancelamento voluntário no exato milissegundo em que uma casa elegível submete o aceite direto,
-- **When** ambas as requisições chegam simultaneamente ao backend sob controle de concorrência serializado ([ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)),
-- **Then** o sistema:
-  1. Se a transação de cancelamento obtiver a serialização primeiro: transiciona a oferta para `CANCELADA`, responde HTTP 200 OK ao cliente e rejeita a requisição da casa com HTTP 409 Conflict (`OFFER_CANCELED`);
-  2. Se a transação de aceite obtiver a serialização primeiro: transiciona a oferta para `FECHADA`, gera o atendimento comercial (`EM_ATENDIMENTO`), responde HTTP 200 OK à casa e rejeita a tentativa de cancelamento do cliente com HTTP 422 Unprocessable Entity (`OFFER_ALREADY_CLOSED`);
-  3. Sob nenhuma condição ocorrem ambos os desfechos simultaneamente.
+### US-2-AC-3: Limites de quantia
 
-### AC-18: Aceite de Contraproposta pelo Cliente vs. Aceite Direto por Outra Casa Simultâneos
-- **Given** uma oferta `ABERTA` com uma contraproposta pendente da Casa B, onde o cliente submete o aceite da contraproposta da Casa B no exato momento em que a Casa C submete o aceite direto da oferta original,
-- **When** ambas as requisições disputam o fechamento da oferta no backend,
-- **Then** o sistema:
-  1. Serializa as operações no banco de dados de modo atômico;
-  2. Se o aceite do cliente processar primeiro: consolida o match com a Casa B, fecha a oferta e rejeita o aceite direto da Casa C com HTTP 409 Conflict (`OFFER_ALREADY_ACCEPTED`);
-  3. Se o aceite da Casa C processar primeiro: consolida o match direto com a Casa C, fecha a oferta, encerra a contraproposta da Casa B (`ENCERRADA` com motivo `MATCH_OUTRA_CASA`) e rejeita a tentativa do cliente com HTTP 409 Conflict (`OFFER_ALREADY_ACCEPTED`);
-  4. Garante a criação de estritamente 1 atendimento comercial para a oferta.
+**Given** o restante do formulário é válido
 
-### AC-19: Duplo Aceite Simultâneo de Contrapropostas pelo Cliente
-- **Given** uma oferta com duas contrapropostas ativas (Proposta 1 e Proposta 2), e o cliente clicando em "Aceitar" em abas simultâneas ou por duplo clique acidental,
-- **When** as duas requisições de aceite de propostas distintas atingem o endpoint em paralelo,
-- **Then** o sistema:
-  1. Processa a primeira requisição com sucesso, mudando a Proposta 1 para `ACEITA` e a oferta para `FECHADA`;
-  2. Força a segunda requisição a ler o estado já atualizado da oferta (`FECHADA`);
-  3. Rejeita imediatamente a segunda requisição com HTTP 422 Unprocessable Entity (`OFFER_ALREADY_CLOSED`);
-  4. Garante que nenhum segundo atendimento comercial seja criado para o mesmo cliente na mesma oferta.
+**When** a quantia enviada é 100, 10000, 99, 10001 ou 100,5
 
-### AC-20: Tentativa de Aceite de Proposta com Versão Desatualizada (`SUBSTITUÍDA`)
-- **Given** que a Casa A emitiu a contraproposta `#PR-10` (versão 1) e, em seguida, emitiu uma nova contraproposta revisada (versão 2), transitando a versão 1 para `SUBSTITUÍDA`,
-- **When** o cliente tenta aceitar a versão 1 enviando `{ "proposal_id": "PR-10", "version": 1 }` (mantida em tela aberta sem sincronização),
-- **Then** o sistema:
-  1. Verifica a tupla ID + versão na transação atômica;
-  2. Detecta que o status da proposta na versão submetida não é mais `PENDENTE` (encontra-se `SUBSTITUÍDA`);
-  3. Rejeita a operação com HTTP 409 Conflict, código `PROPOSAL_SUPERSEDED` e mensagem "Esta contraproposta foi substituída por uma versão mais recente da casa de câmbio.";
-  4. Retorna no payload os dados da nova contraproposta vigente (versão 2) para atualização imediata da interface do cliente.
+**Then** 100 e 10000 criam a oferta, e 99, 10001 e 100,5 não criam e apontam a quantia
 
-### AC-21: Tentativa de Operação por Usuário com Perfil Financeiro
-- **Given** um usuário autenticado na plataforma vinculado a uma casa de câmbio com role `FINANCEIRO`,
-- **When** este usuário tenta invocar endpoints transacionais operacionais (`POST /offers/:id/accept` ou `POST /offers/:id/proposals`),
-- **Then** o sistema:
-  1. Intercepta a requisição na camada de autorização RBAC do backend;
-  2. Bloqueia a execução antes de abrir qualquer conexão ou lock no banco;
-  3. Retorna HTTP 403 Forbidden com código `INSUFFICIENT_PERMISSIONS` e mensagem "Seu perfil de usuário não possui permissão para executar esta operação.";
-  4. Registra a tentativa nos logs de segurança da plataforma.
+### US-2-AC-4: Uma oferta aberta por WhatsApp
 
-### AC-22: Tentativa de Aceite ou Contraproposta por Casa Não Elegível ou Suspensa
-- **Given** uma oferta publicada em São Paulo para moeda EUR e a Casa D que opera apenas no Rio de Janeiro com USD (ou que esteja com status `SUSPENSA`),
-- **When** um operador da Casa D tenta forçar o envio de aceite direto ou contraproposta via API,
-- **Then** o sistema:
-  1. Valida a matriz de elegibilidade e o ciclo de vida da casa no banco;
-  2. Se a casa não atender aos critérios de cidade, moeda ou produto: rejeita com HTTP 403 Forbidden, código `EXCHANGE_NOT_ELIGIBLE`;
-  3. Se a casa estiver com cadastro no status `SUSPENSA` ou `EM_ANÁLISE`: rejeita com HTTP 403 Forbidden, código `EXCHANGE_SUSPENDED` ou `EXCHANGE_NOT_APPROVED`;
-  4. Não cria nenhum registro de proposta nem altera o estado da oferta.
+**Given** o WhatsApp já tem uma oferta `ABERTA`
 
-### AC-23: Concorrência na Criação de Ofertas no Limite Simultâneo por Cliente
-- **Given** um cliente que já possui 2 ofertas com status `ABERTA` (estando a 1 oferta do limite de 3 ofertas simultâneas),
-- **When** o cliente dispara em paralelo 2 requisições concorrentes de criação de nova oferta (`POST /offers`),
-- **Then** o sistema:
-  1. Serializa a checagem de ofertas ativas por cliente de forma atômica no banco de dados;
-  2. Permite que exatamente 1 (uma) criação tenha sucesso, retornando HTTP 201 Created (completando o teto de 3 ofertas);
-  3. Rejeita a requisição concorrente excedente com HTTP 422 Unprocessable Entity, código `OFFER_LIMIT_REACHED` e mensagem padronizada;
-  4. Impede que o cliente mantenha 4 ofertas abertas simultâneas no banco.
+**When** o viajante envia outra oferta com o mesmo WhatsApp
 
-### AC-24: Sincronização do Countdown de Expiração baseado no Horário do Servidor
-- **Given** um cliente ou operador cuja máquina local apresente relógio descalibrado em relação ao horário oficial (ex.: relógio adiantado ou atrasado em 5 minutos),
-- **When** acessa a tela de acompanhamento de oferta com contagem regressiva,
-- **Then** o sistema:
-  1. Entrega em todo payload de oferta/proposta o timestamp oficial do servidor (`server_timestamp`) juntamente com `expires_at`;
-  2. O cliente web calcula o delta de desvio do relógio local e ancora a contagem regressiva estritamente no tempo restante real do servidor;
-  3. Impede que o botão de aceite seja desabilitado precipitadamente ou mantido ativo erroneamente por divergência no relógio do sistema operacional do usuário.
+**Then** nenhuma oferta nova é criada e ele vê o link da oferta que já está aberta
 
-### AC-25: Validade Efetiva da Contraproposta Limitada ao Término da Oferta
-- **Given** uma oferta `#OF-402` restando 8 minutos para expirar,
-- **When** a Casa D submete contraproposta com `prazo_validade_minutos` = 10 minutos (conforme [Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma)),
-- **Then** o sistema:
-  1. Calcula a validade efetiva como $\min(\text{prazo\_validade\_minutos}, \text{tempo restante da oferta}) = \min(10\text{ min}, 8\text{ min}) = 8\text{ minutos}$;
-  2. Grava `expires_at` da contraproposta com timestamp idêntico ao `expires_at` da oferta;
-  3. Exibe na interface do cliente e do operador a contagem regressiva sincronizada em 8 minutos;
-  4. Garante que nenhuma contraproposta permaneça ativa ou aceitável após o encerramento da oferta principal.
+### US-2-AC-5: Clique duplo
 
-### AC-26: Autenticação Multifator (MFA) Obrigatória para Operadores de Casas de Câmbio
-- **Given** um usuário cadastrado com role `CASA_OWNER` ou `CASA_OPERADOR`,
-- **When** tenta realizar login e acessar telas operacionais ou invocar endpoints transacionais (`POST /offers/:id/accept` ou `POST /offers/:id/proposals`) sem ter concluído o pareamento de MFA (segundo fator via aplicativo autenticador TOTP),
-- **Then** o sistema intercepta a requisição na camada de autenticação/guarda do backend, bloqueia a operação retornando HTTP 403 Forbidden com código `MFA_REQUIRED` e mensagem: *"Autenticação multifator (MFA) obrigatória para este perfil."*, redirecionando o usuário para o fluxo de ativação de segundo fator.
+**Given** o viajante dispara duas vezes o mesmo envio
 
-### AC-27: Modal de Confirmação Mandatório antes de Aceite Vinculante
-- **Given** um operador de casa clicando em "Aceitar Oferta (Match Direto)" ou um cliente clicando em "Aceitar Contraproposta",
-- **When** o clique de aceite é acionado na interface,
-- **Then** o frontend obrigatoriamente exibe modal de confirmação pré-aceite contendo: resumo dos valores (moeda estrangeira, taxa de câmbio pura, IOF e tarifas discriminadas informadas pela casa, e VET final total em Reais), dados da loja/entrega, aviso explícito de canal de comunicação sem custódia de fundos e janela comercial de atendimento informada;
-- **And** somente após o usuário clicar expressamente em "Confirmar Aceite Vinculante", o payload transacional é disparado para a API backend.
+**When** os dois pedidos chegam
 
-### AC-28: Validação de Teto de Valor por Oferta no Piloto
-- **Given** a publicação de uma nova oferta por um cliente,
-- **When** o valor pretendido em Reais ultrapassar o teto máximo parametrizado por oferta para o piloto (`OFFER_MAX_VALUE_BRL`, padrão: R$ 50.000,00 conforme [Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma)),
-- **Then** o sistema rejeita a criação da oferta com HTTP 422 Unprocessable Entity, código `OFFER_VALUE_LIMIT_EXCEEDED` e mensagem: *"Valor da oferta excede o teto máximo permitido para o piloto."*.
+**Then** existe uma única oferta
 
-### AC-29: Relato de Problema à Moderação da Plataforma (Governança sem Mediação Financeira)
-- **Given** um atendimento no status `EM_ATENDIMENTO` ou recém-finalizado,
-- **When** o cliente ou a casa de câmbio aciona "Relatar Problema" e submete uma descrição circunstanciada da irregularidade (ex.: recusa injustificada em praticar a taxa acordada, fornecimento de telefone inexistente ou conduta lesiva),
-- **Then** o sistema:
-  1. Registra o relato no log imutável de auditoria vinculado ao atendimento com timestamp, autor e evidências anexadas;
-  2. Dispara alerta na fila de moderação do painel Admin para análise da equipe de suporte;
-  3. Não executa retenção de dinheiro, estorno financeiro ou mediação cambial (a plataforma não custodia fundos);
-  4. Permite ao Admin aplicar sanções cadastrais (advertência, limitação de ofertas de cliente ou suspensão preventiva da casa da rede).
+## Error States
 
-### AC-30: Transição Automática de Atendimento para `SEM_RETORNO` após Timeout
-- **Given** um atendimento no status `EM_ATENDIMENTO` que atinja o término do prazo de inatividade parametrizado (`TIMEOUT_RELATO_DESFECHO_DIAS`, padrão: 5 dias úteis com aviso prévio de 48h) sem manifestação de desfecho por nenhuma das partes,
-- **When** a rotina assíncrona de verificação periódica do BullMQ é executada,
-- **Then** o sistema:
-  1. Atualiza o status do atendimento para `SEM_RETORNO`;
-  2. Registra o motivo em auditoria como `TIMEOUT_INATIVIDADE_ATENDIMENTO`;
-  3. Arquiva o atendimento sem aplicação de sanções punitivas ou bloqueios ao cliente ou à casa.
+### US-2-AC-6: Sem casa na praça
+
+**Given** não há casa ativa que opere EUR no Rio de Janeiro
+
+**When** o viajante envia uma oferta de EUR no Rio de Janeiro
+
+**Then** a oferta não é criada e a mensagem diz que não há casa disponível para essa moeda nessa cidade
+
+### US-2-AC-7: Consentimento desmarcado
+
+**Given** o formulário está válido e o consentimento está desmarcado
+
+**When** ele envia
+
+**Then** a oferta não é criada e o consentimento é indicado como obrigatório
+
+### US-2-AC-8: E-mail ou WhatsApp inválido
+
+**Given** o e-mail não tem formato de e-mail, ou o WhatsApp não é celular brasileiro
+
+**When** ele envia
+
+**Then** a oferta não é criada e o campo inválido é indicado
+
+## Non-Functional Criteria
+
+### US-2-AC-9: Dados pessoais fora da fila
+
+**Given** a oferta acabou de ser criada
+
+**When** um operador elegível consulta a fila antes de aceitar
+
+**Then** nome, e-mail e WhatsApp do viajante não aparecem nessa consulta
+
+## Notes
+
+- Taxa zero ou negativa é recusada. Taxa positiva com até 4 casas decimais é aceita.
+- O rótulo do campo é "Bairro de preferência". O texto de ajuda esclarece que retirada ou qualquer entrega é combinada diretamente com a casa depois do aceite (FR-6).
 
 ---
 
-## 3. Future Considerations / Removido do MVP na v1.5
+# US-3: Acompanhar status e prazo
 
-Os seguintes critérios de aceitação foram retirados do escopo do MVP na versão 1.5 e arquivados para fases posteriores:
+## Story Context
 
-1. **Extensão Automática de Oferta nos Minutos Finais (antigo AC-25):**
-   - *Motivo da remoção:* Simplificação do motor do leilão no MVP; a oferta possui prazo rígido e contrapropostas têm validade limitada ao tempo restante da oferta.
-2. **Segunda Extensão Negada (antigo AC-26):**
-   - *Motivo da remoção:* Consequência da remoção da extensão automática da oferta no MVP.
-3. **Checkpoint de No-Show, Contestação de 24h e Registro de Strikes (antigo AC-28):**
-   - *Motivo da remoção:* Desnecessário em plataforma sem liquidação financeira integrada. Substituído pelo relato voluntário de desfecho (`CONCLUÍDO` vs. `NÃO_CONCLUÍDO` com motivo) e moderação qualitativa.
-4. **Alerta Automatizado de Fracionamento PLD (antigo AC-31 parte 2):**
-   - *Motivo da remoção:* Risco de falsos positivos em canal de aproximação sem custódia; convertido em pergunta em aberto para parecer jurídico regulatório.
-5. **Discussão de Estornos Financeiros de Tarifas (antigo AC-16 / Notas):**
-   - *Motivo da remoção:* MVP é 100% gratuito; monetização e eventuais créditos de leads pertencem exclusivamente à Fase 2 ([ADR-0012](../04-architecture/adr/adr-0012-modelo-cobranca.md)).
+A página de status mostra o estado e o horário exato de expiração. Quatro horas úteis correm só dentro da janela. Estes cenários são a suíte de fronteira do relógio.
+
+## Happy Path
+
+### US-3-AC-1: Confirmação e e-mail
+
+**Given** uma oferta é criada na terça-feira às 10h00
+
+**When** a confirmação é exibida e o e-mail de acompanhamento é entregue
+
+**Then** a página e o e-mail mostram expiração na terça-feira às 14h00, e os dois apontam para o mesmo link privado
+
+### US-3-AC-2: Link abre sem login
+
+**Given** o viajante não tem conta
+
+**When** ele abre o link privado
+
+**Then** vê o estado atual e o horário de expiração
+
+## Edge Cases
+
+### US-3-AC-3: Início exato da janela
+
+**Given** uma oferta é criada na segunda-feira às 9h00
+
+**When** a confirmação é exibida
+
+**Then** a expiração é na segunda-feira às 13h00
+
+### US-3-AC-4: Um minuto antes da janela
+
+**Given** uma oferta é criada na segunda-feira às 8h59
+
+**When** a confirmação é exibida
+
+**Then** a expiração é na segunda-feira às 13h00
+
+### US-3-AC-5: Fim exclusive da janela
+
+**Given** uma oferta é criada na segunda-feira às 18h00
+
+**When** a confirmação é exibida
+
+**Then** a expiração é na terça-feira às 13h00
+
+### US-3-AC-6: Uma hora no fim do dia
+
+**Given** uma oferta é criada na segunda-feira às 17h00
+
+**When** a confirmação é exibida
+
+**Then** a expiração é na terça-feira às 12h00
+
+### US-3-AC-7: Sexta às 17h30
+
+**Given** uma oferta é criada na sexta-feira às 17h30
+
+**When** a confirmação é exibida
+
+**Then** a expiração é na segunda-feira às 12h30
+
+### US-3-AC-8: Sábado e domingo
+
+**Given** uma oferta é criada no sábado às 15h00, e outra no domingo às 23h00
+
+**When** as confirmações são exibidas
+
+**Then** as duas expiram na segunda-feira às 13h00
+
+### US-3-AC-9: Feriado em dia de semana
+
+**Given** uma quinta-feira é feriado e uma oferta é criada nessa quinta às 10h00
+
+**When** a confirmação é exibida
+
+**Then** a expiração é nessa quinta às 14h00
+
+### US-3-AC-10: Instante exato da expiração
+
+**Given** a oferta expira na terça-feira às 14h00
+
+**When** uma casa tenta aceitar às 13h59 e outra tentativa ocorre às 14h00
+
+**Then** a tentativa das 13h59 vence se nenhuma outra casa já tiver aceitado, e a tentativa das 14h00 é recusada sem revelar o contato do viajante
+
+### US-3-AC-11: Aviso atrasado não prolonga a oferta
+
+**Given** o horário de expiração já passou e o estado ainda não foi marcado como `EXPIRADA`
+
+**When** uma casa tenta aceitar
+
+**Then** o aceite é recusado e a casa vê que a oferta expirou
+
+## Error States
+
+### US-3-AC-12: E-mail de acompanhamento falha
+
+**Given** o provedor de e-mail recusa o envio do link
+
+**When** a oferta acaba de ser criada
+
+**Then** a oferta permanece `ABERTA`, a confirmação na tela mostra o link, e a falha fica registrada para nova tentativa
+
+### US-3-AC-13: Link inexistente
+
+**Given** o endereço não corresponde a uma oferta
+
+**When** alguém o abre
+
+**Then** vê que a oferta não foi encontrada e nenhum dado de viajante ou de casa aparece
+
+## Non-Functional Criteria
+
+### US-3-AC-14: Link não adivinhável
+
+**Given** uma oferta existente
+
+**When** se comparam links emitidos para ofertas diferentes
+
+**Then** o link de uma não dá acesso à outra, e o link não aparece em mensagem de erro nem em log legível por quem opera o painel da casa
+
+## Notes
+
+- O aviso de expiração em si é US-6. A corrida entre aceite e expiração é US-9.
 
 ---
 
-## 4. Notes & Open Questions
+# US-4: Receber a casa que aceitou
 
-- **Composição da Oferta e do VET (Decisão em Aberto nº 1):** Oferta expressa em valor total final, tudo incluso (recomendação em aberto; alternativa: taxa pura + encargos). O aceite direto e as contrapropostas trazem a decomposição (câmbio, IOF, tarifas) informada pela casa apenas para transparência; a lista é comparada pelo total. IOF e demais encargos: valor informado pela casa; alíquotas variam por operação e produto e mudam com frequência [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]. O sistema não calcula nem fixa alíquotas.
-- **Contato Pós-Match (Decisão em Aberto nº 2):** Revelar telefone/WhatsApp e e-mail do cliente para a casa e dados institucionais da casa para o cliente, conforme padrão consolidado pelo Melhor Câmbio. Chat interno proprietário permanece fora do MVP.
-- **Validade padrão de contraproposta:** `prazo_validade_minutos` assumido operacionalmente em 10 minutos conforme [Tabela de Parâmetros](prd.md#parâmetros-configuráveis-da-plataforma). A validade efetiva no leilão é sempre $\min(\text{prazo\_validade\_minutos}, \text{tempo restante da oferta})$.
-- **Limite de revisões e cooldown:** Cada casa pode ter apenas 1 proposta `PENDENTE` por oferta. O envio de nova taxa sobrescreve a anterior para status `SUBSTITUÍDA`, com teto de revisões (máx. 3) e cooldown (30s) parametrizados. Casas com propostas recusadas podem contrapropor de novo respeitando esses limites enquanto a oferta estiver aberta.
-- **Suspensão de Casa com Atendimento Ativo:** Atendimentos em curso são retidos com motivo `SUSPENSAO_PARCEIRO` e alerta neutro ao cliente orientando cautela [VALIDAR COM JURÍDICO].
-- **Escopo de Cobrança (Fase 2 / ADR-0012):** O piloto do MVP (Fase 1 / T1) opera com gratuidade total. Hipóteses de cobrança por lead aceito ou mensalidade SaaS pertencem à Fase 2 e encontram-se documentadas no [ADR-0012](../04-architecture/adr/adr-0012-modelo-cobranca.md) como decisões em aberto sujeitas a parecer jurídico.
+## Story Context
+
+Depois do aceite, o viajante vê a loja na página de status e recebe um WhatsApp. A negociação formal acontece fora da plataforma.
+
+## Happy Path
+
+### US-4-AC-1: Página com a loja
+
+**Given** a oferta está `ACEITA` por uma casa com endereço e WhatsApp comercial, e a casa informou taxa no aceite de "melhor taxa"
+
+**When** o viajante abre o link
+
+**Then** vê nome da casa, endereço, WhatsApp comercial e a taxa informada, mais o texto de que IOF, tarifas, valor final, pagamento e contrato são com a loja
+
+### US-4-AC-2: Um WhatsApp
+
+**Given** a oferta acabou de ser aceita
+
+**When** o alerta de aceite é entregue
+
+**Then** o viajante recebe uma mensagem de WhatsApp, e uma segunda entrega do mesmo evento não gera outra mensagem
+
+## Edge Cases
+
+### US-4-AC-3: Aceite da taxa que o viajante pediu
+
+**Given** a oferta tinha taxa desejada e a casa aceitou essa taxa
+
+**When** o viajante abre o status
+
+**Then** a página mostra a taxa desejada como a taxa aceita
+
+## Error States
+
+### US-4-AC-4: WhatsApp falha
+
+**Given** o provedor de WhatsApp recusa o alerta
+
+**When** o viajante abre o link
+
+**Then** a oferta continua `ACEITA`, os dados da casa estão na página, e a falha fica registrada para nova tentativa
+
+## Non-Functional Criteria
+
+### US-4-AC-5: Sem pagamento na mensagem
+
+**Given** o alerta de aceite e a página de status
+
+**When** o conteúdo é lido
+
+**Then** não há chave Pix, valor a pagar à plataforma nem cálculo de IOF
+
+## Notes
+
+- Quem envia o WhatsApp é a plataforma, para o número informado na oferta. A conversa seguinte é entre viajante e casa.
 
 ---
 
-## Histórico de Revisão
+# US-5: Cancelar oferta aberta
 
-| Versão | Data | Autor | Mudanças |
-|--------|------|-------|----------|
-| 1.0 | 2026-11-02 | Equipe de Produto | Versão inicial com 11 critérios de aceitação |
-| 1.1 | 2026-11-03 | Equipe de Produto | Expansão de critérios de resiliência e LGPD |
-| 1.2 | 2026-11-03 | Equipe de Produto | Atualização de AC-05, AC-06, AC-08, AC-13, AC-14, AC-15 e AC-16 |
-| 1.3 | 2026-11-03 | Equipe de Produto | Tabela Unificada de Erros, clock_timestamp(), teste de carga AC-05, novos critérios AC-17 ao AC-24, ordenação condicional VET |
-| 1.4 | 2026-11-03 | Equipe de Produto | Parâmetros configuráveis, VET sem alíquotas fixas de IOF, extensão única de oferta, checkpoint de no-show/strikes, MFA, modal pré-aceite e teto de valor (total de 31 ACs) |
-| 1.5 | 2026-11-03 | Equipe de Produto | Reposicionamento estrutural v1.5 para PLATAFORMA DE COMUNICAÇÃO inspirada no Melhor Câmbio (Nomad); substituição do conceito de "negociação" por "Atendimento Comercial" e status `EM_ATENDIMENTO`; introdução do relato bilateral de desfecho em AC-04 (`CONCLUÍDO` vs. `NÃO_CONCLUÍDO` com motivo); substituição do bloqueio rígido pós-match por desistência voluntária em AC-08; criação de AC-29 (Relato de Problema à Moderação da Plataforma sem mediação financeira) e AC-30 (Timeout de Atendimento para `SEM_RETORNO`); migração de extensão de oferta, checkpoint de no-show, strikes e alertas de PLD para Future Considerations; atualização da Tabela Unificada de Erros; e fixação em 30 Critérios de Aceitação ativos no MVP. |
+## Story Context
+
+O viajante desiste só enquanto a oferta está `ABERTA`.
+
+## Happy Path
+
+### US-5-AC-1: Cancelar
+
+**Given** a oferta está `ABERTA`
+
+**When** o viajante confirma o cancelamento na página de status
+
+**Then** o estado fica `CANCELADA` e a oferta deixa de aparecer na fila das casas
+
+## Edge Cases
+
+### US-5-AC-2: Segunda confirmação
+
+**Given** a oferta já está `CANCELADA`
+
+**When** o mesmo link tenta cancelar de novo
+
+**Then** o estado permanece `CANCELADA`
+
+## Error States
+
+### US-5-AC-3: Oferta já aceita
+
+**Given** a oferta está `ACEITA`
+
+**When** o viajante tenta cancelar
+
+**Then** o cancelamento é recusado, o estado permanece `ACEITA` e a página mostra a casa
+
+## Non-Functional Criteria
+
+### US-5-AC-4: Cancelamento auditado
+
+**Given** um cancelamento concluído
+
+**When** o registro da oferta é consultado pela operação interna
+
+**Then** há data e hora da transição para `CANCELADA`
+
+## Notes
+
+- Cancelamento simultâneo a um aceite está em US-9-AC-8.
+
+---
+
+# US-6: Ser avisado da expiração
+
+## Story Context
+
+Oferta não aceita no prazo vira `EXPIRADA` e o viajante recebe e-mail. O relógio testado é o de US-3.
+
+## Happy Path
+
+### US-6-AC-1: E-mail e estado
+
+**Given** uma oferta `ABERTA` atinge o horário de expiração
+
+**When** passam até 5 minutos
+
+**Then** o estado é `EXPIRADA` e o e-mail do viajante recebe um aviso com o link de acompanhamento
+
+## Edge Cases
+
+### US-6-AC-2: Reprocessamento
+
+**Given** o aviso de expiração é processado duas vezes
+
+**When** a segunda execução termina
+
+**Then** o viajante tem um único e-mail de expiração e o estado continua `EXPIRADA`
+
+## Error States
+
+### US-6-AC-3: E-mail falha
+
+**Given** o provedor de e-mail falha
+
+**When** o prazo acaba
+
+**Then** o estado ainda fica `EXPIRADA`, a página mostra oferta expirada, e a falha fica registrada para nova tentativa
+
+## Non-Functional Criteria
+
+### US-6-AC-4: Expirada não volta
+
+**Given** a oferta está `EXPIRADA`
+
+**When** alguém tenta aceitar ou cancelar
+
+**Then** as duas ações são recusadas e o estado não muda
+
+## Notes
+
+- Aceite depois do prazo, antes da marcação, está em US-3-AC-11 e US-9-AC-9.
+
+---
+
+# US-7: Entrar no painel
+
+## Story Context
+
+Operador ativo entra com e-mail e senha. Sem MFA no MVP.
+
+## Happy Path
+
+### US-7-AC-1: Entrar
+
+**Given** um operador ativo com senha correta
+
+**When** ele envia e-mail e senha
+
+**Then** entra no painel da própria casa
+
+## Edge Cases
+
+### US-7-AC-2: Sessão inativa
+
+**Given** a última ação do operador foi há 10 horas, e desde então só houve a atualização automática do painel
+
+**When** ele tenta abrir a fila
+
+**Then** volta para o login e a fila não é exibida
+
+### US-7-AC-2b: Ação renova a sessão
+
+**Given** a última ação do operador foi há 9 horas e 59 minutos
+
+**When** ele abre a fila, aceita uma oferta ou publica uma cotação
+
+**Then** a ação é atendida e as 10 horas de inatividade recomeçam a contar dela
+
+## Error States
+
+### US-7-AC-3: Senha errada
+
+**Given** a senha não confere
+
+**When** ele tenta entrar
+
+**Then** permanece deslogado e a mensagem não revela se o e-mail existe
+
+### US-7-AC-4: Limite de tentativas
+
+**Given** a conta ou o IP já atingiu o limite configurado de tentativas
+
+**When** ele tenta de novo dentro da janela de bloqueio
+
+**Then** o acesso é recusado e ele vê que deve esperar para tentar outra vez
+
+### US-7-AC-5: Casa desativada
+
+**Given** a casa do operador foi desativada
+
+**When** ele usa a senha correta
+
+**Then** o acesso é recusado
+
+## Non-Functional Criteria
+
+### US-7-AC-6: Senha ilegível
+
+**Given** um operador cadastrado
+
+**When** o armazenamento de credenciais é inspecionado
+
+**Then** a senha não está em texto legível
+
+### US-7-AC-7: Erro acessível
+
+**Given** o login falha
+
+**When** a mensagem aparece
+
+**Then** ela está associada ao formulário de um modo que um leitor de tela anuncia, e o foco vai para o formulário
+
+## Notes
+
+- O número de tentativas é configuração. A inatividade é fixada em 10 horas.
+- A atualização automática do painel, a cada 30 segundos, não conta como atividade. Sem essa regra, um painel esquecido aberto nunca expiraria. Uma jornada das 9h às 18h só olhando a fila continua dentro das 10 horas.
+
+---
+
+# US-8: Receber alerta de nova demanda
+
+## Story Context
+
+A casa vê a oferta da própria cidade sem o contato do viajante, por e-mail e no painel.
+
+## Happy Path
+
+### US-8-AC-1: Fila
+
+**Given** uma oferta `ABERTA` de 1.000 USD em São Paulo, bairro Pinheiros, taxa 5,4000, e a casa opera USD em São Paulo
+
+**When** o operador abre a fila
+
+**Then** vê moeda, quantia, bairro, taxa e tempo restante, e não vê nome nem WhatsApp
+
+### US-8-AC-2: E-mail da casa
+
+**Given** dois operadores ativos dessa casa
+
+**When** a oferta é criada
+
+**Then** cada um recebe um e-mail, e um reprocessamento não envia o segundo e-mail para o mesmo operador
+
+## Edge Cases
+
+### US-8-AC-3: Moeda que a casa não opera
+
+**Given** a casa opera só USD e surge oferta de GBP na mesma cidade
+
+**When** o operador abre a fila e o e-mail é processado
+
+**Then** a oferta não aparece e nenhum e-mail dessa oferta é enviado à casa
+
+### US-8-AC-4: Som só depois da permissão
+
+**Given** o painel está aberto e o alerta sonoro ainda não foi ligado pelo operador
+
+**When** uma oferta compatível surge
+
+**Then** em até 30 segundos ela aparece em destaque e nenhum som toca
+
+### US-8-AC-5: Som depois de ligar
+
+**Given** o operador ligou o alerta sonoro nesta visita ao painel
+
+**When** outra oferta compatível surge
+
+**Then** em até 30 segundos ela aparece em destaque e toca um som curto, uma vez
+
+## Error States
+
+### US-8-AC-6: E-mail da casa falha
+
+**Given** o provedor de e-mail falha
+
+**When** o operador está com o painel aberto
+
+**Then** a oferta ainda aparece na próxima consulta, em até 30 segundos, e a falha do e-mail fica registrada para nova tentativa
+
+## Non-Functional Criteria
+
+### US-8-AC-7: Sem dado pessoal em trânsito para a casa
+
+**Given** a oferta contém nome, e-mail e WhatsApp
+
+**When** a fila e o e-mail de alerta são produzidos
+
+**Then** nenhum dos dois contém nome, e-mail ou WhatsApp do viajante
+
+## Notes
+
+- O intervalo de 30 segundos é o padrão e pode ser configurado. O teste usa o padrão.
+
+---
+
+# US-9: Aceitar e saber se ganhou
+
+## Story Context
+
+A primeira casa que aceita ganha. Pedidos simultâneos, cancelamento e expiração disputam a mesma oferta e só uma transição vence. O perdedor não recebe contato.
+
+## Happy Path
+
+### US-9-AC-1: Aceite da taxa pedida
+
+**Given** uma oferta `ABERTA`, dentro do prazo, com taxa desejada, visível para uma única casa elegível
+
+**When** o operador clica em "Aceitar oferta"
+
+**Then** a oferta fica `ACEITA` para essa casa e a tela confirma que ela ganhou o atendimento
+
+### US-9-AC-2: Melhor taxa com número
+
+**Given** a oferta pede a melhor taxa e está `ABERTA`
+
+**When** o operador informa 5,5100 e aceita
+
+**Then** a oferta fica `ACEITA` e a taxa registrada é 5,5100
+
+## Edge Cases
+
+### US-9-AC-3: Duas casas no mesmo segundo
+
+**Given** a Casa A e a Casa B são elegíveis para a mesma oferta `ABERTA`
+
+**When** as duas submetem o aceite no mesmo segundo
+
+**Then** exatamente uma fica vencedora, a outra vê "Oferta já atendida por outra casa", a oferta sai da fila da perdedora, e o viajante tem um único alerta de aceite
+
+### US-9-AC-4: Dez aceites simultâneos
+
+**Given** dez casas elegíveis submetem o aceite ao mesmo tempo
+
+**When** todos os pedidos terminam
+
+**Then** existe um único estado `ACEITA`, uma única casa vencedora e nove resultados de oferta já atendida
+
+### US-9-AC-5: Clique duplo da mesma casa
+
+**Given** a casa ainda não venceu
+
+**When** o operador dispara dois aceites da mesma oferta
+
+**Then** a casa vence uma vez e o segundo resultado não cria outro atendimento nem outra notificação
+
+### US-9-AC-6: Taxa absurda em "melhor taxa"
+
+**Given** a oferta pede a melhor taxa e a cotação publicada pela casa é 5,5000
+
+**When** o operador tenta aceitar com taxa 0, com taxa negativa e com taxa 9,9999
+
+**Then** 0 e a taxa negativa são recusados sem mudar o estado, e 9,9999 é aceito se essa casa vencer
+
+### US-9-AC-7: Casa de outra cidade ou moeda
+
+**Given** a oferta é de USD em São Paulo
+
+**When** uma casa do Rio de Janeiro, ou uma casa de São Paulo que não opera USD, submete aceite
+
+**Then** o aceite é recusado e o estado da oferta não muda por causa desse pedido
+
+## Error States
+
+### US-9-AC-8: Aceite contra cancelamento
+
+**Given** a oferta está `ABERTA`
+
+**When** o viajante confirma o cancelamento e uma casa submete o aceite ao mesmo tempo
+
+**Then** só uma das duas transições permanece, o outro lado vê o estado final, e não existem ao mesmo tempo `ACEITA` e `CANCELADA`
+
+### US-9-AC-9: Aceite contra expiração
+
+**Given** a oferta atinge o instante de expiração enquanto uma casa submete o aceite
+
+**When** os dois pedidos terminam
+
+**Then** ou a casa venceu antes do instante e o viajante recebe o alerta, ou o aceite é recusado e a oferta fica `EXPIRADA`, nunca os dois
+
+### US-9-AC-10: Aceite depois do prazo com marcação atrasada
+
+**Given** o instante de expiração já passou e o estado ainda não foi atualizado para `EXPIRADA`
+
+**When** a casa clica em aceitar
+
+**Then** o aceite é recusado, a casa vê que a oferta expirou e nenhum contato do viajante é exibido
+
+### US-9-AC-11: Casa desativada no meio da fila
+
+**Given** a casa via a oferta e é desativada antes do clique
+
+**When** o operador aceita
+
+**Then** o aceite é recusado e as outras casas elegíveis continuam podendo aceitar
+
+### US-9-AC-12: Melhor taxa sem número
+
+**Given** a oferta pede a melhor taxa
+
+**When** o operador aceita sem informar taxa
+
+**Then** o estado continua `ABERTA` e a tela pede a taxa
+
+## Non-Functional Criteria
+
+### US-9-AC-13: Perdedor sem contato
+
+**Given** a Casa B perdeu US-9-AC-3, US-9-AC-4 ou US-9-AC-8
+
+**When** a resposta do aceite, a fila e o histórico da Casa B são lidos
+
+**Then** nenhum deles contém nome, e-mail ou WhatsApp do viajante
+
+### US-9-AC-14: Falha de notificação não desfaz o vencedor
+
+**Given** o aceite vencedor foi gravado e o WhatsApp do viajante falha
+
+**When** a falha é registrada
+
+**Then** a oferta continua `ACEITA` pela mesma casa e a página de status mostra essa casa
+
+### US-9-AC-15: Tentativa perdida auditada
+
+**Given** uma casa perdeu o aceite por concorrência, cancelamento ou expiração
+
+**When** a operação interna consulta o registro da oferta
+
+**Then** a tentativa perdida está registrada com data, hora e casa, sem o contato do viajante nesse registro de perda
+
+## Notes
+
+- O teste de US-9-AC-3 e US-9-AC-4 dispara os pedidos juntos, contra o banco real do projeto, e confere o resultado observável. Não basta simular a ordem na aplicação.
+- Taxa positiva fora da cotação publicada é decisão da casa. A plataforma não corrige preço.
+
+---
+
+# US-10: Ver contato do viajante
+
+## Story Context
+
+Só a casa vencedora vê nome e WhatsApp. O e-mail do viajante não vai para a casa.
+
+## Happy Path
+
+### US-10-AC-1: Contato e atalho
+
+**Given** a casa venceu o aceite de uma oferta com nome e WhatsApp
+
+**When** a confirmação do aceite é exibida
+
+**Then** o operador vê nome e WhatsApp e um atalho que abre conversa com esse número
+
+## Edge Cases
+
+### US-10-AC-2: Segunda abertura
+
+**Given** o operador fechou a tela e voltou ao histórico antes de qualquer exclusão manual dos dados pessoais da oferta
+
+**When** ele abre a oferta aceita
+
+**Then** nome e WhatsApp continuam visíveis
+
+## Error States
+
+### US-10-AC-3: Operador de outra casa
+
+**Given** outra casa da mesma cidade está autenticada
+
+**When** ela pede o contato dessa oferta
+
+**Then** o pedido é recusado e o contato não aparece
+
+## Non-Functional Criteria
+
+### US-10-AC-4: E-mail oculto e leitura auditada
+
+**Given** a casa vencedora abre o contato
+
+**When** a tela e o registro de auditoria são conferidos
+
+**Then** o e-mail do viajante não está na tela, e a leitura fica registrada com data, hora e operador
+
+## Notes
+
+- O atalho não envia mensagem pela plataforma.
+
+---
+
+# US-11: Publicar cotação de venda
+
+## Story Context
+
+O operador publica o preço de balcão que a vitrine exibe.
+
+## Happy Path
+
+### US-11-AC-1: Publicar USD
+
+**Given** o operador está autenticado e a casa opera USD
+
+**When** ele publica 5,5050
+
+**Then** a vitrine da cidade em USD mostra a casa com 5,5050
+
+## Edge Cases
+
+### US-11-AC-2: Substituição
+
+**Given** a cotação exibida é 5,5050
+
+**When** ele publica 5,4900
+
+**Then** a vitrine mostra 5,4900
+
+### US-11-AC-3: Quatro casas decimais
+
+**Given** o operador publica 5,4321
+
+**When** a vitrine é consultada
+
+**Then** o valor exibido é 5,4321
+
+## Error States
+
+### US-11-AC-4: Valor inválido ou moeda não operada
+
+**Given** a casa não opera GBP
+
+**When** o operador publica 0, um valor negativo, ou uma cotação de GBP
+
+**Then** a publicação é recusada e a vitrine não muda
+
+## Non-Functional Criteria
+
+### US-11-AC-5: Horário da publicação
+
+**Given** uma publicação aceita
+
+**When** a cotação é lida 24 horas e 1 minuto depois sem nova publicação
+
+**Then** a casa não aparece na vitrine dessa moeda
+
+## Notes
+
+- A casa sem cotação fresca ainda pode receber oferta se estiver ativa. Isso é FR-3 com FR-8.
+
+---
+
+# US-12: Credenciar e desativar casas
+
+## Story Context
+
+A operação interna credencia casa conferida na lista do Banco Central e pode desativá-la.
+
+## Happy Path
+
+### US-12-AC-1: Credenciar
+
+**Given** a operação interna conferiu a autorização
+
+**When** grava razão social, nome, CNPJ, São Paulo, bairro, endereço, WhatsApp comercial, USD, data da conferência, um operador e a senha inicial desse operador
+
+**Then** a casa fica ativa e esse operador consegue entrar com essa senha, sem troca obrigatória no primeiro acesso
+
+## Edge Cases
+
+### US-12-AC-2: Cidade ou moeda fora do piloto
+
+**Given** a operação interna tenta salvar uma casa em Belo Horizonte ou com moeda diferente de USD, EUR e GBP
+
+**When** ela grava
+
+**Then** o cadastro é recusado e a casa não fica ativa
+
+## Error States
+
+### US-12-AC-3: Operador tenta credenciar
+
+**Given** um operador de casa autenticado
+
+**When** ele cria, edita ou desativa uma casa
+
+**Then** a ação é recusada
+
+### US-12-AC-4: Desativar com aceite antigo
+
+**Given** a casa tem uma oferta `ACEITA` e outra `ABERTA` na fila
+
+**When** a operação interna desativa a casa
+
+**Then** a casa sai da vitrine, a oferta aberta deixa de ser aceitável por ela, o aceite antigo permanece, e ela não recebe alerta novo
+
+## Non-Functional Criteria
+
+### US-12-AC-5: Data da conferência obrigatória
+
+**Given** os outros campos estão preenchidos e a data da conferência está vazia
+
+**When** a operação interna grava
+
+**Then** a casa não é ativada
+
+### US-12-AC-6: Exclusão manual de dados pessoais
+
+**Given** uma oferta com nome, e-mail e WhatsApp do viajante ainda legíveis
+
+**When** a operação interna aciona a exclusão manual de FR-31
+
+**Then** esses dados deixam de ser legíveis, o link privado responde como oferta não encontrada, e nenhum job agendado executou a ação
+
+## Notes
+
+- Não há integração automática com o Banco Central neste MVP.
+
+---
+
+# US-13: Ver histórico de aceites
+
+## Story Context
+
+A casa vencedora recupera o contato enquanto os dados pessoais da oferta existirem. No piloto não há apagamento automático; a exclusão, se necessária, é manual pelo administrador (FR-31).
+
+## Happy Path
+
+### US-13-AC-1: Histórico recente
+
+**Given** a casa aceitou uma oferta e o administrador ainda não excluiu os dados pessoais dessa oferta
+
+**When** o operador abre o histórico
+
+**Then** a oferta aparece, da mais recente para a mais antiga, com nome e WhatsApp
+
+## Edge Cases
+
+### US-13-AC-2: Oferta perdida
+
+**Given** a casa tentou aceitar e perdeu
+
+**When** o operador abre o histórico
+
+**Then** essa oferta não aparece
+
+## Error States
+
+### US-13-AC-3: Outra casa
+
+**Given** a oferta foi aceita pela Casa A
+
+**When** a Casa B abre o histórico
+
+**Then** a oferta da Casa A não aparece para a Casa B
+
+## Non-Functional Criteria
+
+### US-13-AC-4: Exclusão manual pelo administrador
+
+**Given** a operação interna excluiu os dados pessoais de uma oferta `ACEITA` da Casa A
+
+**When** o operador da Casa A abre o histórico e o viajante abre o link privado
+
+**Then** a oferta ainda aparece no histórico da Casa A sem nome, e-mail nem WhatsApp legíveis, o link privado responde como oferta não encontrada, e nenhum job agendado executou essa exclusão
+
+## Notes
+
+- O prazo de retenção de dados pessoais aguarda confirmação jurídica. Até lá, os dados permanecem acessíveis conforme FR-26.

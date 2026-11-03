@@ -1,500 +1,374 @@
 ---
 artifact: prd
-version: "1.5.1"
-created: 2026-11-02
-status: draft
+version: "1.2"
+created: 2026-11-03
+updated: 2026-11-03
+status: spec-locked
 ---
 
-# PRD: Marketplace de Câmbio — MVP (Versão 1.5.1)
+# PRD: MVP de aproximação neutra para compra de papel-moeda (SP e RJ)
+
+Especificação travada. Implementação de código bloqueada até validação do portão em [`docs/01-discovery/hypotheses.md`](../01-discovery/hypotheses.md).
 
 ## Overview
 
 ### Problem Statement
 
-Pessoas físicas e jurídicas que precisam comprar ou vender moeda estrangeira enfrentam um mercado fragmentado, opaco e com taxas de balcão discrepantes. Os canais tradicionais de cotação (ligações telefônicas, visitas presenciais ou consulta a sites estáticos individuais) demandam alto esforço do cliente e oferecem pouca transparência sobre taxas efetivas com todos os encargos inclusos. Por outro lado, para as casas de câmbio autorizadas pelo Banco Central, a atração de clientes depende fortemente de localização física e marketing local, resultando em mesas operacionais subutilizadas em horários de menor movimento.
+Casas de câmbio físicas autorizadas pelo Banco Central em São Paulo e no Rio de Janeiro perderam o canal neutro que levava o viajante até elas. Desde junho de 2024 esse canal, o Melhor Câmbio, pertence à Nomad, que vende conta internacional e passou a disputar a atenção do mesmo cliente. O viajante pessoa física continua precisando de papel-moeda e continua comprando numa casa autorizada. Falta um lugar neutro onde a demanda dele chegue à casa.
 
-O resultado é um mercado com alta assimetria de informação: clientes pagam spreads elevados e casas de câmbio perdem oportunidades de negócio qualificadas.
+Problema completo em [`docs/01-discovery/problem-statement.md`](../01-discovery/problem-statement.md).
 
 ### Solution Summary
 
-A plataforma é posicionada formalmente na versão 1.5 como uma **PLATAFORMA TECNOLÓGICA DE COMUNICAÇÃO, MENSAGERIA E APROXIMAÇÃO** entre clientes e casas de câmbio autorizadas pelo Banco Central, inspirada na mecânica de mercado do portal **Melhor Câmbio** (`melhorcambio.com`), porém modernizada com pregão em tempo real e contrapropostas simultâneas.
+Uma aplicação web responsiva com dois lados, que só aproxima:
 
-O cliente publica sua demanda anônima especificando: moeda, operação (compra ou venda sob sua ótica), valor pretendido, taxa desejada, modalidade (papel-moeda ou cartão pré-pago), preferência de atendimento (retirada ou delivery) e recorte territorial macro (cidade e região/bairro). As casas de câmbio elegíveis conectadas ao pregão em tempo real via WebSocket podem **aceitar diretamente** a oferta original (match instantâneo por *first-come, first-served*) ou submeter **contrapropostas estruturadas** com valor total em reais (VET).
+1. **Viajante:** consulta a vitrine pública de cotações de papel-moeda por cidade e moeda. A vitrine mostra só nome da casa, cidade e cotação de balcão. O viajante cria uma oferta com quantia, taxa desejada ou "quero a melhor taxa", bairro de preferência, nome, e-mail e WhatsApp. Recebe o link de acompanhamento por e-mail e o alerta de aceite por WhatsApp.
+2. **Casa de câmbio:** acessa um painel com login e senha. Recebe alerta por e-mail e no painel quando surge oferta na sua cidade, vê a oferta sem os dados pessoais do viajante e aceita. A primeira casa que aceita fecha a reserva. Os contatos são revelados só entre o viajante e essa casa.
 
-> [!IMPORTANT]
-> **Premissa Inviolável de Não-Intermediação Financeira [VALIDAR COM ADVOGADO]:**
-> A plataforma atua estritamente como canal de comunicação e aproximação tecnológica.
-> - **A plataforma NÃO recebe, NÃO custodia, NÃO transaciona, NÃO processa e NÃO intermedia valores financeiros.**
-> - **A plataforma NÃO gerencia formas de pagamento (Pix, TED, dinheiro em espécie) nem etapas logísticas de entrega ou retirada de valores.**
-> - O pagamento, a entrega do numerário, a conferência documental regulatória (KYC cambial) e a celebração formal do contrato de câmbio ocorrem **DIRETAMENTE ENTRE A CASA DE CÂMBIO AUTORIZADA E O CLIENTE**, fora do ambiente do software.
-> - O aceite na plataforma constitui um **compromisso comercial de atendimento direto** por uma janela temporal informada (conforme parâmetro configurável) e **NÃO é executado nem garantido financeiramente pela plataforma**.
-
----
-
-### Contexto Competitivo: O Modelo Melhor Câmbio e Diferenciais em Hipótese
-
-Conforme detalhado no documento de discovery [Contexto Competitivo](../01-discovery/competitive-context.md), o produto posiciona-se no mesmo segmento desbravado pelo **Melhor Câmbio** (`melhorcambio.com`, adquirido pela fintech Nomad):
-
-1. **O Modelo Incumbente:** O Melhor Câmbio opera como um comparador de taxas por cidade combinado a um sistema assíncrono de ofertas: o cliente informa o montante e seus contatos; a plataforma anuncia a oferta às casas parceiras; se uma casa aceita, o cliente é avisado por e-mail e tem até 2 horas para finalizar; a casa contata o cliente diretamente para concluir o câmbio. *(Os números do site de 1.600+ parceiros e 1M+ usuários únicos/mês são dados auto-declarados, pendentes de verificação).*
-2. **Hipóteses de Diferenciação da Nova Plataforma:**
-   - **Contrapropostas simultâneas estruturadas:** Múltiplas casas concorrem ativamente pela mesma oferta com taxas alternativas, comparadas em ranking transparente pelo valor total em reais (VET) [HIPÓTESE – A VALIDAR];
-   - **Anonimato pré-match:** O cliente expõe apenas região/bairro, mantendo nome e telefone 100% protegidos até a consolidação do match para evitar assédio comercial [HIPÓTESE – A VALIDAR];
-   - **Comunicação instantânea em tempo real:** Pregão via WebSocket com alertas sonoros e visuais, substituindo a latência do e-mail [HIPÓTESE – A VALIDAR];
-   - **Ferramentas B2B para Casas:** Vitrine Informativa de taxas de balcão, auditoria e futura integração via APIs e landing pages [HIPÓTESE – A VALIDAR];
-   - **Mobile-First:** Aplicação web responsiva moderna evoluindo para app móvel dedicado na Fase 2 [HIPÓTESE – A VALIDAR].
-3. **Riscos Competitivos:** Reconhecimento de marca e escala massiva do incumbente, prática de *multi-homing* pelas casas parceiras e risco de desintermediação/vazamento comercial após a revelação dos contatos.
-4. **Salvaguardas Contratuais do Fundador [VALIDAR COM ADVOGADO]:**
-   - A assessoria jurídica deve avaliar eventuais obrigações contratuais do fundador decorrentes de vínculos prévios com concorrentes (cláusulas de confidencialidade, não-concorrência e não-aliciamento).
-   - É expressamente vedada a reutilização de marcas, trade dress, código-fonte, bases de dados ou contatos de terceiros.
-
----
-
-### Glossário e Convenções Operacionais
-
-- **Operação de Compra e Venda:** A definição de compra/venda é **sempre sob a perspectiva do CLIENTE**:
-  - **COMPRA:** O cliente adquire moeda estrangeira (paga reais - BRL, recebe moeda estrangeira). A casa de câmbio é vendedora.
-  - **VENDA:** O cliente converte moeda estrangeira em reais (entrega moeda estrangeira, recebe BRL). A casa de câmbio é compradora.
-- **Valor Efetivo Total (VET):** Valor final total em Reais da transação, composto pela taxa de câmbio pura somada ao IOF e eventuais tarifas informadas pela casa de câmbio. IOF e demais encargos: valor informado pela casa; alíquotas variam por operação e produto e mudam com frequência [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]. O sistema não calcula nem fixa alíquotas.
-- **Oferta Anônima:** Divulgação pré-match aos operadores contendo apenas parâmetros essenciais da demanda (moeda, operação, valor, taxa, produto, cidade, região/bairro e modalidade), sem dados de contato direto (telefone, e-mail) nem logradouro/CEP.
-- **Atendimento Comercial (Substitui "Negociação"):** O ciclo pós-match onde a plataforma disponibiliza os contatos mútuos para que casa e cliente realizem a transação diretamente fora do sistema. Estados: `EM_ATENDIMENTO` → `CONCLUÍDO` | `NÃO_CONCLUÍDO` | `SEM_RETORNO`.
-- **Janela de Atendimento:** Prazo comercial acordado e parametrizado para que as partes estabeleçam contato direto e concluam o atendimento (padrão: 24 horas úteis [HIPÓTESE – A VALIDAR]). A plataforma **não executa** a operação.
+Contrato cambial, IOF, tarifas, pagamento e entrega do numerário acontecem fora da plataforma, entre a casa e o viajante.
 
 ### Target Users
 
-- **Cliente (Pessoa Física / Jurídica):** Deseja comprar ou vender moeda estrangeira com agilidade, privacidade e melhor taxa total em reais.
-- **Casa de Câmbio (Owner, Operador, Financeiro):** Deseja captar clientes com intenção firme de câmbio, acessar pregão em tempo real e gerenciar atendimentos.
-- **Admin da Plataforma:** Aprova o cadastro KYB de casas, monitora a qualidade da rede, atende a relatos de problemas e audita o sistema.
+- **Viajante:** pessoa física com viagem internacional que precisa comprar papel-moeda (USD, EUR ou GBP) em São Paulo ou no Rio de Janeiro.
+- **Operador da casa:** dono, gerente ou atendente de casa de câmbio com loja física em SP ou RJ, autorizada pelo Banco Central e credenciada manualmente por nós.
+- **Operação interna:** o fundador, que credencia e desativa casas. Não há tela de autoatendimento para isso no MVP.
 
 ## Goals & Success Metrics
 
 ### Goals
 
-1. Estabelecer o primeiro canal digital de mensageria em tempo real com leilão por melhor oferta entre clientes e casas de câmbio autorizadas em RJ e SP.
-2. Permitir que o cliente obtenha taxas competitivas por meio de contrapropostas dinâmicas comparadas pelo valor final total (VET).
-3. Validar a liquidez operacional do modelo de aproximação sem participação financeira no piloto em São Paulo e Rio de Janeiro.
-4. Construir uma rede qualificada de casas parceiras comprometidas com agilidade e integridade no atendimento ao cliente.
+1. Fazer ofertas de papel-moeda de viajantes chegarem a casas autorizadas e terminarem em aceite com troca de contato.
+2. Garantir que cada oferta tenha no máximo uma casa vencedora e que os dados do viajante só cheguem a ela.
+3. Operar sem tocar em dinheiro, contrato cambial ou cálculo de IOF.
 
 ### Success Metrics
 
-| Métrica | Baseline Atual | Meta | Prazo |
-|---------|---------------|------|-------|
-| Casas de câmbio cadastradas e aprovadas (RJ + SP) | 0 | 10 a 20 casas [HIPÓTESE – A VALIDAR] | 90 dias pós-lançamento |
-| Densidade semanal de demanda (ofertas por casa ativa) | 0 | 3 a 5 ofertas/casa/semana [HIPÓTESE – A VALIDAR] | 90 dias pós-lançamento |
-| Taxa de match (ofertas que geram atendimento comercial) | 0% | > 35% [HIPÓTESE – A VALIDAR] | 90 dias pós-lançamento |
-| Taxa de conversão por desfecho declarado (`CONCLUÍDO` / atendimentos) | 0% | > 60% [HIPÓTESE – A VALIDAR] | 90 dias pós-lançamento |
-| Tempo mediano de primeira resposta das casas | N/A | < 15 minutos [HIPÓTESE – A VALIDAR] | 90 dias pós-lançamento |
-| Índice de relatos de "taxa não mantida" | N/A | < 3% dos atendimentos [HIPÓTESE – A VALIDAR] | 90 dias pós-lançamento |
-| Retenção mensal de casas ativas | 0% | > 70% no Mês 3 [HIPÓTESE – A VALIDAR] | 90 dias pós-lançamento |
+Os alvos vêm do problem statement. Contam a partir do lançamento do piloto, que só acontece depois do portão de código das hipóteses (ver Timeline).
+
+| Metric | Current Baseline | Target | Timeline |
+| --- | --- | --- | --- |
+| Ofertas que terminam em `ACEITA` com contatos revelados aos dois lados (primária) | 0 | 30 | 90 dias após o lançamento |
+| Casas ativas em SP ou RJ: casa credenciada que aceitou ao menos uma oferta no período | 0 | 10 a 15 | 90 dias após o lançamento |
+| Mediana do tempo entre criação da oferta e aceite, em horas úteis | Sem dado | Medir; sem alvo no MVP | Contínuo |
+| Parcela de ofertas que terminam em `EXPIRADA` | Sem dado | Medir; sem alvo no MVP | Contínuo |
+| Ofertas com mais de uma casa vencedora (guardrail) | 0 | 0 | Contínuo |
+| Dados do viajante exibidos a casa não vencedora (guardrail) | 0 | 0 | Contínuo |
+| Reais recebidos, Pix gerado ou IOF calculado pela plataforma (guardrail) | 0 | 0 | Contínuo |
 
 ### Non-Goals
 
-- **Intermediação ou Custódia Financeira:** A plataforma NÃO processa pagamentos, não recebe Pix, não emite boletos, não retém dinheiro em conta escrow e não liquida contratos cambiais.
-- **Logística e Entrega:** A plataforma NÃO gerencia logística física de entregadores, motoboys ou horários de agendamento de balcão.
-- **Mediação Financeira de Disputas:** A plataforma NÃO atua como juízo arbitral de valores, não devolve recursos e não impõe retenções pecuniárias. O suporte atua exclusivamente na moderação de cadastro e qualidade da rede.
-- **Monetização no MVP:** O piloto da Fase 1 é 100% gratuito. A cobrança (por lead/atendimento ou SaaS) ocorrerá exclusivamente na Fase 2 ([ADR-0012](../04-architecture/adr/adr-0012-modelo-cobranca.md)).
-- **Cobertura Nacional Imediata:** O piloto é restrito às praças estratégicas do Rio de Janeiro e de São Paulo.
-
----
-
-## Go-to-Market (GTM) e Aquisição de Demanda
-
-A retenção sustentável das casas de câmbio no regime de *multi-homing* com o incumbente depende de superar o gargalo de liquidez de demanda. Para o piloto em São Paulo e Rio de Janeiro, o plano de Go-to-Market apoia-se em três pilares de tração orgânica e co-distribuída:
-
-### 1. Pilares de Aquisição de Demanda
-
-1. **SEO Local de Cotação por Cidade e Região:**
-   - Construção de páginas altamente performáticas e otimizadas para busca orgânica com intenção local imediata (ex.: *"onde comprar dólar em são paulo"*, *"cotação euro turismo rj"*, *"melhor câmbio barra da tijuca"*).
-   - O tráfego de busca local captura clientes no exato momento da decisão de viagem ou compra de papel-moeda, sem depender de investimento maciço em mídia de performance no piloto.
-2. **Landing Pages e Presença Digital das Casas:**
-   - Disponibilização de links parametrizados e páginas públicas de perfil para que as casas participantes possam divulgar aos seus clientes em canais próprios (site institucional, redes sociais, assinatura de e-mail e QR Code no balcão).
-3. **Base de Clientes das Próprias Casas Parceiras:**
-   - Incentivo para que as casas parceiras utilizem a plataforma para organizar pedidos de sua carteira recorrente de clientes que pedem cotações por telefone ou WhatsApp, digitalizando o fluxo de atendimento da mesa.
-
-### 2. Metas de Ofertas por Casa por Semana [HIPÓTESE – A VALIDAR]
-- Conforme a hipótese estruturante [H5](../01-discovery/hypotheses.md#h5--hipótese-de-multi-homing-e-priorização-por-densidade-de-ofertas), a mesa de câmbio só manterá a aba da plataforma aberta e com operadores engajados se receber um fluxo mínimo perceptível de negócios.
-- **Meta Operacional do Piloto:** Atingir entre **3 a 5 ofertas qualificadas por casa ativa por semana** [HIPÓTESE – A VALIDAR] nas praças de SP e RJ durante o ciclo T1. Volumes inferiores a 2 ofertas/semana aumentam o risco de abandono silencioso da mesa.
-
-### 3. Exploração Conceitual: "Modo Oferta Privada" (Post-MVP / Fora do Escopo do MVP)
-- **Conceito:** Modalidade em que um cliente que acessa a plataforma por meio da landing page ou link exclusivo de uma casa de câmbio específica pode optar por criar uma **"Oferta Privada"**. Nesse modo, a oferta é despachada **exclusivamente para a mesa daquela casa parceira**, sem entrar no pregão concorrencial aberto com as demais instituições da cidade. Se a casa aceitar, o match é direto; caso a casa recuse ou o prazo expire, o cliente pode optar por abrir a oferta para o mercado geral.
-- **Status do Recurso:** Registrado formalmente como uma **ideia para validação de produto com as casas parceiras** ([Questão 7 do Roteiro de Entrevistas](../01-discovery/interview-guide-casas.md)), posicionada **ESTRITAMENTE FORA DO ESCOPO DO MVP** (planejada para estudo e prototipação na Fase 2).
-
----
+- Ser instituição de pagamento, correspondente cambial ou intermediário financeiro.
+- Calcular preço final, VET ou IOF.
+- Mediar a negociação depois do aceite.
+- Formar preço em tempo real ou leilão entre casas.
+- Monetizar o piloto. O MVP é gratuito para casas e viajantes.
 
 ## User Stories
 
-A suíte completa de 30 User Stories do MVP está documentada detalhadamente em [User Stories](user-stories.md), estruturada por persona e épicos:
+Histórias resumidas. O detalhe está em [`user-stories.md`](user-stories.md) e os cenários de QA em [`acceptance-criteria.md`](acceptance-criteria.md).
 
-| ID | User Story | Persona | Prioridade | Épico |
-|----|------------|---------|------------|-------|
-| US-001 | Autocadastro de Cliente com Validação Mínima | Cliente | P0 | Épico 1: Onboarding e Autenticação |
-| US-002 | Autocadastro de Casa de Câmbio (KYB) | Casa (Owner) | P0 | Épico 1: Onboarding e Autenticação |
-| US-003 | Aprovação/Reprovação de Casa pelo Admin | Admin | P0 | Épico 1: Onboarding e Autenticação |
-| US-004 | Consulta de Cotação de Referência | Cliente / Casa | P0 | Épico 2: Cotações de Referência |
-| US-005 | Fallback e Cache de Cotação no Backend | Sistema | P0 | Épico 2: Cotações de Referência |
-| US-006 | Publicação de Oferta de Câmbio Anônima | Cliente | P0 | Épico 3: Ofertas |
-| US-007 | Configuração de Prazo de Expiração da Oferta | Cliente | P0 | Épico 3: Ofertas |
-| US-008 | Cancelamento de Oferta sem Match | Cliente | P0 | Épico 3: Ofertas |
-| US-009 | Visualização e Histórico de Ofertas | Cliente | P0 | Épico 3: Ofertas |
-| US-010 | Recebimento de Ofertas Elegíveis em Tempo Real | Casa (Operador) | P0 | Épico 4: Aceite e Contrapropostas |
-| US-011 | Aceite Direto de Oferta (Match Automático) | Casa (Operador) | P0 | Épico 4: Aceite e Contrapropostas |
-| US-012 | Envio de Contraproposta Estruturada por Casa | Casa (Operador) | P0 | Épico 4: Aceite e Contrapropostas |
-| US-013 | Visualização e Comparação de Contrapropostas por Valor Total | Cliente | P0 | Épico 4: Aceite e Contrapropostas |
-| US-014 | Aceite de Contraproposta pelo Cliente | Cliente | P0 | Épico 4: Aceite e Contrapropostas |
-| US-015 | Recusa de Contraproposta pelo Cliente | Cliente | P1 | Épico 4: Aceite e Contrapropostas |
-| US-016 | Resolução Transacional de Concorrência de Aceite | Sistema | P0 | Épico 5: Match e Atendimento Comercial |
-| US-017 | Encerramento em Cascata de Propostas Concorrentes | Sistema | P0 | Épico 5: Match e Atendimento Comercial |
-| US-018 | Acompanhamento do Atendimento Comercial e Revelação Segura de Contatos | Cliente / Casa | P0 | Épico 5: Match e Atendimento Comercial |
-| US-019 | Relato de Desfecho do Atendimento Comercial e Conclusão / Sem Retorno | Casa / Cliente | P0 | Épico 5: Match e Atendimento Comercial |
-| US-020 | Relato de Problema à Moderação da Plataforma (Qualidade sem Mediação Financeira) | Cliente / Casa | P1 | Épico 5: Match e Atendimento Comercial |
-| US-021 | Cadastro de Taxas de Balcão na Vitrine | Casa (Owner/Operador) | P1 | Épico 6: Vitrine Informativa |
-| US-022 | Consulta da Vitrine de Taxas pelo Cliente | Cliente | P1 | Épico 6: Vitrine Informativa |
-| US-023 | Notificações em Tempo Real via WebSocket | Cliente / Casa | P0 | Épico 7: Notificações |
-| US-024 | Notificações Multicanal para Operadores Offline | Casa / Cliente | P1 | Épico 7: Notificações |
-| US-025 | Gestão de Operadores e Membros da Casa | Casa (Owner) | P1 | Épico 8: Gestão e Governança |
-| US-026 | Suspensão Preventiva de Casa pelo Admin | Admin | P0 | Épico 8: Gestão e Governança |
-| US-027 | Log de Auditoria de Ações Transacionais | Admin / Sistema | P0 | Épico 8: Gestão e Governança |
-| US-028 | Autenticação Multifator (MFA) Obrigatória para Casas de Câmbio | Casa (Owner/Operador) | P0 | Épico 1: Onboarding e Autenticação |
-| US-029 | Confirmação Pré-Aceite com Resumo Financeiro Vinculante | Cliente / Casa (Operador) | P0 | Épico 4: Aceite e Contrapropostas |
-| US-030 | Controle de Teto de Valor por Oferta no Piloto | Sistema / Admin | P0 | Épico 3: Ofertas |
-
----
+| ID | User Story | Priority |
+| --- | --- | --- |
+| US-1 | Como viajante, quero ver as cotações de papel-moeda das casas da minha cidade para a moeda escolhida, para saber se vale a pena fazer uma oferta | P0 |
+| US-2 | Como viajante, quero criar uma oferta com quantia, taxa desejada ou "melhor taxa", bairro, nome e WhatsApp, para que casas autorizadas me atendam | P0 |
+| US-3 | Como viajante, quero ver o status e o prazo da minha oferta, para saber se ainda estou esperando | P0 |
+| US-4 | Como viajante, quero receber os dados da casa que aceitou, para fechar a compra diretamente com ela | P0 |
+| US-5 | Como viajante, quero cancelar minha oferta enquanto nenhuma casa aceitou, para não ser contatado se desistir | P0 |
+| US-6 | Como viajante, quero ser avisado quando minha oferta expirar sem aceite, para buscar outra alternativa | P0 |
+| US-7 | Como operador da casa, quero entrar no painel com e-mail e senha, para ver as ofertas da minha cidade | P0 |
+| US-8 | Como operador da casa, quero ser alertado por e-mail e no painel quando surgir oferta na minha cidade, para responder antes das outras casas | P0 |
+| US-9 | Como operador da casa, quero aceitar uma oferta e saber na hora se ganhei ou se outra casa chegou antes, para não atender cliente que não é meu | P0 |
+| US-10 | Como operador da casa, quero ver nome e WhatsApp do viajante depois de ganhar o aceite, para iniciar o contato imediatamente | P0 |
+| US-11 | Como operador da casa, quero publicar minha cotação de venda por moeda, para aparecer na vitrine | P0 |
+| US-12 | Como operação interna, quero credenciar e desativar casas autorizadas, para que só casas conferidas recebam ofertas | P0 |
+| US-13 | Como operador da casa, quero ver o histórico das ofertas que minha casa aceitou, para recuperar o contato depois | P1 |
 
 ## Scope
 
-### In Scope (MVP)
+### In Scope
 
-- Cadastro e autenticação de clientes (PF e PJ) com validação de telefone via OTP.
-- Cadastro institucional de casas de câmbio (KYB) com aprovação pelo Admin.
-- Cotação de referência em tempo real (AwesomeAPI com cache Redis e fallback).
-- Publicação de oferta anônima pelo cliente (moeda, operação, valor, taxa desejada, produto, retirada/delivery, região/bairro e prazo de expiração).
-- Aceite direto por casa elegível com match instantâneo ("first-come, first-served").
-- Submissão de contrapropostas com valor total VET decomposto informado pela casa (sem alíquotas fixas), ordenadas por valor total (compra ASC, venda DESC).
-- Ciclo de Atendimento Comercial pós-match (`EM_ATENDIMENTO` → `CONCLUÍDO` / `NÃO_CONCLUÍDO` / `SEM_RETORNO`) com revelação de contatos diretos.
-- Relato qualitativo de desfecho pelas partes e funcionalidade "Relatar Problema" à moderação (sem mediação de valores).
-- Desistência voluntária de atendimento informando motivo.
-- Notificações em tempo real via WebSocket (Socket.IO) e canais complementares offline (WhatsApp com throttling, push e e-mail).
-- Vitrine Informativa de taxas de balcão das casas parceiras.
-- Painel Administrativo de governança e suspensão de casas.
-- Auditoria imutável (append-only) de todas as transições e ações no leilão.
-- MFA obrigatório para usuários de casas (Owner e Operador).
-- Modal mandatório de confirmação vinculante antes de qualquer aceite.
-- Teto de valor por oferta no piloto configurável no backend.
+- Web responsiva para o viajante: vitrine, criação de oferta, página de status com cancelamento.
+- Web responsiva para a casa: login, cotações, fila de ofertas abertas, aceite, histórico de aceites.
+- Cidades: São Paulo e Rio de Janeiro.
+- Moedas: USD, EUR, GBP, somente papel-moeda.
+- E-mail transacional ao viajante com o link de acompanhamento e com o aviso de expiração. WhatsApp ao viajante apenas no alerta de aceite. A página de status é a fonte de verdade.
+- Notificação à casa por e-mail e por alerta visual e sonoro no painel aberto.
+- Regra do primeiro aceite com garantia atômica de vencedor único.
+- Expiração automática e cancelamento pelo viajante.
+- Credenciamento interno de casas, com conferência manual na lista do Banco Central.
 
 ### Out of Scope
 
-- Pagamentos integrados (Pix automático, TED, gateway bancário ou custódia escrow).
-- Logística de entrega ou rastreamento de motoboys.
-- Chat interno em tempo real dentro da plataforma.
-- Mediação financeira formal de disputas com julgamento de valores.
-- Sistema de cobrança e faturamento (MVP é 100% gratuito; monetização na Fase 2).
-- Aplicativo mobile nativo (mantido foco em Web responsivo/PWA no MVP).
-- API pública de integração para terceiros.
-- Landing pages personalizadas para casas de câmbio.
-- Geolocalização exata por GPS / mapas no leilão.
-- Contraproposta reversa do cliente.
+- Qualquer pagamento: Pix, TED, boleto, cartão, custódia, escrow, sinal.
+- Pregão em tempo real, WebSocket, contraproposta ou leilão entre casas.
+- Chat dentro da plataforma. A conversa acontece no WhatsApp dos envolvidos.
+- Cálculo de IOF, VET, tarifas ou preço final.
+- App nativo iOS ou Android.
+- Cartão pré-pago, outras moedas, outras cidades, pessoa jurídica.
+- Gestão de entrega ou logística de numerário. O campo é só "Bairro de preferência". A retirada, ou qualquer entrega, é combinada diretamente com a casa depois do aceite.
+- Autocadastro de casas, KYB automatizado, MFA.
+- Avaliação, ranking de atendimento, cupom, programa de fidelidade.
+- Cobrança das casas ou dos viajantes.
 
----
+### Future Considerations
 
-### Future Considerations / Removido do MVP na v1.5
-
-Os itens abaixo foram formalmente removidos do escopo do MVP na versão 1.5 e arquivados para consideração futura:
-
-1. **Disputa Mediada pelo Admin com SLAs Financeiros:**
-   - *Texto original:* Previa abertura de litígio com prazos de 24h a 5 dias úteis e mediação pelo suporte para decidir estornos ou transferências financeiras.
-   - *Razão da remoção:* A plataforma não é intermediadora financeira nem custodia valores. Disputas entre as partes sobre entrega ou pagamento bancário devem ser resolvidas diretamente entre cliente e casa autorizada ou via órgãos de proteção ao consumidor (Procon/BACEN). Na plataforma, foi substituída por "Relatar Problema" voltado estritamente à moderação de cadastro.
-2. **Sistema de Strikes, Checkpoint de No-Show e Contestação de 24h:**
-   - *Texto original:* Previa checkpoint às 18h / fim da janela com contadores de ausências (strikes) e suspensão compulsória de clientes.
-   - *Razão da remoção:* Complexidade operacional desnecessária para o piloto sem fluxo financeiro. O MVP adota o relato voluntário de desfecho (`CONCLUÍDO` ou `NÃO_CONCLUÍDO` com motivo) e moderação qualitativa pelo Admin.
-3. **Extensão Automática da Oferta nos Minutos Finais ("Janela de Decisão"):**
-   - *Texto original:* Previa prorrogação automática de 5 minutos da oferta caso uma contraproposta chegasse no final, com controle concorrencial via `extensions_count === 0`.
-   - *Razão da remoção:* Simplificação do motor do pregão e eliminação de prorrogações artificiais de leilão. A validade da oferta passa a ser rígida conforme definida pelo cliente, e as contrapropostas limitam-se ao tempo remanescente da oferta principal.
-4. **Bloqueio Rígido de Cancelamento Pós-Match (HTTP 422 `OFFER_ALREADY_CLOSED`):**
-   - *Texto original:* Proibia unilateralmente o cancelamento de ofertas após o match para forçar o cumprimento.
-   - *Razão da remoção:* Incompatível com o modelo de comunicação onde as partes podem desistir comercialmente antes da formalização bancária. Substituído por "Desistir do Atendimento" com motivo informado e notificação bilateral imediata.
-5. **Alerta Automatizado de Fracionamento PLD:**
-   - *Texto original:* Algoritmo de agregação de ofertas em janela de 24h para disparar alertas automáticos de estruturação financeira.
-   - *Razão da remoção:* Risco de falsos positivos em plataforma sem transação financeira. O teto de valor por oferta (R$ 50k) foi mantido no piloto, e os critérios de monitoramento de fracionamento foram movidos para pergunta em aberto sob parecer jurídico de compliance.
-6. **Atendimento Parcial do Valor (v2):** Permitir contrapropostas de montante fracionado (deferido; atendimento integral obrigatório no MVP).
-7. **Sistema de Monetização e Cobrança por Lead / SaaS (v2):** Implementação de faturamento no T2 ([ADR-0012](../04-architecture/adr/adr-0012-modelo-cobranca.md)).
-8. **Chat Interno Pós-Match (v2):** Canal de mensageria proprietário entre cliente e casa.
-9. **App Mobile Nativo (v2):** Aplicativo React Native / Expo.
-10. **Landing Pages White-Label e API Pública (v3):** Serviços B2B para expansão.
-
----
+- Cartão pré-pago: entra só com evidência de dor separada da do papel-moeda.
+- Novas praças: depois de a meta de 90 dias em SP e RJ ser atingida.
+- Verificação do WhatsApp do viajante por código: depende do volume de ofertas com número inválido observado no piloto.
+- Modelo de receita: depois de provar que a aproximação acontece de graça.
+- Calendário de feriados na contagem de horas úteis: depende da quantidade de ofertas criadas perto de feriados.
 
 ## Solution Design
 
-### Parâmetros Configuráveis da Plataforma
-
-> [!NOTE]
-> Os parâmetros operacionais abaixo controlam limites temporais, de concorrência, frequência e governança. Todos são gerenciados via configuração centralizada no backend (variáveis de ambiente e tabela `platform_configs`), podendo ser ajustados sem necessidade de alteração de código ou novos deploys. Os valores padrão representam hipóteses de calibração operacional para o piloto [HIPÓTESE – A VALIDAR].
-
-| Parâmetro | Chave de Configuração | Valor Padrão | Unidade | Owner | Status |
-|-----------|------------------------|--------------|---------|-------|--------|
-| Expiração Padrão da Oferta | `OFFER_EXPIRATION_DEFAULT_MINUTES` | 30 | minutos | Produto | [HIPÓTESE – A VALIDAR] |
-| Expiração Mínima da Oferta | `OFFER_EXPIRATION_MIN_MINUTES` | 15 | minutos | Produto | [HIPÓTESE – A VALIDAR] |
-| Expiração Máxima da Oferta | `OFFER_EXPIRATION_MAX_MINUTES` | 60 | minutos | Produto | [HIPÓTESE – A VALIDAR] |
-| Validade da Contraproposta | `PROPOSAL_VALIDITY_DEFAULT_MINUTES` | 10 | minutos | Produto | [HIPÓTESE – A VALIDAR] |
-| Teto de Revisões de Proposta | `PROPOSAL_MAX_REVISIONS_PER_EXCHANGE` | 3 | revisões | Produto | [HIPÓTESE – A VALIDAR] |
-| Cooldown entre Propostas | `PROPOSAL_COOLDOWN_SECONDS` | 30 | segundos | Produto | [HIPÓTESE – A VALIDAR] |
-| Limite de Ofertas Abertas Simultâneas | `CUSTOMER_MAX_OPEN_OFFERS` | 3 | ofertas | Produto | [HIPÓTESE – A VALIDAR] |
-| Desvio Máximo de Alerta da Cotação | `QUOTE_ALERT_DEVIATION_PERCENT` | 15 | % | Produto | [HIPÓTESE – A VALIDAR] |
-| Janela Comercial de Atendimento Informada | `JANELA_ATENDIMENTO_HORAS` | 24 | horas úteis | Operações | [HIPÓTESE – A VALIDAR] |
-| Timeout para Relato de Desfecho | `TIMEOUT_RELATO_DESFECHO_DIAS` | 5 | dias úteis | Produto | [HIPÓTESE – A VALIDAR] |
-| Aviso Prévio no Timeout de Desfecho | `ATENDIMENTO_TIMEOUT_WARNING_HOURS` | 48 | horas | Produto | [HIPÓTESE – A VALIDAR] |
-| Throttling de Alertas via WhatsApp | `WHATSAPP_ALERT_THROTTLING_MINUTES` | 30 | minutos | Engenharia | [HIPÓTESE – A VALIDAR] |
-| Inatividade Offline para Alerta Multicanal | `OPERATOR_OFFLINE_THRESHOLD_MINUTES` | 5 | minutos | Engenharia | [HIPÓTESE – A VALIDAR] |
-| Limite de Desistências para Alerta de Cliente | `LIMITE_DESISTENCIAS_CLIENTE` | 3 | desistências | Operações | [HIPÓTESE – A VALIDAR] |
-| Threshold de Relatos de Taxa Não Mantida | `THRESHOLD_REPUTACAO_TAXA_NAO_MANTIDA` | 3 | relatos em 30d | Operações | [HIPÓTESE – A VALIDAR] |
-| Teto de Valor por Oferta no Piloto | `OFFER_MAX_VALUE_BRL` | 50.000,00 | BRL | Jurídico / PLD | [A VALIDAR COM JURÍDICO/PLD] |
-
----
-
 ### Functional Requirements
 
-#### Cadastro e Autenticação
-- **FR-01:** O sistema deve permitir cadastro de clientes (pessoa física e jurídica) com e-mail, senha e dados básicos.
-- **FR-02:** O sistema deve autenticar usuários via JWT com access tokens de curta duração e refresh tokens em cookies seguros.
-- **FR-03:** O sistema deve implementar RBAC com os perfis: Admin, Casa de Câmbio (Owner, Operador, Financeiro) e Cliente.
-- **FR-04:** Cada perfil deve ter permissões granulares definidas (ex.: Operador pode aceitar ofertas e emitir propostas; Financeiro apenas visualiza relatórios).
+#### Vitrine pública
 
-#### Cadastro de Casas de Câmbio (KYB)
-- **FR-05:** A casa de câmbio deve poder se autocadastrar informando: CNPJ, razão social, nome fantasia, responsável legal, documentos societários, autorização formal do Banco Central e pontos de atendimento.
-- **FR-06:** O cadastro da casa segue o ciclo: `PENDENTE` → `EM_ANÁLISE` → `APROVADA` → `SUSPENSA`.
-- **FR-07:** O admin deve poder aprovar, reprovar, suspender e reativar casas de câmbio no painel de governança.
-- **FR-08:** Somente casas com status `APROVADA` podem receber ofertas e operar no pregão.
-- **FR-09:** A casa deve cadastrar moedas, produtos (papel-moeda, cartão pré-pago) e cidades em que atua (RJ e/ou SP), determinando sua elegibilidade.
+- FR-1: A vitrine exige a escolha de cidade (São Paulo ou Rio de Janeiro) e de moeda (USD, EUR ou GBP) e lista as casas credenciadas e ativas daquela cidade que publicaram cotação de venda de papel-moeda para aquela moeda.
+- FR-2: Cada item da vitrine mostra apenas o nome da casa, a cidade e a cotação de venda de balcão em reais por unidade, com até 4 casas decimais. A lista vem ordenada da menor para a maior cotação. Bairro, telefone, WhatsApp, endereço e horário da cotação não aparecem na vitrine.
+- FR-3: Cotação atualizada há mais de 24 horas não aparece na vitrine. Se nenhuma casa tiver cotação válida, a vitrine informa isso e continua permitindo criar a oferta, desde que FR-8 seja atendido.
+- FR-4: Telefone, WhatsApp e endereço da casa só aparecem para o viajante depois do aceite (FR-25). A vitrine pública não os contém.
+- FR-5: A vitrine e a página da oferta informam, em texto visível, que a cotação é referência da casa, que o valor final com IOF e tarifas é informado pela casa, e que pagamento e contrato acontecem diretamente com ela.
 
-#### Vitrine Informativa
-- **FR-10:** Cada casa pode cadastrar e atualizar taxas padrão de balcão (por moeda, compra/venda, papel-moeda/cartão).
-- **FR-11:** As taxas da vitrine são exibidas como informativo público para comparação de mercado.
+#### Oferta do viajante
 
-#### Cotação de Referência
-- **FR-12:** O backend consulta cotações de referência (comercial, turismo, PTAX) via AwesomeAPI como provedor primário, com fallback secundário configurável.
-- **FR-13:** As cotações devem ser cacheadas em Redis com TTL configurável.
-- **FR-14:** O backend distribui cotações atualizadas ao frontend via WebSocket. O frontend nunca chama provedores externos diretamente.
+- FR-6: O formulário de oferta pede cidade, moeda, quantia, taxa desejada ou a opção "quero a melhor taxa disponível", bairro de preferência, nome, e-mail e WhatsApp. O rótulo do campo é "Bairro de preferência". O texto de ajuda diz que a retirada, ou qualquer entrega, é combinada diretamente com a casa depois do aceite. Todos são obrigatórios, exceto a taxa quando "melhor taxa" estiver marcada.
+- FR-7: A quantia é um número inteiro de unidades da moeda, de 100 a 10.000 inclusive, para USD, EUR e GBP. A taxa desejada é positiva, em reais por unidade, com até 4 casas decimais. O e-mail tem formato válido. O WhatsApp é um celular brasileiro válido, armazenado em E.164.
+- FR-8: A criação é recusada com mensagem clara se não houver nenhuma casa credenciada e ativa que opere aquela moeda naquela cidade.
+- FR-9: Antes de enviar, o viajante marca um aceite explícito informando que nome e WhatsApp serão compartilhados apenas com a casa que aceitar a oferta, para contato sobre essa compra.
+- FR-10: Cada WhatsApp pode ter no máximo uma oferta `ABERTA` ao mesmo tempo. Uma nova tentativa mostra a oferta aberta existente em vez de criar outra.
+- FR-11: Um envio repetido do mesmo formulário, por clique duplo ou nova tentativa de rede, não cria duas ofertas.
+- FR-12: Criada a oferta, o viajante vê uma página de confirmação com status, data e hora exatas de expiração, resumo da oferta e um link privado e não adivinhável para acompanhá-la. O mesmo link segue por e-mail transacional para o endereço informado. A página de confirmação também mostra o link, para o viajante não depender da entrega do e-mail.
 
-#### Criação de Ofertas
-- **FR-16:** O cliente pode criar uma oferta informando: moeda, operação (compra/venda sob a perspectiva do cliente), valor, taxa desejada, produto (papel-moeda/cartão), modalidade (retirada/delivery), região/bairro e prazo de expiração.
-- **FR-16A:** Oferta e contrapropostas são expressas em **valor total final em reais (VET)**, tudo incluso (Decisão nº 1). IOF e tarifas são informados pela casa apenas para transparência; o sistema não calcula nem fixa alíquotas [VALIDAR COM ESPECIALISTA TRIBUTÁRIO]. Ordenação condicional: COMPRA = ascendente (`ASC`); VENDA = descendente (`DESC`).
-- **FR-16B:** O cliente deve ter telefone verificado via OTP e CPF/CNPJ validado antes de publicar ofertas, respeitando o limite de ofertas ativas simultâneas da tabela de parâmetros.
-- **FR-16C:** Alerta visual de desvio excessivo da cotação (> 15%). Em caso de provedores fora do ar, o sistema exibe banner informativo e permite a criação livre da oferta sem bloqueio.
-- **FR-17:** A oferta é criada como `ABERTA` e distribuída como oferta anônima em tempo real às casas elegíveis (apenas moeda, operação, valor, taxa, produto, cidade, região/bairro e modalidade). Dados de contato direto e endereço exato são estritamente ocultados pré-match.
-- **FR-18:** O cliente pode cancelar uma oferta `ABERTA` a qualquer momento pré-match, transitando para `CANCELADA`. As propostas vinculadas transitam para `ENCERRADA` (`OFERTA_CANCELADA`).
-- **FR-19:** Ofertas cujo prazo vence sem match transitam para `EXPIRADA`. As propostas vinculadas transitam para `ENCERRADA` (`OFERTA_EXPIRADA`).
+#### Ciclo de vida da oferta
 
-#### Aceite Direto
-- **FR-20:** Uma casa elegível pode aceitar uma oferta `ABERTA` exatamente como publicada, informando a decomposição transparente do valor acordado.
-- **FR-21:** O aceite direto gera match automático imediato ("first-come, first-served"). No aceite direto, o cliente não escolhe a casa.
-- **FR-22:** Quando o match ocorre, a oferta transita para `FECHADA` e todas as propostas ativas concorrentes transitam para `ENCERRADA` (`MATCH_OUTRA_CASA`).
-- **FR-23:** Controle transacional determinístico com lock pessimista (`SELECT FOR UPDATE`) e `clock_timestamp()` no PostgreSQL ([ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)), garantindo exatamente 1 vencedor e $N-1$ conflitos tratados (HTTP 409 `OFFER_ALREADY_ACCEPTED`).
+- FR-13: A oferta tem exatamente quatro estados: `ABERTA`, `ACEITA`, `EXPIRADA`, `CANCELADA`. As únicas transições permitidas são de `ABERTA` para cada um dos outros três. Estados terminais não mudam.
+- FR-14: A validade é de 4 horas úteis, aprovada, contadas na janela de segunda a sexta, das 9h inclusive às 18h exclusive, no fuso America/Sao_Paulo. Uma oferta criada fora da janela começa a contar na próxima abertura. No instante exato da expiração a oferta já não pode ser aceita. Feriados que caem de segunda a sexta contam como dia de janela no MVP. A janela e a validade são configuráveis sem alterar código.
+- FR-15: Ao fim da validade, uma oferta ainda `ABERTA` passa a `EXPIRADA` e o viajante é notificado por e-mail. A transição ocorre em até 5 minutos depois do horário de expiração. Uma oferta vencida nunca pode ser aceita, mesmo que o aviso de expiração ainda não tenha sido processado.
+- FR-16: Pela página de status, o viajante pode cancelar a oferta enquanto ela estiver `ABERTA`. Depois de `ACEITA`, o cancelamento não está disponível na plataforma, e a página orienta o viajante a falar diretamente com a casa.
 
-#### Contrapropostas
-- **FR-24:** Uma casa elegível pode submeter contraproposta estruturada com valor idêntico ao da oferta (atendimento integral no MVP), taxa em reais, `prazo_validade_minutos`, ponto/local de atendimento e decomposição transparente de IOF/tarifas informadas pela casa, totalizando o VET final em reais.
-  - Teto de revisões (máx. 3) e cooldown de 30s respeitados conforme tabela de parâmetros.
-  - Casa com proposta recusada pelo cliente pode submeter nova contraproposta enquanto a oferta principal estiver aberta.
-  - Validade efetiva da contraproposta é limitada ao tempo remanescente da oferta ($\min(\text{validade\_proposta}, \text{tempo restante da oferta})$).
-- **FR-25:** A contraproposta é criada como `PENDENTE` e não gera match automático.
-- **FR-26:** O cliente visualiza as contrapropostas em lista ordenada pelo total em reais (VET) e pode aceitar ou recusar individualmente.
-- **FR-27:** Quando o cliente aceita uma contraproposta, ela transita para `ACEITA`, a oferta transita para `FECHADA` e as demais propostas transitam para `ENCERRADA` (`MATCH_OUTRA_CASA`).
-- **FR-28:** Quando o cliente recusa uma contraproposta, ela transita para `RECUSADA`. A oferta segue `ABERTA`.
-- **FR-29:** Propostas cujo prazo vence transitam para `EXPIRADA`.
+#### Painel da casa
 
-#### Atendimento Comercial (Ciclo Pós-Match e Qualidade sem Dinheiro)
-- **FR-30:** Quando o match ocorre (aceite direto ou aceite de contraproposta), cria-se um registro de Atendimento Comercial com status `EM_ATENDIMENTO`. A plataforma revela bilateralmente os canais de contato direto: telefone e e-mail do cliente para a casa vencedora; telefone, WhatsApp, e-mail e endereço da loja da casa para o cliente.
-- **FR-31 (Relato de Desfecho e Janela Comercial):**
-  - As partes dispõem da Janela Comercial de Atendimento (`JANELA_ATENDIMENTO_HORAS`, padrão: 24h úteis) para entrar em contato diretamente e realizar a operação cambial fora da plataforma.
-  - Ambas as partes possuem acesso aos botões de **Relato de Desfecho**:
-    - **`Concluído`:** Se ambas as partes confirmam (ou uma confirma e a outra não se manifesta até o timeout), o atendimento transiciona para `CONCLUÍDO`.
-    - **`Não Concluído`:** Qualquer parte pode relatar insucesso informando obrigatoriamente um motivo padronizado: `CLIENTE_DESISTIU`, `CASA_NAO_ATENDEU`, `TAXA_NAO_MANTIDA` ou `OUTRO`, transicionando o atendimento para `NÃO_CONCLUÍDO`.
-    - **`SEM_RETORNO`:** Caso nenhuma das partes informe o desfecho dentro do prazo limite (`TIMEOUT_RELATO_DESFECHO_DIAS`, padrão: 5 dias úteis com aviso prévio de 48h), o atendimento transiciona automaticamente para `SEM_RETORNO`.
-- **FR-32 ("Relatar Problema" à Moderação):** A qualquer momento durante o atendimento, qualquer das partes pode acionar o recurso "Relatar Problema" para notificar a equipe de suporte e moderação da plataforma sobre comportamentos irregulares (ex.: recusa da casa em manter a taxa acordada, contato falso ou fraude). O suporte analisa o caso estritamente para fins de governança de rede e reputação, **sem mediação financeira ou execução cambial**.
-- **FR-33 (Governança e Moderação da Plataforma):**
-  - Casas de câmbio que acumularem relatos recorrentes de `TAXA_NAO_MANTIDA` (atingindo o limiar parametrizado) sofrem investigação administrativa e podem ser suspensas (`SUSPENSA`) pelo Admin [HIPÓTESE – A VALIDAR].
-  - Clientes que acumularem desistências não justificadas frequentes podem ter o limite de novas ofertas simultâneas temporariamente restrito pelo sistema [HIPÓTESE – A VALIDAR].
-- **FR-34 (Desistência Voluntária do Atendimento):** Qualquer das partes pode registrar desistência voluntária do atendimento a qualquer momento pós-match, selecionando o motivo correspondente. A contraparte é notificada imediatamente via push/e-mail e o atendimento é encerrado como `NÃO_CONCLUÍDO`, liberando as partes sem bloqueios rígidos no software.
+- FR-17: O operador entra com e-mail e senha. Não há MFA no MVP. Senhas são armazenadas com hash adaptativo. Tentativas de login são limitadas por conta e por IP. A sessão expira após 10 horas sem ação do operador, o equivalente a uma jornada comercial, e é encerrada imediatamente se a casa ou o operador for desativado. A atualização automática do painel não conta como ação.
+- FR-18: O operador publica e atualiza a cotação de venda de papel-moeda da casa para cada moeda que ela opera. Cada atualização registra data e hora.
+- FR-19: A fila de ofertas mostra só ofertas `ABERTA` da cidade da casa e de moedas que ela opera. Cada uma traz moeda, quantia, bairro de preferência, taxa desejada ou "melhor taxa", e o tempo restante. Nome e WhatsApp do viajante não aparecem em nenhuma resposta da API para a casa antes de ela vencer o aceite.
+- FR-20: A cada nova oferta compatível, a plataforma envia e-mail aos operadores ativos de cada casa elegível. Envio duplicado da mesma oferta para o mesmo operador não acontece.
+- FR-21: Com o painel aberto, a fila se atualiza por consulta periódica (padrão: 30 segundos). Uma nova oferta gera destaque visual e um som curto. O som só toca depois que o operador ativa o alerta sonoro no painel, por exigência dos navegadores.
 
-#### Notificações em Tempo Real e Multicanal
-- **FR-35:** O sistema notifica casas elegíveis via WebSocket em tempo real sobre novas ofertas compatíveis.
-- **FR-36:** O sistema notifica o cliente em tempo real sobre aceites diretos e novas contrapropostas.
-- **FR-37:** O sistema notifica casas concorrentes sobre o encerramento em cascata de suas propostas.
-- **FR-38:** Suporte a canais complementares para operadores offline (push notifications, e-mail transacional e WhatsApp). O WhatsApp opera com throttling de no máximo 1 alerta consolidado a cada 30 minutos por operador offline, sob opt-in prévio e templates homologados pela Meta.
+#### Aceite e troca de contatos
 
-#### Painel Administrativo e Governança
-- **FR-39:** O Admin dispõe de painel com visão consolidada de: casas cadastradas, atendimentos em curso, taxa de conversão declarada e fila de relatos de problemas.
-- **FR-40:** O Admin gerencia o ciclo de vida das casas (aprovar, suspender, reativar).
-- **FR-41:** O Admin consulta a trilha imutável de auditoria de todas as ações e transições da plataforma.
+- FR-22: O botão "Aceitar oferta" fica disponível apenas para oferta `ABERTA` e não vencida. Para oferta de "melhor taxa", o aceite exige que a casa informe a taxa em reais por unidade que se compromete a praticar. Para oferta com taxa desejada, o aceite é a concordância com essa taxa.
+- FR-23: A transição de `ABERTA` para `ACEITA` é atômica no banco de dados. Entre aceites concorrentes, inclusive no mesmo segundo, exatamente um vence. Todo outro aceite, cancelamento ou expiração concorrente sobre a mesma oferta falha sem efeito colateral.
+- FR-24: A casa vencedora vê imediatamente nome e WhatsApp do viajante, com um atalho para abrir conversa no WhatsApp. A casa perdedora vê "Oferta já atendida por outra casa" e a oferta sai da sua fila.
+- FR-25: O viajante recebe por WhatsApp o alerta de aceite, e vê na página de status nome da casa, endereço da loja, telefone ou WhatsApp comercial e, quando houver, a taxa informada no aceite. A mensagem diz que IOF, tarifas, valor final, pagamento e contrato serão tratados diretamente com a loja. WhatsApp do viajante não é usado para o link de acompanhamento nem para o aviso de expiração.
+- FR-26: Ofertas aceitas ficam no histórico da casa vencedora, com os dados do viajante, até uma exclusão manual feita pelo administrador (FR-31).
 
-#### Auditoria
-- **FR-42:** Registro append-only em `audit_logs` de todas as ações em ofertas (criação, cancelamento, expiração, fechamento).
-- **FR-43:** Registro append-only de todas as ações em propostas (criação, aceite, recusa, expiração, substituição, encerramento com gatilho).
-- **FR-44:** Registro append-only de todas as transições de Atendimentos (`EM_ATENDIMENTO`, desfechos, relatos de problemas e desistências).
+#### Credenciamento
 
-#### Segurança e Conformidade
-- **FR-45:** Gestão de consentimento e conformidade estrita com LGPD.
-- **FR-46:** Proteção de dados bidirecional: nenhum dado de contato direto é exposto antes do match consolidado.
-- **FR-47:** Autenticação multifator (MFA via TOTP) obrigatória para usuários de casas de câmbio (Owner e Operador) [HIPÓTESE – A VALIDAR].
-- **FR-48:** Modal mandatório de confirmação vinculante antes de qualquer aceite, com resumo transparente de moeda, valor, total em reais VET e aviso explícito de que a operação cambial será realizada diretamente com a contraparte.
-- **FR-49:** Aplicação do teto máximo de valor por oferta no piloto (`OFFER_MAX_VALUE_BRL`, padrão: R$ 50.000,00 [A VALIDAR COM JURÍDICO/PLD]).
+- FR-27: Só a operação interna cria, edita e desativa casas e operadores. O cadastro registra razão social, nome de exibição, CNPJ, cidade, bairro, endereço da loja, WhatsApp ou telefone comercial, moedas operadas e a data da conferência na lista oficial do Banco Central. Ao criar ou redefinir um operador, o administrador define a senha inicial; a entrega à casa é por canal seguro fora da plataforma. Não há senha temporária gerada pelo sistema nem troca obrigatória no primeiro login.
+- FR-28: Uma casa desativada para de receber alertas, some da vitrine e não consegue aceitar ofertas. Ofertas que ela já aceitou permanecem válidas.
 
----
+#### Privacidade e auditoria
 
-### Edge Cases e Cenários de Borda
+- FR-29: Nome, e-mail e WhatsApp do viajante só podem ser lidos pelo próprio viajante, via link privado, e, depois do aceite, pelos operadores da casa vencedora. O e-mail do viajante não é exibido à casa.
+- FR-30: A plataforma registra criação, aceite, tentativa de aceite perdida, cancelamento e expiração de cada oferta, com data e hora, e cada leitura dos dados do viajante pela casa vencedora.
+- FR-31: Não há job de anonimização. O prazo de retenção de nome, e-mail e WhatsApp fica pendente de análise jurídica. No piloto, se for necessário apagar esses dados, o administrador faz a exclusão manual. Depois dela, nome, e-mail e WhatsApp deixam de ser legíveis e o link privado responde como oferta não encontrada.
 
-A tabela abaixo sintetiza o tratamento dos cenários de concorrência e borda formalizados nos critérios de aceitação executáveis ([Acceptance Criteria](acceptance-criteria.md)):
+### User Experience
 
-| Cenário | Comportamento Esperado | Critério de Aceitação |
-|---------|----------------------|-----------------------|
-| Concorrência de aceites simultâneos ($N$ casas) | Lock pessimista atômico serializa: exatamente 1 vencedor (HTTP 200/201) e $N-1$ conflitos (HTTP 409 `OFFER_ALREADY_ACCEPTED`), gerando 1 atendimento único | [AC-05](acceptance-criteria.md#ac-05-teste-de-carga-e-concorrência-de-aceite-direto-n-requisições-paralelas) |
-| Oferta expira em concorrência com tentativa de aceite | Validação atômica contra `clock_timestamp()`; se expirada, rejeita com HTTP 410 Gone (`OFFER_EXPIRED`) sem alterar estado no banco | [AC-06](acceptance-criteria.md#ac-06-tentativa-de-aceite-em-oferta-expirada-race-condition-com-worker-assíncrono) |
-| Cliente aceita contraproposta que já expirou | Rejeição imediata com HTTP 400 Bad Request (`PROPOSAL_EXPIRED`) sem alterar estado da proposta | [AC-07](acceptance-criteria.md#ac-07-tentativa-de-aceite-de-contraproposta-expirada-pelo-cliente) |
-| Desistência do atendimento pós-match pelo cliente ou casa | Em vez de bloqueio rígido, qualquer parte registra desistência com motivo, notificando a contraparte e mudando para `NÃO_CONCLUÍDO` | [AC-08](acceptance-criteria.md#ac-08-desistência-voluntária-do-atendimento-comercial-pós-match) |
-| Casa com status `SUSPENSA` durante atendimento | Propostas pendentes invalidadas (`CASA_SUSPENSA`) e atendimento em curso notificado com aviso institucional neutro `SUSPENSAO_PARCEIRO` [VALIDAR COM JURÍDICO] | [AC-09](acceptance-criteria.md#ac-09-casa-de-câmbio-suspensa-pelo-admin-com-atendimento-em-curso) |
-| Provedor de cotação fora do ar | Fallback configurado ou entrega do cache Redis com flag `is_stale: true`, sem bloquear criação de oferta | [AC-10](acceptance-criteria.md#ac-10-indisponibilidade-total-das-apis-de-cotação-de-referência-awesomeapi--fallback) |
-| Queda e reconexão WebSocket | Reconexão automática Socket.IO e ressincronização via REST | [AC-11](acceptance-criteria.md#ac-11-queda-e-reconexão-de-conexão-websocket-durante-o-leilão) |
-| Contraproposta com atendimento parcial | Rejeição por schema (`PARTIAL_VALUE_NOT_SUPPORTED` / 422); atendimento integral obrigatório no MVP | [AC-12](acceptance-criteria.md#ac-12-tentativa-de-envio-de-contraproposta-com-atendimento-parcial-do-valor) |
-| Contraproposta com variação abusiva | Alerta visual de confirmação na interface para evitar erros de digitação de taxas | [AC-13](acceptance-criteria.md#ac-13-contraproposta-com-variação-expressiva-em-relação-à-taxa-desejada-ou-de-mercado) |
-| Obtenção de dados pessoais pré-match | Bloqueio estrutural de campos de contato na API pública de ofertas anônimas | [AC-14](acceptance-criteria.md#ac-14-tentativa-de-obtenção-de-dados-pessoais-do-cliente-antes-do-match) |
-| Throttling de mensagens no WhatsApp | Máximo de 1 alerta digest a cada 30 minutos para mesas offline | [AC-15](acceptance-criteria.md#ac-15-throttling-e-limitação-de-frequência-de-alertas-no-whatsapp) |
-| Teto de revisões e cooldown | Bloqueio de 4ª revisão (422 `PROPOSAL_REVISION_LIMIT_REACHED`) e envio antes de 30s (429 `PROPOSAL_COOLDOWN_ACTIVE`) | [AC-16](acceptance-criteria.md#ac-16-limite-de-revisões-de-contraproposta-e-cooldown-entre-envios) |
-| Cancelamento de oferta vs. aceite direto simultâneos | Serialização no banco: ou oferta cancela (409 `OFFER_CANCELED` na casa) ou oferta fecha (422 `OFFER_ALREADY_CLOSED` no cancelamento) | [AC-17](acceptance-criteria.md#ac-17-cancelamento-de-oferta-pelo-cliente-vs-aceite-direto-simultâneos) |
-| Aceite de proposta vs. aceite direto por outra casa | Serialização atômica garante exatamente 1 atendimento com a casa pioneira e 409 na concorrente | [AC-18](acceptance-criteria.md#ac-18-aceite-de-contraproposta-pelo-cliente-vs-aceite-direto-por-outra-casa-simultâneos) |
-| Duplo aceite simultâneo de propostas pelo cliente | Segunda requisição encontra oferta já `FECHADA` e é rejeitada com HTTP 422 `OFFER_ALREADY_CLOSED` | [AC-19](acceptance-criteria.md#ac-19-duplo-aceite-simultâneo-de-contrapropostas-pelo-cliente) |
-| Aceite de proposta com versão desatualizada | Rejeição atômica com HTTP 409 `PROPOSAL_SUPERSEDED` e retorno da versão mais recente | [AC-20](acceptance-criteria.md#ac-20-tentativa-de-aceite-de-proposta-com-versão-desatualizada-substituída) |
-| Operador com perfil Financeiro tentando operar leilão | Interceptação em RBAC com HTTP 403 Forbidden (`INSUFFICIENT_PERMISSIONS`) | [AC-21](acceptance-criteria.md#ac-21-tentativa-de-operação-por-usuário-com-perfil-financeiro) |
-| Casa não elegível ou suspensa tentando operar | Validação de matriz: rejeição com HTTP 403 (`EXCHANGE_NOT_ELIGIBLE`, `EXCHANGE_SUSPENDED`) | [AC-22](acceptance-criteria.md#ac-22-tentativa-de-aceite-ou-contraproposta-por-casa-não-elegível-ou-suspensa) |
-| Concorrência na criação de ofertas no teto simultâneo | Serialização atômica impede que o cliente ultrapasse o teto de 3 ofertas (HTTP 422 `OFFER_LIMIT_REACHED`) | [AC-23](acceptance-criteria.md#ac-23-concorrência-na-criação-de-ofertas-no-limite-simultâneo-por-cliente) |
-| Countdown com relógio local descalibrado | Delta calculado via `server_timestamp` oficial do servidor retornado no payload | [AC-24](acceptance-criteria.md#ac-24-sincronização-do-countdown-de-expiração-baseado-no-horário-do-servidor) |
-| Validade efetiva de proposta com tempo curto | Proposta tem validade truncada ao tempo remanescente da oferta ($\min(\text{proposta}, \text{oferta})$) | [AC-25](acceptance-criteria.md#ac-25-validade-efetiva-da-contraproposta-limitada-ao-término-da-oferta) |
-| Usuário de casa tentando operar sem MFA | Bloqueio de acesso operacional com HTTP 403 Forbidden (`MFA_REQUIRED`) | [AC-26](acceptance-criteria.md#ac-26-autenticação-multifator-mfa-obrigatória-para-operadores-de-casas-de-câmbio) |
-| Aceite direto ou de proposta sem confirmação explícita | Exibição obrigatória de modal com resumo decomposto antes do dispatch transacional | [AC-27](acceptance-criteria.md#ac-27-modal-de-confirmação-mandatório-antes-de-aceite-vinculante) |
-| Oferta acima do teto de valor no piloto | Rejeição com HTTP 422 `OFFER_VALUE_LIMIT_EXCEEDED` para valores acima de R$ 50.000 | [AC-28](acceptance-criteria.md#ac-28-validação-de-teto-de-valor-por-oferta-no-piloto) |
-| Relato de problema pelo cliente ou casa | Notificação à moderação administrativa sem mediação financeira de valores | [AC-29](acceptance-criteria.md#ac-29-relato-de-problema-à-moderação-da-plataforma-sem-mediação-financeira) |
-| Atendimento sem manifestação após timeout | Transição automática para `SEM_RETORNO` após 5 dias úteis | [AC-30](acceptance-criteria.md#ac-30-transição-automática-de-atendimento-para-sem_retorno-após-timeout) |
+**Viajante:** vitrine, depois formulário, depois página de status. Não há conta de viajante. O link privado substitui o login. A página de status mostra, em destaque, o estado atual e o horário de expiração. Quando a oferta é aceita, ela mostra os dados da casa e o texto de que o atendimento continua fora da plataforma.
 
----
+**Casa:** login, depois fila de ofertas da cidade, depois aceite, depois contato do viajante. Fora isso, há uma tela de cotações e uma de histórico. O painel precisa caber numa tela de celular, porque o atendente da loja pode estar no balcão.
 
-### Diagramas de Fluxo e Estados
+**Textos obrigatórios:** a neutralidade da plataforma, a ausência de pagamento e o valor final dado pela casa aparecem na vitrine, no formulário, na confirmação e na mensagem de aceite. O conteúdo exato vai para revisão jurídica.
 
-#### Fluxo Completo de Atendimento
+Wireframes ainda não existem. Serão feitos após as histórias detalhadas.
 
-```mermaid
-%% MEANING: Fluxo operacional completo da oferta ao atendimento direto
-flowchart TD
-    ClientePublica["1. Cliente publica oferta anônima (Moeda, Valor, Taxa, Bairro)"] --> Broadcast["2. Notificação em tempo real para Casas Elegíveis"]
-    
-    Broadcast --> DecisaoCasa{"3. Decisão da Casa"}
-    DecisaoCasa -->|Aceita Taxa Exata| AceiteDireto["4. Aceite Direto no Sistema"]
-    DecisaoCasa -->|Propõe Nova Taxa| Contraproposta["5. Envio de Contraproposta"]
-    
-    AceiteDireto --> Concorrencia{"Concorrência: Já aceita?"}
-    Concorrencia -->|Primeira Casa| MatchDireto["Match: Oferta FECHADA"]
-    Concorrencia -->|Segunda Casa| Rejeicao["HTTP 409: Oferta já aceita por outra casa"]
-    
-    Contraproposta --> ListaCliente["6. Lista de Contrapropostas no Cliente (Ranking VET)"]
-    ListaCliente --> DecisaoCliente{"7. Decisão do Cliente"}
-    DecisaoCliente -->|Aceita| MatchContraprop["Match: Oferta FECHADA"]
-    DecisaoCliente -->|Recusa| Recusada["Proposta RECUSADA (Oferta segue ABERTA)"]
-    DecisaoCliente -->|Prazo vence| Expirada["Proposta EXPIRADA"]
-    
-    MatchDireto --> Cascata["8. Encerramento em cascata das propostas concorrentes"]
-    MatchContraprop --> Cascata
-    
-    Cascata --> Atendimento["9. Status EM_ATENDIMENTO: Revelação Bilateral de Contatos"]
-    Atendimento --> JanelaComercial["10. Contato e Transação Diretos fora da Plataforma (Janela Comercial)"]
-    
-    JanelaComercial --> Desfecho{"11. Relato de Desfecho"}
-    Desfecho -->|Ambas confirmam| Concluido["CONCLUÍDO"]
-    Desfecho -->|Insucesso ou Desistência| NaoConcluido["NÃO_CONCLUÍDO (com motivo)"]
-    Desfecho -->|Nenhum relato após prazo| SemRetorno["SEM_RETORNO"]
-    
-    JanelaComercial -.->|Relato de irregularidade| Suporte["Relatar Problema: Moderação pelo Admin (Sem mediação financeira)"]
-```
+### Edge Cases
 
-#### Estados do Atendimento Comercial
-
-```mermaid
-%% MEANING: Ciclo de vida do atendimento comercial pós-match
-stateDiagram-v2
-    [*] --> EM_ATENDIMENTO : Match consolidado (Contatos revelados)
-    
-    EM_ATENDIMENTO --> CONCLUIDO : Relato de conclusão pelas partes
-    EM_ATENDIMENTO --> NAO_CONCLUIDO : Desistência voluntária ou insucesso relatado
-    EM_ATENDIMENTO --> SEM_RETORNO : Timeout sem manifestação bilateral
-    
-    CONCLUIDO --> [*]
-    NAO_CONCLUIDO --> [*]
-    SEM_RETORNO --> [*]
-```
-
----
+| Scenario | Expected Behavior |
+| --- | --- |
+| Duas casas clicam "Aceitar" no mesmo segundo | Uma vence e vê o contato do viajante. A outra vê "Oferta já atendida por outra casa". O viajante recebe uma única notificação de aceite. |
+| A casa clica "Aceitar" depois de a oferta expirar, mas antes do job de expiração rodar | Aceite recusado, a oferta é tratada como `EXPIRADA`, a casa vê que a oferta expirou. |
+| O viajante cancela e uma casa aceita ao mesmo tempo | Vence a transição que o banco registrar primeiro. A outra falha e o lado perdedor vê o estado final real. |
+| O viajante tenta cancelar uma oferta já aceita | O cancelamento é recusado. A página mostra os dados da casa e orienta o contato direto. |
+| Oferta criada às 17h30 de uma sexta | Expira às 12h30 da segunda seguinte. 30 minutos contam na sexta e 3h30 na segunda. O horário exato aparece na confirmação. |
+| Oferta criada no sábado ou fora da janela | Começa a contar na próxima abertura da janela. O horário exato aparece na confirmação. |
+| Não há casa ativa para aquela moeda e cidade | A criação é recusada antes do envio, com mensagem explicando. |
+| O WhatsApp já tem uma oferta `ABERTA` | A plataforma não cria outra e mostra o link da oferta existente. |
+| O e-mail com o link ou com a expiração falha | A oferta segue válida, a página de status continua mostrando o estado real, e a falha fica registrada com novas tentativas. |
+| O WhatsApp de aceite falha | O aceite permanece. A página de status mostra os dados da casa. A falha fica registrada com novas tentativas. |
+| O e-mail para a casa falha | O alerta do painel continua funcionando. A falha fica registrada com novas tentativas. |
+| A casa é desativada com oferta aberta na sua fila | Ela deixa de ver a oferta e não consegue aceitar. As outras casas seguem elegíveis. |
+| Oferta de "melhor taxa" aceita com taxa absurda, como zero ou valor muito acima da cotação publicada pela própria casa | Taxa zero ou negativa é recusada. Taxa positiva é aceita como informada pela casa. A plataforma não valida preço de mercado. |
+| O viajante informa um WhatsApp de terceiro | O MVP não verifica o número. O risco é aceito e medido (ver Riscos). |
+| O link privado é compartilhado | Quem tiver o link vê o status e pode cancelar enquanto a oferta estiver `ABERTA`. Por isso o link não é adivinhável e não aparece em logs públicos. |
 
 ## Technical Considerations
 
-- **Stack Confirmada vs. Proposta:** Backend em **NestJS** (TypeScript) e Frontend Web em **React** confirmados pelo fundador. PostgreSQL (banco relacional), Redis + BullMQ (cache e filas assíncronas), Socket.IO (WebSocket em tempo real) e Monorepo com `@melhor-cambio/shared` compõem a stack proposta.
-- **Isolamento de Pagamentos e Custódia:** O sistema não possui conexões com arranjos de pagamento ou gateways bancários. Nenhum dado financeiro sensível (cartão, conta bancária ou chaves Pix) transita na API.
-- **Relógio de Banco Atômico:** Validação de expiração utiliza estritamente `clock_timestamp()` no PostgreSQL ([ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)).
-- **Auditoria Append-Only:** Toda ação transacional e relato de desfecho grava registro imutável em `audit_logs` na mesma transação.
+### Constraints
 
----
+- Stack: NestJS no backend, PostgreSQL como banco, Redis para filas e jobs agendados, Next.js no frontend.
+- Arquitetura assíncrona e simples: requisição HTTP para comandos, fila para notificações e expiração, consulta periódica no painel. WebSocket fica proibido no MVP.
+- O vencedor único do aceite é garantido pelo PostgreSQL na mesma transação que muda o estado. Não pode depender de Redis, de verificação na aplicação seguida de escrita, ou de ordem de chegada na fila.
+- A expiração precisa ser correta mesmo se o job atrasar. O aceite verifica o prazo na própria transação.
+- Notificações saem da transação de negócio por um mecanismo de entrega garantida. Falha de provedor não pode desfazer um aceite já gravado.
+- Horários são armazenados em UTC e calculados na janela em America/Sao_Paulo.
+- Fronteiras de módulos, transações e filas serão decididas em ADR na Etapa 3.
+
+### Integration Points
+
+- Provedor de e-mail transacional: link de acompanhamento e aviso de expiração para o viajante, e alerta de nova oferta para operadores das casas.
+- Provedor de WhatsApp Business: somente o alerta de aceite ao viajante. Exige template aprovado pela Meta e número remetente verificado.
+- Lista oficial de instituições autorizadas do Banco Central: conferência manual no credenciamento. Sem integração automática no MVP.
+
+### Data Requirements
+
+- Dados pessoais do viajante: nome, e-mail e WhatsApp. Base legal, texto de aceite e prazo de retenção precisam de revisão jurídica antes do lançamento.
+- Dados de operadores: nome, e-mail, hash de senha, casa vinculada.
+- Dados de casa: cadastro de FR-27 e cotações com histórico de atualização.
+- Logs de aplicação não registram nome, e-mail nem WhatsApp do viajante em texto claro.
+- Não há dado de pagamento, documento do viajante, nem contrato cambial na base.
+
+## Agent Execution Contract
+
+### Authoritative Sources
+
+| Source | Path or link | Definitive for |
+| --- | --- | --- |
+| Este PRD | `docs/03-product/prd.md` | Comportamento, escopo, requisitos FR-1 a FR-31. Em conflito com histórias ou critérios, este documento vence. |
+| Histórias | `docs/03-product/user-stories.md` | Recorte das 13 histórias e o benefício de cada uma |
+| Critérios de aceite | `docs/03-product/acceptance-criteria.md` | Cenários observáveis de QA, inclusive concorrência e expiração |
+| Problem statement | `docs/01-discovery/problem-statement.md` | Por que o produto existe, guarda-corpos, metas do piloto |
+| Hipóteses | `docs/01-discovery/hypotheses.md` | Portão de código. Nenhum código de produto começa antes dele. |
+| ADRs da Etapa 3 | `docs/04-architecture/adr/` (ADR-001 a ADR-004) | Arquitetura e fronteiras técnicas. Prevalecem sobre a seção Technical Considerations quando forem mais específicos, mas não alteram comportamento definido aqui. |
+| Regras do repositório | `.cursor/rules/` | Convenções de engenharia NestJS |
+
+### Do Not Touch
+
+| Path or system | Reason it is off limits |
+| --- | --- |
+| `.cursor/rules/` e `.agents/skills/` | São o processo de trabalho da equipe, não código do produto |
+| `docs/01-discovery/` | Registro de decisões já tomadas. Mudanças ali exigem decisão de produto. |
+| Qualquer integração de pagamento, Pix, banco ou carteira | Proibido pelo guarda-corpo de zero custódia |
+| Cálculo de IOF, VET ou tarifas | Responsabilidade legal da casa autorizada |
+
+### Requirement Verification Map
+
+| Requirement | How it is verified | Who verifies |
+| --- | --- | --- |
+| FR-1 | Teste de integração: só casas ativas da cidade com cotação na moeda aparecem | Automated |
+| FR-2 | Teste de contrato: cada item público tem só nome, cidade e cotação, ordenado da menor para a maior | Automated |
+| FR-3 | Teste com cotação de 24h01 de idade: excluída. Teste de vitrine vazia com criação de oferta disponível | Automated |
+| FR-4 | Teste de contrato: resposta pública não contém telefone, WhatsApp, bairro nem endereço | Automated |
+| FR-5 | Revisão dos textos em vitrine, formulário e confirmação | PM |
+| FR-6 | Teste de validação: cada campo obrigatório ausente é recusado; taxa opcional com "melhor taxa" | Automated |
+| FR-7 | Testes de 99, 100, 10.000 e 10.001 unidades, taxa e formatos de e-mail e WhatsApp | Automated |
+| FR-8 | Teste: cidade e moeda sem casa ativa recusam a criação | Automated |
+| FR-9 | Teste: criação sem aceite de compartilhamento é recusada | Automated |
+| FR-10 | Teste: segunda oferta para WhatsApp com oferta `ABERTA` retorna a existente | Automated |
+| FR-11 | Teste: duas requisições idênticas com a mesma chave criam uma oferta | Automated |
+| FR-12 | Teste: confirmação traz expiração exata e link. Teste de entropia do token | Automated |
+| FR-13 | Teste de todas as transições inválidas a partir de cada estado terminal | Automated |
+| FR-14 | Testes de cálculo com horário fixo: dentro da janela, sexta 17h30, sábado, fora do horário | Automated |
+| FR-15 | Teste do job com relógio controlado. Teste de aceite após o prazo antes do job rodar | Automated |
+| FR-16 | Teste: cancelar `ABERTA` funciona; cancelar `ACEITA` é recusado | Automated |
+| FR-17 | Teste de login, de limite de tentativas e de hash de senha | Automated |
+| FR-18 | Teste de atualização e histórico de cotação | Automated |
+| FR-19 | Teste de contrato: nenhuma resposta da fila contém nome ou WhatsApp. Teste de filtro por cidade e moeda | Automated |
+| FR-20 | Teste de job: um e-mail por operador elegível por oferta, inclusive com reprocessamento | Automated |
+| FR-21 | Verificação manual no navegador: nova oferta aparece em até 30 segundos, com destaque e som após ativação | QA |
+| FR-22 | Teste: "melhor taxa" sem taxa da casa é recusada; taxa desejada aceita sem campo extra | Automated |
+| FR-23 | Teste de concorrência no PostgreSQL real: N aceites simultâneos produzem exatamente um vencedor. Também aceite contra cancelamento e contra expiração | Automated |
+| FR-24 | Teste: vencedora recebe contato; perdedora recebe mensagem de oferta já atendida | Automated |
+| FR-25 | Teste do conteúdo da mensagem e da página de status após aceite | Automated |
+| FR-26 | Teste do histórico da casa vencedora e da ausência para as outras | Automated |
+| FR-27 | Teste: rotas de credenciamento recusam operador de casa | Automated |
+| FR-28 | Teste: casa desativada sai da vitrine, não recebe alerta e não aceita | Automated |
+| FR-29 | Teste de autorização para cada leitor não permitido | Automated |
+| FR-30 | Teste: cada evento listado gera registro de auditoria | Automated |
+| FR-31 | Teste da exclusão manual pelo administrador. Não existe job agendado de anonimização | Automated |
+
+### Stop and Escalate
+
+| Condition | Escalate to |
+| --- | --- |
+| Qualquer requisito parece exigir receber, reter ou movimentar dinheiro | Renato (produto) |
+| Qualquer requisito parece exigir calcular IOF, VET, tarifa ou preço final | Renato (produto) |
+| Qualquer mudança expõe nome ou WhatsApp do viajante a quem não venceu o aceite | Renato (produto) e Tech Lead |
+| A garantia de vencedor único só parece possível fora do PostgreSQL | Tech Lead |
+| A solução proposta exige WebSocket, chat, contraproposta ou leilão | Renato (produto) |
+| Um provedor de WhatsApp exige fluxo ou dado que este PRD não prevê | Renato (produto) |
+| A implementação começa antes do portão de código das hipóteses estar fechado | Renato (produto) |
+| Um texto legal, de consentimento ou de retenção precisa ser escrito sem revisão jurídica | Renato (produto) |
 
 ## Dependencies & Risks
 
 ### Dependencies
 
-| Dependência | Responsável | Status | Impacto se Atrasada |
-|-------------|-------------|--------|---------------------|
-| AwesomeAPI (cotações) | Terceiro (externo) | Disponível | Sem cotação de referência; tela exibe cotações em fallback sem bloquear criação |
-| Parecer jurídico regulatório (Comunicação vs. Câmbio) | Jurídico | Não iniciado | Bloqueador absoluto do Go-Live [A VALIDAR COM ADVOGADO] |
-| Parecer tributário sobre VET e ausência de fixação de IOF | Jurídico / Tributário | Não iniciado | Risco de questionamento sobre responsabilidade tributária [VALIDAR COM ADVOGADO] |
-| Revisão jurídica dos Termos de Uso (isenção de responsabilidade) | Jurídico | Não iniciado | Bloqueador de lançamento [VALIDAR COM ADVOGADO] |
-| Parecer sobre obrigações contratuais do fundador | Jurídico | Não iniciado | Bloqueador ético/legal de governança [VALIDAR COM ADVOGADO] |
+| Dependency | Owner | Status | Impact if Delayed |
+| --- | --- | --- | --- |
+| Portão de código de `hypotheses.md` (H1 e H3 validadas, H4 não invalidada) | Renato (produto) | Concierge começa em 4 de novembro de 2026 | Sem portão, não começa código de produto |
+| Conta e template de aceite aprovados no WhatsApp Business | Renato (produto) | Não iniciado | O aceite continua visível na página de status. O alerta no WhatsApp do viajante atrasa. |
+| Provedor de e-mail transacional com domínio verificado | Tech Lead | Não iniciado | O viajante depende do link mostrado na confirmação. A casa só recebe alerta com o painel aberto. |
+| Revisão jurídica de consentimento, retenção e textos de neutralidade | Renato (produto) | Não iniciado | O lançamento do piloto fica bloqueado |
+| Casas credenciadas de H1, conferidas na lista do Banco Central | Renato (produto) | Concierge em andamento a partir de 4 de novembro de 2026 | Lançamento sem oferta do lado das casas |
 
 ### Risks
 
-| Risco | Classificação | Impacto | Estratégia de Mitigação |
-|-------|---------------|---------|--------------------------|
-| **1. Enquadramento Regulatório (BACEN)** | **Crítico** | Risco de equiparação a instituição financeira não autorizada. | Posicionamento estrito como plataforma de comunicação e mensageria sem custódia ([ADR-0010](../04-architecture/adr/adr-0010-plataforma-sem-custodia.md)); condicionamento do lançamento à entrega de parecer formal assinado por escritório regulatório especializado [VALIDAR COM ADVOGADO]. |
-| **2. Vazamento Comercial (Desintermediação)** | **Alto** | Clientes e casas fecham operações futuras diretamente sem retornar à plataforma. | Anonimato rígido pré-match; revelação dos contatos somente pós-match; comodidade de leilão em tempo real; monetização da Fase 2 focada em lead qualificado ou assinatura SaaS. |
-| **3. Liquidez Insuficiente no Cold-Start** | **Alto** | Ofertas sem respostas em tempo hábil frustram clientes. | Piloto restrito a RJ e SP com 10 a 20 casas comprometidas comercialmente antes da abertura ao público; alertas sonoros no painel dos operadores. |
-| **4. Concorrência e Double-Matching** | **Médio** | Duas casas aceitam a mesma oferta no mesmo milissegundo. | Serialização determinística no PostgreSQL com lock pessimista (`SELECT FOR UPDATE`), validação atômica via `clock_timestamp()` e constraint `UNIQUE (offer_id)` ([ADR-0006](../04-architecture/adr/adr-0006-concorrencia-match.md)). |
-| **5. Taxa Não Mantida pela Casa** | **Médio** | Casa parceira tenta cobrar spread adicional no balcão físico. | Funcionalidade "Relatar Problema" e relato de desfecho `TAXA_NAO_MANTIDA`; moderação ativa pelo Admin com faculdade de suspensão preventiva da casa da rede. |
+| Risk | Likelihood | Impact | Mitigation |
+| --- | --- | --- | --- |
+| A casa aceita a taxa e depois cobra tarifa que muda o preço final | M | H | Textos de FR-5 e FR-25. A taxa aceita fica registrada. Reclamações viram dado do piloto. |
+| O viajante informa WhatsApp de terceiro ou errado | M | M | Medir contatos inválidos reportados pelas casas. A verificação por código é a próxima medida. |
+| A casa contorna a plataforma e não aceita pelo painel | M | M | Painel no celular, alerta por e-mail, aceite em um clique. Medir aceites por casa. |
+| Ofertas criadas à noite ficam paradas até o dia seguinte | H | M | A expiração conta só na janela, e o horário exato aparece para o viajante. |
+| Aprovação do template de aceite no WhatsApp atrasa | M | M | A página de status mostra a casa vencedora. O e-mail do link não depende desse template. |
+| A consulta periódica do painel gera carga além do esperado | L | L | Intervalo configurável. A consulta é barata e filtrada por cidade e moeda. |
+| O alerta sonoro cria a sensação de pregão | L | M | Um som por nova oferta, sem contagem regressiva competitiva nem lances. |
 
----
+## Timeline & Milestones
+
+Datas absolutas antes do portão seriam palpite. Os marcos de construção contam a partir dele.
+
+| Milestone | Description | Target Date |
+| --- | --- | --- |
+| Portão de código | Decisão agregada das hipóteses H1 a H4 | 28 de dezembro de 2026 |
+| Histórias, critérios de aceite e ADRs | Etapas 2 e 3 concluídas; revisão por `utility-pm-critic` | Antes do portão, em paralelo ao concierge |
+| M1: Fundação | Credenciamento interno, login da casa, cotações, vitrine | Portão + 2 semanas |
+| M2: Oferta e ciclo de vida | Criação, status, cancelamento, expiração, alerta por e-mail | Portão + 4 semanas |
+| M3: Aceite e contatos | Aceite atômico, revelação de contatos, WhatsApp, painel com alerta | Portão + 6 semanas |
+| Lançamento do piloto | Casas de H1 credenciadas; revisão jurídica concluída | Portão + 7 semanas |
+| Fim do piloto | Leitura das metas de 90 dias | Lançamento + 90 dias |
+
+## Decisões travadas em 2026-11-03
+
+- A vitrine pública mostra apenas nome da casa, cidade e cotação de balcão. Telefone, WhatsApp, bairro e endereço ficam para depois do aceite.
+- A quantia aceita é de 100 a 10.000 unidades inteiras, inclusive, para USD, EUR e GBP.
+- O link de acompanhamento e o aviso de expiração vão por e-mail transacional. O alerta de aceite vai por WhatsApp. Por isso a oferta passa a pedir e-mail.
+- A expiração de 4 horas úteis, de segunda a sexta, das 9h inclusive às 18h exclusive, está aprovada. Sábado e domingo ficam fora da janela.
+- A sessão do operador expira após 10 horas sem atividade.
 
 ## Open Questions
 
-> [!IMPORTANT]
-> Os itens abaixo estão **Em aberto** com as respectivas recomendações indicadas, sem serem tratados como decididos:
+- [ ] Qual prazo de retenção de nome, e-mail e WhatsApp a assessoria jurídica vai definir? No piloto não há apagamento automático; a exclusão, se necessária, é manual pelo administrador. O texto de consentimento também aguarda essa revisão. - Owner: Renato (produto), com assessoria jurídica
+- [ ] Qual provedor de WhatsApp Business será usado, e qual o custo por mensagem de aceite no piloto gratuito? - Owner: Tech Lead
+- [ ] Depois do aceite, a plataforma deve registrar se a compra aconteceu, para repetir a medição da H4 no piloto? - Owner: Renato (produto)
+## Appendix
 
-1. **Forma de expressão do valor da oferta e contraproposta (Decisão em Aberto nº 1):**
-   - *Em Aberto:* Definir se a oferta e as contrapropostas são expressas em valor total final tudo incluso (VET) ou em taxa pura com acréscimo posterior de encargos.
-   - *Recomendação:* **Oferta e contraproposta expressas em valor total final em reais (VET tudo incluso)**, garantindo comparabilidade perfeita. No aceite direto e nas contrapropostas, a casa informa a decomposição (câmbio puro, IOF e tarifas) apenas para transparência e formalização regulatória, sem alterar o total acordado. O sistema não calcula nem fixa alíquotas [VALIDAR COM ESPECIALISTA TRIBUTÁRIO].
-2. **Contato Pós-Match (Decisão em Aberto nº 2):**
-   - *Em Aberto:* Quais dados exatos de contato devem ser disponibilizados às partes após a consolidação do match?
-   - *Recomendação:* **Revelar ao match o telefone/WhatsApp e e-mail do cliente para a casa vencedora, e os dados de contato institucional (telefone, WhatsApp, e-mail e endereço da loja física) da casa para o cliente**, reproduzindo o padrão estabelecido no mercado pelo Melhor Câmbio. Chat proprietário interno permanece fora do MVP.
-3. **Critérios de Monitoramento Preventivo de PLD/FT:**
-   - *Em Aberto:* Sendo a plataforma um canal de comunicação sem custódia de fundos, quais regras de agregação ou monitoramento de ofertas devem gerar alertas preventivos ao Admin para resguardar a integridade da rede?
-   - *Recomendação:* Manter o teto parametrizado de R$ 50.000 por oferta no piloto e submeter à consultoria jurídica regulatória a definição de eventuais regras de agregação por CPF/CNPJ [VALIDAR COM JURÍDICO/PLD].
-4. **Suspensão preventiva de casa e atendimentos em andamento:**
-   - *Em Aberto:* Caso uma casa seja suspensa pelo Admin por denúncia de má conduta, como tratar atendimentos que já receberam match?
-   - *Recomendação:* Invalidação imediata de propostas ativas; nos atendimentos em andamento, emissão de notificação institucional neutra ao cliente informando sobre o encerramento da parceria e orientando cautela [VALIDAR COM JURÍDICO].
-5. **Visibilidade entre casas concorrentes (Cego vs. Aberto):**
-   - *Em Aberto:* Propostas cegas no MVP (cada casa vê apenas sua proposta) vs. leilão com book semi-aberto para incentivar agressividade de spreads.
-   - *Recomendação:* Manter propostas cegas no MVP para simplificar o pregão e avaliar leilão dinâmico na Fase 2.
-6. **Modelo Definitivo de Monetização da Fase 2 ([ADR-0012](../04-architecture/adr/adr-0012-modelo-cobranca.md)):**
-   - *Em Aberto:* Cobrança de taxa fixa por lead/atendimento gerado vs. mensalidade de assinatura SaaS de software. Piloto é 100% gratuito.
+### Related Documents
 
----
+- Problem Statement: [`docs/01-discovery/problem-statement.md`](../01-discovery/problem-statement.md)
+- Hipóteses e portão de código: [`docs/01-discovery/hypotheses.md`](../01-discovery/hypotheses.md)
+- Histórias: [`docs/03-product/user-stories.md`](user-stories.md)
+- Critérios de aceite: [`docs/03-product/acceptance-criteria.md`](acceptance-criteria.md)
+- User Research: concierge das hipóteses H1 a H4, em andamento
+- Design Specs: a criar
+- Technical Design: [`docs/04-architecture/adr/`](../04-architecture/adr/)
 
-## Revision History
+### Revision History
 
-| Versão | Data | Autor | Mudanças |
-|--------|------|-------|----------|
-| 1.0 | 2026-11-02 | Equipe de Produto | Versão inicial do PRD do MVP |
-| 1.1 | 2026-11-03 | Equipe de Produto | Correções da revisão PM-Critic |
-| 1.2 | 2026-11-03 | Equipe de Produto | Ajustes em recusa, cascata, multicanal e regras de VET |
-| 1.3 | 2026-11-03 | Equipe de Produto | clock_timestamp(), ordenação condicional VET, região/bairro e 27 User Stories |
-| 1.4 | 2026-11-03 | Equipe de Produto | Tabela de Parâmetros Configuráveis, remoção de alíquotas fixas de IOF, extensão única de oferta, checkpoint de no-show/strikes, pilot free, MFA, modal pré-aceite e 30 User Stories |
-| 1.5 | 2026-11-03 | Equipe de Produto | Reposicionamento estrutural v1.5 decidido pelo fundador: redefinição como PLATAFORMA DE COMUNICAÇÃO e aproximação entre casa e cliente inspirada no Melhor Câmbio (Nomad); explicitação de que pagamento, entrega e contratação ocorrem diretamente entre as partes fora do software; inclusão da seção de Contexto Competitivo; substituição do conceito de "negociação" por "Atendimento Comercial" (estados: EM_ATENDIMENTO, CONCLUÍDO, NÃO_CONCLUÍDO com motivo, e SEM_RETORNO); remoção do MVP (migrados para Future Considerations) de disputas mediadas financeiras, strikes/no-show, extensão automática de oferta, bloqueio rígido pós-match (substituído por desistência voluntária) e alertas de fracionamento PLD; inclusão de relato qualitativo de desfecho, "Relatar Problema" e governança de moderação da rede sem mediação de dinheiro; registro em aberto da decisão de contato pós-match com recomendação; ajuste da Tabela de Parâmetros; e sincronização de 30 User Stories e 30 Critérios de Aceitação. |
-| 1.5.1 | 2026-11-03 | Equipe de Produto | Complemento v1.5.1: inclusão da seção formal de Go-to-Market (GTM) e Aquisição de Demanda (SEO local por cidade, landing pages das casas e base de parceiros); meta operacional de densidade de 3 a 5 ofertas por casa ativa por semana [HIPÓTESE – A VALIDAR]; e registro conceitual do "Modo Oferta Privada" como ideia para validação na Fase 2, estritamente fora do escopo do MVP. |
+| Version | Date | Author | Changes |
+| --- | --- | --- | --- |
+| 1.0 | 2026-11-03 | Tech Lead e PM | Rascunho inicial |
+| 1.1 | 2026-11-03 | Tech Lead e PM | Trava vitrine sem contato, limites 100 a 10.000, e-mail do link e WhatsApp só no aceite, janela de 4 horas úteis, sessão de 10 horas de inatividade |
+| 1.2 | 2026-11-03 | Tech Lead e PM | Ajustes F-01 a F-08: casa ativa, bairro de preferência, status spec-locked, exclusão manual sem job de 90 dias |

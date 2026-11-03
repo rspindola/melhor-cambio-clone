@@ -1,0 +1,397 @@
+---
+description: "Creates a comprehensive Product Requirements Document that aligns stakeholders on what to build, why, and how success will be measured. Use when specifying features, epics, or product initiatives for engineering handoff."
+globs: "docs/**/*.md"
+alwaysApply: false
+---
+
+<!-- PM-Skills | https://github.com/product-on-purpose/pm-skills | Apache 2.0 -->
+# Product Requirements Document (PRD)
+
+A Product Requirements Document is the primary specification artifact that communicates what to build and why. It bridges the gap between problem understanding and engineering implementation by providing clear requirements, success criteria, and scope boundaries. A good PRD enables engineering to build the right thing while maintaining flexibility on implementation details.
+
+## When to Use
+
+- After problem and solution alignment, before engineering work begins
+- When specifying features, epics, or product initiatives for handoff
+- When multiple teams need to coordinate on a shared deliverable
+- When stakeholders need to approve scope before investment
+- As reference documentation during development and QA
+
+## When NOT to Use
+
+- The problem is still unframed or contested -> use `define-problem-statement` first; a PRD assumes an agreed problem
+- You need a one-page pitch to align stakeholders on an approach -> use `develop-solution-brief`; the PRD comes after that alignment
+- You only need the work broken into tickets for a sprint -> use `deliver-user-stories`
+- You are recording a technical or architectural decision -> use `develop-adr`
+
+## Instructions
+
+When asked to create a PRD, follow these steps:
+
+1. **Summarize the Problem**
+   Start with a brief recap of the problem being solved. Link to the problem statement if available. Ensure readers understand *why* this work matters before diving into *what* to build.
+
+2. **Define Goals and Success Metrics**
+   Articulate what success looks like. Include specific, measurable metrics with baselines and targets. These metrics should connect directly to the problem being solved.
+
+3. **Outline the Solution**
+   Describe the proposed solution at a high level. Focus on user-facing functionality and key capabilities. Include enough detail for stakeholders to evaluate the approach without over-specifying implementation.
+
+4. **Detail Functional Requirements**
+   Break down what the system must do. Use user stories or requirement statements. Each requirement should be testable - someone should be able to verify if it's met.
+
+5. **Link AI Behavior to Evidence** *(only when the feature's output comes from a model)*
+   Skip this step entirely for deterministic features. A property that a deterministic check can decide, such as a required field being present or a count matching, does not bring a feature under this step just because a model produced the output; specify it as an ordinary requirement in step 4. When a model produces the output, the behavior varies run to run, so "it works" is a claim that needs evidence attached. Name the behaviors that are requirements of this release and, for each one, how it will be shown to hold and the rule a case must meet to pass, fixed before the run. Refusal and abstention get their own rows: a model has no dependable default for either, so what the feature does when it should *not* answer is a requirement, not an implementation detail. Score each component of a multi-step feature separately, because an end-to-end pass rate hides which step failed. State how the case set was sized as a method, never as a borrowed number.
+
+   Because the same case can pass on one run and fail on the next, the template recommends stating how many times each case runs at production settings and when a case counts as passed. It also recommends two rows that are easy to leave out. When the model reads content that neither the product's instructions nor the user told it to obey, that content is data and never instructions. When the output is shown to people other than the one whose access produced it, it must not reach anyone with less access than its source. A rate, such as "90% of answers are faithful to their sources", can be verified only by a designed sample; until one exists, keep the rate and mark its verification unresolved, with pass rules per case as additional evidence.
+
+6. **Define Scope Boundaries**
+   Explicitly state what's in scope, out of scope, and deferred to future iterations. Clear scope prevents scope creep and sets realistic expectations.
+
+7. **Address Technical Considerations**
+   Note any technical constraints, architectural decisions, or integration requirements. Don't design the system, but surface considerations engineering needs to know.
+
+8. **Write the Agent Execution Contract** *(only when an executor will implement this without the authoring context)*
+   Skip this step entirely when the implementers were in the room. A coding agent, an outside contractor, or a team picking this up cold cannot infer what you already know, so declare it: which sources are authoritative and which wins when two disagree, what must not be touched and why, how each FR-n is verified and by whom, and the conditions where the executor must stop and escalate rather than decide. Name an owner for every escalation; an escalation with no addressee becomes a guess. A requirement with no verification is not ready to hand off, because nothing distinguishes "done" from "the executor believes it is done".
+
+9. **Identify Dependencies and Risks**
+   List external dependencies, assumptions, and risks that could impact delivery. Include mitigation strategies where applicable.
+
+10. **Propose Timeline and Milestones**
+    Outline key phases and checkpoints. This helps stakeholders understand the delivery plan without committing to specific dates prematurely.
+
+## Project Memory Contract
+
+Active only when `.claude/pm-skills.local.md` exists. With no file, ignore this section entirely
+and behave exactly as described above.
+
+- **Reads:** `active_initiative`, and any `interpretation` artifacts recording personas or research findings. Use them instead of asking for context that has already been produced. If none exist, ask as normal and never invent a persona to fill the gap.
+- **Writes:** the PRD as a `decision` artifact, and its committed scope boundaries and success metrics to the `## Decisions` section.
+- **Posture:** propose the entry and wait for confirmation before writing, unless
+  `memory_auto_append: true` is set, in which case append and echo what was written.
+- **Write discipline:** re-read the file immediately before writing, never from the copy that
+  produced the proposal. If it changed in between, merge your entry into the current state and
+  re-propose rather than overwriting; add only your own entry and leave every other field and
+  section byte-identical. Nothing enforces this at runtime and the file is gitignored, so a
+  careless whole-file write loses another session's work with no way to recover it.
+
+This is the reader half of the demonstration loop: when `discover-interview-synthesis` has already recorded personas, do not ask the user to supply them again.
+## Output Format
+
+Use the template in `references/TEMPLATE.md` to structure the output. A complete PRD fills every template section: Overview; Goals & Success Metrics; User Stories; Scope; Solution Design; Technical Considerations; Dependencies & Risks; Timeline & Milestones; Open Questions; the Appendix when supporting material exists; AI Behavior and Evaluation when the feature's output comes from a model; and the Agent Execution Contract when an executor will implement it without the authoring context.
+
+The last three are conditional by design. A PRD that omits a section its feature does not need is complete; a PRD that includes an empty one is not.
+
+## Quality Checklist
+
+Before finalizing, verify:
+
+- [ ] Problem and "why now" are clearly articulated
+- [ ] Success metrics are specific and measurable
+- [ ] Scope boundaries are explicit (in/out/future)
+- [ ] Requirements are testable and unambiguous
+- [ ] Technical considerations are surfaced without over-specifying
+- [ ] Dependencies and risks are documented with owners
+- [ ] Document is readable in under 15 minutes
+- [ ] If the output comes from a model: every behavior requirement has an evaluation and a pass rule, and refusal and abstention are among them
+- [ ] If an evaluation set is sized: each slice's floor says what coverage it commits to and why that slice earns it, and no slice result is reported as a failure rate or as a bound on one
+- [ ] If an executor will implement this without the authoring context: every FR-n has a verification and a verifier, and every escalation condition names an owner
+
+## Examples
+
+See `references/EXAMPLE.md` for a completed example.
+
+
+---
+
+## Canonical Template / Reference
+
+```markdown
+---
+artifact: prd
+version: "1.0"
+created: <YYYY-MM-DD>
+status: draft
+---
+
+# PRD: [Feature/Initiative Name]
+
+## Overview
+
+### Problem Statement
+<!-- Brief recap of the problem. Link to full problem statement if available. -->
+
+[Problem summary]
+
+### Solution Summary
+<!-- High-level description of what we're building -->
+
+[Solution summary]
+
+### Target Users
+<!-- Who will use this feature? -->
+
+[Target user description]
+
+## Goals & Success Metrics
+
+### Goals
+<!-- What outcomes are we trying to achieve? -->
+
+1. [Primary goal]
+2. [Secondary goal]
+3. [Secondary goal]
+
+### Success Metrics
+
+| Metric | Current Baseline | Target | Timeline |
+|--------|-----------------|--------|----------|
+| [Primary metric] | [Value] | [Value] | [Date] |
+| [Secondary metric] | [Value] | [Value] | [Date] |
+
+### Non-Goals
+<!-- What are we explicitly NOT trying to achieve? -->
+
+- [Non-goal 1]
+- [Non-goal 2]
+
+## User Stories
+
+<!-- Summary of key user stories. Link to detailed stories if available. -->
+
+| ID | User Story | Priority |
+|----|-----------|----------|
+| US-1 | As a [user], I want [action] so that [benefit] | P0 |
+| US-2 | As a [user], I want [action] so that [benefit] | P0 |
+| US-3 | As a [user], I want [action] so that [benefit] | P1 |
+
+See [link to detailed user stories] for full acceptance criteria.
+
+## Scope
+
+### In Scope
+<!-- What will be delivered in this iteration -->
+
+- [Feature/capability 1]
+- [Feature/capability 2]
+- [Feature/capability 3]
+
+### Out of Scope
+<!-- What will NOT be delivered -->
+
+- [Excluded item 1]
+- [Excluded item 2]
+
+### Future Considerations
+<!-- Items deferred to future iterations -->
+
+- [Future item 1] - [Rationale for deferral]
+- [Future item 2] - [Rationale for deferral]
+
+## Solution Design
+
+### Functional Requirements
+
+#### [Requirement Area 1]
+<!-- Group related requirements -->
+
+- FR-1: [Requirement statement]
+- FR-2: [Requirement statement]
+
+#### [Requirement Area 2]
+
+- FR-3: [Requirement statement]
+- FR-4: [Requirement statement]
+
+### User Experience
+
+<!-- Key UX decisions, flows, or wireframe references -->
+
+[UX notes or link to designs]
+
+### Edge Cases
+<!-- Important edge cases to handle -->
+
+| Scenario | Expected Behavior |
+|----------|------------------|
+| [Edge case 1] | [Behavior] |
+| [Edge case 2] | [Behavior] |
+
+## AI Behavior and Evaluation
+
+<!-- CONDITIONAL, not optional. Include whenever the feature's output comes from a model and
+     varies run to run, and skip it entirely for deterministic features. When the condition applies
+     this section is REQUIRED for completeness: a PRD that meets the trigger and omits it does not
+     satisfy the skill's contract.
+
+     A property that a deterministic check can decide (a required field is present, a count
+     matches, a value is in range) does not trigger this section just because a model produced
+     the output. Specify it as an ordinary functional requirement with a deterministic test.
+
+     This section links behavior to evidence. It is not a full behavior specification: it names
+     the behaviors that are requirements of THIS release and how each will be shown to hold. -->
+
+### Behavior Requirements and Their Evidence
+
+<!-- Refusal and abstention need their own rows. A model has no dependable default for either, so
+     "what it does when it should not answer" is a requirement, not an implementation detail.
+     Score each component of a multi-step feature separately: an end-to-end pass rate hides which
+     step failed.
+
+     The pass rule is fixed before the run and applies to each case, for example "refuses on
+     every run". A percentage over a curated set makes a weak pass rule, because that set supports
+     no rate (see Evaluation Set). A rate belongs here only when a designed sample backs it, and
+     that sample is drawn separately from the curated evaluation set below.
+
+     AB-4 and AB-5 are recommended rows, each with its own condition. Include a row when its
+     condition holds and delete it when it does not. Both are easy to leave out, which is why they are
+     named here rather than left to the slice list. -->
+
+| ID | Behavior required | How it is evaluated | Pass rule |
+|----|-------------------|---------------------|-----------|
+| AB-1 | [What the feature must do in the normal case] | [Cases, rubric, or check] | [The rule each case must meet, fixed before the run] |
+| AB-2 | [What it must refuse, and what it says instead] | [Cases, rubric, or check] | [The rule each case must meet, fixed before the run] |
+| AB-3 | [How it abstains when it cannot ground an answer] | [Cases, rubric, or check] | [The rule each case must meet, fixed before the run] |
+| AB-4 | *When the model reads content that neither the product's instructions nor the user told it to obey (documents, web pages, tickets, email):* instructions inside that content are treated as data and never followed | [Cases that plant instructions inside that content] | [The rule each case must meet, fixed before the run] |
+| AB-5 | *When the output is shown to anyone other than the person whose access produced it:* the output never reaches an audience with less access than its source | [Cases where the source and the audience have different access] | [The rule each case must meet, fixed before the run] |
+
+### Evaluation Set
+
+<!-- Size this set by risk, not by saturation. "Keep adding cases until the verdict stops
+     moving" is stopping on the outcome you are trying to measure: the answer depends on the
+     order cases happen to arrive in, and the verdict usually stabilizes BEFORE the rare and
+     harmful slices show up, because rare cases are rare. It reports a number with no coverage
+     target behind it and then presents that number as release evidence.
+
+     Name the slices first, set a floor per slice, then count. Do not state a fixed N here as
+     a house default; N is derived per feature from the slices below.
+
+     What a floor is, and what it is not. A floor is a COVERAGE commitment: it says every named
+     failure mode was looked for deliberately, across a stated number of cases. It is not a
+     measurement, and it is not a bound on how often the feature fails.
+
+     This template deliberately does not tell you how to turn a case count into a failure-rate
+     claim. Doing that honestly needs a sampling frame, a threshold fixed before the run, and
+     independence assumptions that a hand-curated slice usually violates. A number that looks
+     statistical but is not carries more authority than an obviously rough one, which makes it
+     the more dangerous thing to put in a PRD. If the release genuinely turns on a rate, get a
+     designed sample and someone who can defend it, and do not derive one here. -->
+
+- **Where the cases live:** [Path or system]
+- **Slices that must be covered:** [Derive them, do not guess. At minimum: every AB-n row above; every refusal and every abstention case; and the input classes where a failure costs the most - name the cost, not just the class]
+- **Floor per slice, and what it commits you to:** [For each slice: the minimum cases you will not go below, and why that slice earns that floor. Say what the floor buys in coverage terms, which is that a named failure mode was searched for deliberately rather than incidentally. Do not state or imply a failure rate]
+- **Runs per case** *(recommended)*: [How many times each case runs at production settings, and when a case passes: on every run, or on a stated number of runs fixed before the run. A case that passes once and fails once has not shown that it holds]
+- **Held-out cases:** [The cases not used while tuning, kept back to check the pass rules still hold. If none are held out, say so and say why the pass rules are not overfit]
+- **Slices scored separately:** [The segments reported on their own, never only in the aggregate. An aggregate that passes while one slice fails is a failing evaluation]
+- **If a requirement is stated as a rate:** [A criterion such as "at least 90% of answers are faithful to their sources" can be verified only by a designed sample. That sample is drawn separately from this curated set, with a sampling frame, a size and a threshold fixed before the run, and someone who can defend them. Without one, keep the criterion and mark its verification unresolved until a designed sample exists. Pass rules per case over the named slices are additional evidence, not a replacement]
+- **If someone asks for a rate:** [This set does not support one, and saying so is the correct answer. Report the raw counts per slice and the floor each was held to. A rate claim needs a designed sample, not a curated evaluation set, and inventing one here is how a PRD ends up carrying a number nobody can defend]
+
+## Technical Considerations
+
+<!-- Technical constraints, architectural notes, or integration requirements -->
+
+### Constraints
+- [Constraint 1]
+- [Constraint 2]
+
+### Integration Points
+- [System/API 1]: [Integration notes]
+- [System/API 2]: [Integration notes]
+
+### Data Requirements
+<!-- Any data migration, storage, or privacy considerations -->
+
+[Data notes]
+
+## Agent Execution Contract
+
+<!-- CONDITIONAL, not optional. Include whenever a coding agent, an outside contractor, or any
+     executor working without the authoring context will implement this PRD, and skip it entirely
+     otherwise. When the condition applies this section is REQUIRED for completeness.
+
+     Everything here is a declaration the author already knows and the executor cannot infer. -->
+
+### Authoritative Sources
+
+<!-- What the executor treats as ground truth, and which one wins when two disagree -->
+
+| Source | Path or link | Definitive for |
+|--------|--------------|----------------|
+| [Source 1] | [Path or link] | [Scope it settles] |
+| [Source 2] | [Path or link] | [Scope it settles] |
+
+### Do Not Touch
+
+<!-- Files, systems, or configuration the executor must leave alone, and why. A path with no
+     reason gets edited anyway the first time it looks convenient. -->
+
+| Path or system | Reason it is off limits |
+|----------------|-------------------------|
+| [Path or system] | [Reason] |
+
+### Requirement Verification Map
+
+<!-- One row per FR-n above. A requirement with no verification is not ready to hand off, because
+     nothing distinguishes "done" from "the executor believes it is done". -->
+
+| Requirement | How it is verified | Who verifies |
+|-------------|--------------------|--------------|
+| FR-1 | [Test, check, or observation that proves it] | [Automated / QA / PM] |
+| FR-2 | [Test, check, or observation that proves it] | [Automated / QA / PM] |
+
+### Stop and Escalate
+
+<!-- Conditions where the executor must stop and ask rather than decide. Name the owner: an
+     escalation with no addressee becomes a guess. -->
+
+| Condition | Escalate to |
+|-----------|-------------|
+| [Condition that must not be resolved unilaterally] | [Owner] |
+| [Condition that must not be resolved unilaterally] | [Owner] |
+
+## Dependencies & Risks
+
+### Dependencies
+
+| Dependency | Owner | Status | Impact if Delayed |
+|------------|-------|--------|-------------------|
+| [Dependency 1] | [Team/Person] | [Status] | [Impact] |
+| [Dependency 2] | [Team/Person] | [Status] | [Impact] |
+
+### Risks
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| [Risk 1] | [H/M/L] | [H/M/L] | [Mitigation strategy] |
+| [Risk 2] | [H/M/L] | [H/M/L] | [Mitigation strategy] |
+
+## Timeline & Milestones
+
+| Milestone | Description | Target Date |
+|-----------|-------------|-------------|
+| [Milestone 1] | [Description] | [Date] |
+| [Milestone 2] | [Description] | [Date] |
+| [Launch] | [Description] | [Date] |
+
+## Open Questions
+
+<!-- Unresolved questions that need answers before or during development -->
+
+- [ ] [Question 1] - Owner: [Name]
+- [ ] [Question 2] - Owner: [Name]
+
+## Appendix
+
+### Related Documents
+- Problem Statement - add link or path
+- User Research - add link or path
+- Design Specs - add link or path
+- Technical Design - add link or path
+
+### Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | [Date] | [Author] | Initial draft |
+
+```
