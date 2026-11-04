@@ -15,7 +15,7 @@ Aqui é o Renato. Estou entrando em contato direto porque acompanho de perto o m
 
 Desde que o Melhor Câmbio foi comprado pela Nomad, percebemos que muitas casas tradicionais e autorizadas ficaram sem um canal neutro de captação — já que hoje o portal pertence a uma fintech que concorre diretamente com vocês promovendo a conta global deles.
 
-Estamos lançando um canal 100% neutro, feito exclusivamente para direcionar viajantes que precisam de papel-moeda (espécie) para lojas físicas credenciadas da nossa região.
+Estamos lançando o **Câmbio Direto**, um canal 100% neutro feito exclusivamente para direcionar viajantes que precisam de papel-moeda (espécie) para lojas físicas credenciadas da nossa região.
 
 - Zero custódia / zero intermediação: O cliente fecha e paga diretamente com a sua loja, fora da plataforma, exatamente como vocês já operam no balcão.
 - Não competimos com vocês: Não vendemos conta digital nem cartão próprio.
@@ -40,7 +40,7 @@ Faz sentido para a mesa de vocês receber essas ofertas de viajantes prontos par
 >
 > *Estou desenvolvendo uma plataforma neutra de aproximação para viajantes que compram papel-moeda em [SP/RJ]. Com a compra do Melhor Câmbio pela Nomad, muitas casas tradicionais sentiram que perderam espaço porque o portal agora prioriza a conta digital da proprietária.*
 >
-> *Nós criamos uma alternativa neutra: não temos conta internacional, não competimos com vocês, não mexemos no dinheiro/Pix e não cobramos taxa no piloto. Eu só preciso de 1 minuto para te mandar os detalhes pelo WhatsApp e ver se vocês topam receber essas cotações sem compromisso. Qual o seu melhor número de WhatsApp?"*
+> *Criamos o Câmbio Direto como alternativa neutra: não temos conta internacional, não competimos com vocês, não mexemos no dinheiro/Pix e não cobramos taxa no piloto. Eu só preciso de 1 minuto para te mandar os detalhes pelo WhatsApp e ver se vocês topam receber essas cotações sem compromisso. Qual o seu melhor número de WhatsApp?"*
 
 ---
 
@@ -58,8 +58,8 @@ Escrevo para apresentar uma oportunidade de parceria comercial para captação d
 Contexto de Mercado:
 Historicamente, as casas de câmbio físicas contavam com portais de comparação para captar clientes prontos para fechar. Desde a aquisição do Melhor Câmbio pela Nomad, o mercado independente perdeu seu principal canal neutro, já que o portal passou a priorizar a conversão de usuários para a conta digital da proprietária.
 
-Nossa Proposta (Plataforma Neutra):
-Estamos estruturando um canal tecnológico de aproximação que conecta viajantes pessoa física precisando de papel-moeda (USD, EUR, GBP) diretamente às mesas de operação autorizadas pelo Banco Central.
+Nossa Proposta (Câmbio Direto):
+Estamos estruturando o Câmbio Direto, um canal tecnológico de aproximação que conecta viajantes pessoa física precisando de papel-moeda (USD, EUR, GBP) diretamente às mesas de operação autorizadas pelo Banco Central.
 
 Como funciona para a sua instituição:
 1. Sem Intermediação Financeira: Nossa plataforma atua puramente como canal de comunicação. Não recebemos valores, não operamos Pix e não cobramos taxas do cliente.
