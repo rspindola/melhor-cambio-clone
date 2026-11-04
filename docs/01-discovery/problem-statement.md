@@ -44,7 +44,7 @@ A empresa existe para ser o canal neutro das casas autorizadas pelo Banco Centra
 
 Para a casa, o prejuízo é demanda qualificada de viajante que deixa de chegar sem que o dono do canal dispute o cliente. Não temos o GMV perdido por casa, nem a receita que o canal antigo retinha. O R$ 1 milhão por dia citado na imprensa de 2024 é compra de moeda nas casas, não receita de plataforma.
 
-No piloto, o canal é gratuito para a casa e para o viajante. Cobrança fica fora desta fase para não criar atrito antes de provar que a aproximação acontece. Receita futura, assinatura ou taxa por lead, continua em aberto e não é premissa deste problema.
+No piloto, o canal é gratuito para a casa e para o viajante. Cobrança fica fora desta fase para não criar atrito antes de provar que a aproximação acontece. A monetização futura prevê assinatura mensal fixa de software para as casas parceiras (sem taxa ou percentual por operação cambial), a ser testada após o piloto.
 
 ### Why Now?
 

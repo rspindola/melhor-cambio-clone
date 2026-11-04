@@ -11,7 +11,7 @@
 ```text
 Olá, [Nome do Gerente ou "Equipe da Casa de Câmbio"], tudo bem?
 
-Aqui é o Renato. Estou entrando em contato direto porque acompanho de perto o mercado de câmbio turismo aqui em [São Paulo / Rio de Janeiro].
+Aqui é da equipe do **Câmbio Direto**. Estou entrando em contato direto porque acompanho de perto o mercado de câmbio turismo aqui em [São Paulo / Rio de Janeiro].
 
 Desde que o Melhor Câmbio foi comprado pela Nomad, percebemos que muitas casas tradicionais e autorizadas ficaram sem um canal neutro de captação — já que hoje o portal pertence a uma fintech que concorre diretamente com vocês promovendo a conta global deles.
 
@@ -23,7 +23,7 @@ Estamos lançando o **Câmbio Direto**, um canal 100% neutro feito exclusivament
 
 Estamos selecionando apenas 20 casas em [SP / RJ] para receber essas demandas durante o piloto. 
 
-Faz sentido para a mesa de vocês receber essas ofertas de viajantes prontos para fechar? Se sim, me avise por aqui para eu cadastrar o contato de atendimento de vocês!
+Faz sentido para a loja de vocês receber essas ofertas de viajantes prontos para fechar? Se sim, me avise por aqui para eu cadastrar o contato de atendimento de vocês!
 ```
 
 ---
@@ -33,10 +33,10 @@ Faz sentido para a mesa de vocês receber essas ofertas de viajantes prontos par
 *Caso ligue no telefone fixo da loja física.*
 
 ### Etapa 1: Passar pela recepção/atendente
-> *"Olá, bom dia! Por favor, quem é o responsável pela mesa de câmbio turismo ou o gerente comercial hoje? [...] Poderia me transferir para ele rapidinho? É sobre encaminhamento de clientes de papel-moeda para a loja de vocês."*
+> *"Olá, bom dia! Por favor, quem é o responsável pelo câmbio turismo ou o gerente comercial hoje? [...] Poderia me transferir para ele rapidinho? É sobre encaminhamento de clientes de papel-moeda para a loja de vocês."*
 
 ### Etapa 2: Pitch direto com o Decisor
-> *"Olá, [Nome], tudo bem? Prometo ser muito breve. Meu nome é Renato.*
+> *"Olá, [Nome], tudo bem? Prometo ser muito breve. Falo da equipe de parcerias do Câmbio Direto.*
 >
 > *Estou desenvolvendo uma plataforma neutra de aproximação para viajantes que compram papel-moeda em [SP/RJ]. Com a compra do Melhor Câmbio pela Nomad, muitas casas tradicionais sentiram que perderam espaço porque o portal agora prioriza a conta digital da proprietária.*
 >
@@ -59,23 +59,24 @@ Contexto de Mercado:
 Historicamente, as casas de câmbio físicas contavam com portais de comparação para captar clientes prontos para fechar. Desde a aquisição do Melhor Câmbio pela Nomad, o mercado independente perdeu seu principal canal neutro, já que o portal passou a priorizar a conversão de usuários para a conta digital da proprietária.
 
 Nossa Proposta (Câmbio Direto):
-Estamos estruturando o Câmbio Direto, um canal tecnológico de aproximação que conecta viajantes pessoa física precisando de papel-moeda (USD, EUR, GBP) diretamente às mesas de operação autorizadas pelo Banco Central.
+Estamos estruturando o Câmbio Direto, um canal tecnológico de aproximação que conecta viajantes pessoa física precisando de papel-moeda (USD, EUR, GBP) diretamente às casas de câmbio autorizadas pelo Banco Central.
 
 Como funciona para a sua instituição:
 1. Sem Intermediação Financeira: Nossa plataforma atua puramente como canal de comunicação. Não recebemos valores, não operamos Pix e não cobramos taxas do cliente.
 2. Autonomia Total: Toda a liquidação financeira, formalização de contrato cambial e entrega do numerário ocorrem diretamente entre a sua loja e o cliente, seguindo o compliance habitual da sua instituição.
-3. Alerta Direto: Quando um viajante na sua região publica uma intenção de compra, sua mesa recebe o alerta e pode aceitar a demanda para receber os contatos imediatos do cliente.
+3. Alerta Direto: Quando um viajante na sua região publica uma intenção de compra, sua loja recebe o alerta e pode aceitar a demanda para receber os contatos imediatos do cliente.
 
 Condições do Piloto:
 O piloto de 90 dias é 100% GRATUITO (sem mensalidade, sem taxa por lead e sem fidelidade). Nosso objetivo é validar o volume de liquidez com um grupo seleto de 15 a 20 casas na praça.
 
-Para confirmar o interesse e cadastrar os operadores da sua mesa para receberem as demandas iniciais, basta responder a este e-mail informando o nome e WhatsApp/e-mail do responsável pelo atendimento.
+Para confirmar o interesse e cadastrar o contato de atendimento da sua loja para receberem as demandas iniciais, basta responder a este e-mail informando o nome e WhatsApp/e-mail do responsável pelo atendimento.
 
 Atenciosamente,
 
-Renato
-Fundador & Responsável Comercial
-[Seu Telefone / WhatsApp]
+Equipe de Parcerias Institucionais
+Câmbio Direto (Kodly)
+WhatsApp: +55 21 3955-7496
+contato@kodly.com.br
 ```
 
 ---
@@ -84,7 +85,7 @@ Fundador & Responsável Comercial
 
 | Objeção | Resposta Direta |
 | :--- | :--- |
-| **"Quanto custa ou qual é a pegadinha?"** | *"Zero pegadinha. O piloto de 90 dias é 100% gratuito. Não cobramos taxa por cliente nem mensalidade. Nosso objetivo agora é apenas provar que o canal entrega demanda qualificada para a sua mesa."* |
+| **"Quanto custa ou qual é a pegadinha?"** | *"Zero pegadinha. O piloto de 90 dias é 100% gratuito. Não cobramos taxa por cliente nem mensalidade. Nosso objetivo agora é apenas provar que o canal entrega demanda qualificada para a sua loja."* |
 | **"Vocês recebem o dinheiro ou fazem o Pix do cliente?"** | *"Não! Nós não somos instituição financeira nem intermediamos pagamento. Nós apenas aproximamos o cliente da sua loja. O cliente paga diretamente para a sua conta ou no balcão da loja, e o contrato de câmbio é emitido por vocês como qualquer cliente de balcão."* |
 | **"Como fica o Banco Central / Compliance / KYC?"** | *"Nossa plataforma atua estritamente como software de mensageria. A identificação do cliente no Sisbacen, a checagem de documentos e o cumprimento das normas cambiais continuam sendo de competência exclusiva da sua instituição autorizada."* |
 | **"Como vocês ganham dinheiro no futuro?"** | *"No futuro, quando a plataforma já estiver gerando dezenas de clientes para a sua loja toda semana, planejamos ter um plano de assinatura simples para as casas manterem o canal ativo. Mas você não tem nenhum compromisso de pagar nada agora e pode sair a qualquer momento."* |
@@ -97,7 +98,7 @@ Para validar cada casa na sua planilha de H1, **não é necessário contrato for
 
 Basta que o gerente ou dono responda por WhatsApp ou E-mail com uma mensagem equivalente a:
 
-> *"De acordo, Renato. Pode cadastrar a nossa loja de [Bairro]. O e-mail para receber as ofertas é [email@casadecambio.com.br] e o WhatsApp da mesa é [(XX) 9XXXX-XXXX]."*
+> *"De acordo. Pode cadastrar a nossa loja de [Bairro]. O e-mail para receber as ofertas é [email@casadecambio.com.br] e o WhatsApp de atendimento é [(XX) 9XXXX-XXXX]."*
 
 *Ação:* Salve o print da confirmação com a data e registre na sua planilha de controle.
 

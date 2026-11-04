@@ -61,7 +61,7 @@ Os alvos vêm do problem statement. Contam a partir do lançamento do piloto, qu
 - Calcular preço final, VET ou IOF.
 - Mediar a negociação depois do aceite.
 - Formar preço em tempo real ou leilão entre casas.
-- Monetizar o piloto. O MVP é gratuito para casas e viajantes.
+- Monetizar o piloto. O MVP é gratuito para casas e viajantes. A monetização futura prevê modelo de assinatura mensal de software para as casas parceiras, descartando percentual ou cobrança sobre operações cambiais.
 
 ## User Stories
 

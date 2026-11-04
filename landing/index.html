@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Câmbio Direto | Canal Neutro para Casas de Câmbio Físicas (SP e RJ)</title>
-  <meta name="description" content="Recupere o fluxo de viajantes de papel-moeda na sua loja física sem comissões abusivas e sem concorrência desleal de contas digitais. Participe do piloto gratuito para casas autorizadas pelo Banco Central." />
+  <title>Câmbio Direto | Canal Independente para Casas de Câmbio (SP e RJ)</title>
+  <meta name="description"
+    content="Plataforma de aproximação cambial para papel-moeda físico em SP e RJ. Conecte sua loja autorizada a viajantes sem intermediação financeira. Tecnologia Kodly." />
+  <link rel="canonical" href="https://cambiodireto.kodly.com.br" />
+
+  <!-- Open Graph / Redes Sociais (WhatsApp, LinkedIn, Facebook) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cambiodireto.kodly.com.br" />
+  <meta property="og:title" content="Câmbio Direto | Canal Independente para Casas de Câmbio (SP e RJ)" />
+  <meta property="og:description"
+    content="Plataforma independente de aproximação cambial para papel-moeda físico. Conecte sua casa de câmbio autorizada a viajantes em São Paulo e no Rio de Janeiro." />
+  <meta property="og:image" content="https://cambiodireto.kodly.com.br/kodly-logo.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Câmbio Direto - Tecnologia Kodly" />
+  <meta property="og:site_name" content="Câmbio Direto" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Câmbio Direto | Casas Fundadoras em SP e RJ" />
+  <meta name="twitter:description"
+    content="Canal neutro para papel-moeda físico nas melhores casas de câmbio de SP e RJ." />
+  <meta name="twitter:image" content="https://cambiodireto.kodly.com.br/kodly-logo.jpg" />
+
+  <!-- Favicon SVG Data URI -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏦</text></svg>">
 
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,9 +49,10 @@
               900: '#064e3b',
             },
             navy: {
-              800: '#1e293b',
-              900: '#0f172a',
-              950: '#0a0f1d',
+              800: '#152033',
+              850: '#111a2c',
+              900: '#0c1424',
+              950: '#070c17',
             }
           }
         }
@@ -33,11 +60,10 @@
     }
   </script>
 
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
   <style>
     body {
@@ -45,200 +71,270 @@
     }
   </style>
 </head>
+
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
 
-  <!-- ========================================================
-       CONFIGURAÇÃO DO WHATSAPP DO FUNDADOR:
-       Altere o número de WhatsApp abaixo na seção de scripts
-       ======================================================== -->
-
-  <!-- Top Ribbon: Exclusividade B2B -->
-  <aside aria-label="Alerta de conformidade" class="bg-navy-950 text-slate-300 text-xs py-2 px-4 text-center border-b border-slate-800 flex items-center justify-center gap-2">
-    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-      PILOTO EXCLUSIVO B2B
-    </span>
-    <span>Vagas limitadas a <strong>20 casas em São Paulo</strong> e <strong>20 no Rio de Janeiro</strong>. Piloto 100% gratuito.</span>
+  <!-- Top Ribbon: Contexto Institucional B2B -->
+  <aside aria-label="Alerta de conformidade"
+    class="bg-navy-950 text-slate-300 text-xs py-2 px-4 text-center border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-2">
+      <span
+        class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+        PROGRAMA DE CASAS FUNDADORAS
+      </span>
+      <span class="text-slate-300 text-[11px] sm:text-xs">Piloto de 90 dias (válido a contar do 1º lead entregue) sem
+        custos para instituições autorizadas em SP e RJ.</span>
+    </div>
   </aside>
 
-  <!-- Header / Navbar -->
-  <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-slate-800 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
-          <i data-lucide="building-2" class="w-5 h-5"></i>
+  <!-- Header / Navbar Principal (Layout Fluido sem quebra de texto) -->
+  <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-slate-800/90 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 shrink-0 group">
+        <div
+          class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:bg-brand-500 transition">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2L2 7v2h20V7L12 2zm8 9H4v8h2v-6h3v6h2v-6h2v6h2v-6h3v6h2v-8zM2 21h20v2H2v-2z" />
+          </svg>
         </div>
         <div>
-          <span class="text-xl font-extrabold tracking-tight text-white">Câmbio<span class="text-brand-400">Direto</span></span>
-          <span class="hidden sm:inline-block ml-2 text-xs font-semibold text-slate-400 border-l border-slate-700 pl-2 uppercase tracking-wider">Mesa de Operações</span>
+          <span class="text-xl font-extrabold tracking-tight text-white whitespace-nowrap">Câmbio<span
+              class="text-brand-400">Direto</span></span>
         </div>
-      </div>
+      </a>
 
-      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
-        <a href="#proposta" class="hover:text-brand-400 transition">A Tese Neutra</a>
-        <a href="#comparativo" class="hover:text-brand-400 transition">Por que Mudar?</a>
-        <a href="#como-funciona" class="hover:text-brand-400 transition">Como Funciona</a>
-        <a href="#faq" class="hover:text-brand-400 transition">Dúvidas & Compliance</a>
+      <!-- Desktop Navigation Links (Nomes concisos e whitespace-nowrap para não quebrar) -->
+      <nav class="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-semibold text-slate-300">
+        <a href="#proposta" class="whitespace-nowrap hover:text-brand-400 transition py-1">Proposta Neutra</a>
+        <a href="#cenario" class="whitespace-nowrap hover:text-brand-400 transition py-1">Mercado</a>
+        <a href="#como-funciona" class="whitespace-nowrap hover:text-brand-400 transition py-1">Como Funciona</a>
+        <a href="#quem-somos" class="whitespace-nowrap hover:text-brand-400 transition py-1">Sobre a Kodly</a>
+        <a href="#faq" class="whitespace-nowrap hover:text-brand-400 transition py-1">Dúvidas</a>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <a href="#cadastro-parceiro" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold py-2.5 px-5 rounded-xl shadow-md shadow-brand-600/30 transition hover:scale-[1.02]">
-          <i data-lucide="check-circle" class="w-4 h-4"></i>
-          <span>Cadastrar Minha Casa</span>
+      <!-- Desktop CTA & Actions -->
+      <div class="flex items-center gap-3 shrink-0">
+        <!-- Primary CTA Button -->
+        <a href="#cadastro-parceiro"
+          class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white text-xs sm:text-sm font-bold py-2.5 px-4 sm:px-5 rounded-xl shadow-md shadow-brand-600/30 transition hover:scale-[1.02] whitespace-nowrap">
+          <span>Cadastrar Casa de Câmbio</span>
         </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-300 hover:text-white focus:outline-none"
+          aria-label="Abrir menu">
+          <svg class="w-6 h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileMenu"
+      class="hidden lg:hidden bg-navy-950 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3 text-sm font-semibold">
+      <a href="#proposta" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-brand-400">Proposta
+        Neutra</a>
+      <a href="#cenario" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-brand-400">Cenário de
+        Mercado</a>
+      <a href="#como-funciona" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-brand-400">Como
+        Funciona</a>
+      <a href="#quem-somos" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-brand-400">Sobre a
+        Kodly</a>
+      <a href="#faq" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-brand-400">Dúvidas
+        Frequentes</a>
+      <a href="https://wa.me/552139557496?text=Ol%C3%A1%21%20Gostaria%20de%20tirar%20d%C3%BAvidas%20sobre%20o%20piloto%20do%20C%C3%A2mbio%20Direto."
+        target="_blank" rel="noopener"
+        class="flex items-center justify-center gap-2 py-3 text-emerald-400 bg-slate-900 rounded-xl border border-slate-800">
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+        <span>Falar no WhatsApp (+55 21 3955-7496)</span>
+      </a>
+      <a href="#cadastro-parceiro" onclick="toggleMobileMenu()"
+        class="block text-center bg-brand-600 text-white py-3 rounded-xl font-bold mt-2">
+        Cadastrar Casa no Piloto
+      </a>
     </div>
   </header>
 
   <!-- Hero Section -->
   <section class="relative pt-12 pb-20 md:pt-16 md:pb-28 overflow-hidden bg-navy-900 text-white">
-    <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:28px_28px] opacity-10 pointer-events-none"></div>
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
+
         <!-- Left Column: Copy Comercial -->
         <div class="lg:col-span-7 text-center lg:text-left space-y-6">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold">
-            <i data-lucide="shield-check" class="w-4 h-4 text-brand-400"></i>
-            Para Casas de Câmbio Autorizadas pelo Banco Central
+          <div
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-200 text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+            Para Instituições Autorizadas pelo Banco Central em SP e RJ
           </div>
 
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.18] text-white">
-            Sua casa de câmbio perdeu clientes após a compra do <span class="text-amber-400 underline decoration-amber-500/50 underline-offset-4">Melhor Câmbio pela Nomad</span>?
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.2] text-white">
+            O principal comparador passou a vender conta digital própria. <br class="hidden sm:inline" />
+            <span class="text-emerald-400">
+              E se a sua loja física tivesse um canal independente?
+            </span>
           </h1>
 
           <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-            Nós construímos o <strong>primeiro canal 100% neutro</strong> de aproximação cambial. Não temos conta internacional, não competimos com o seu spread e devolvemos viajantes prontos para fechar papel-moeda no seu balcão físico em <strong>São Paulo</strong> e no <strong>Rio de Janeiro</strong>.
+            Estamos estruturando uma alternativa neutra de aproximação entre viajantes e casas de câmbio para compra de
+            papel-moeda (espécie). Participe do <strong>piloto de 90 dias (válido a partir do 1º lead
+              entregue)</strong>, sem mensalidade, sem comissão e com autonomia total da sua loja.
           </p>
 
-          <!-- Badges de Alívio de Objeções -->
+          <!-- Pilares da Proposta -->
           <div class="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-xl mx-auto lg:mx-0 text-left">
-            <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <div class="text-brand-400 font-extrabold text-sm flex items-center gap-1.5 mb-1">
-                <i data-lucide="x-circle" class="w-4 h-4 text-rose-400"></i>
-                Zero Conflito
+            <div class="p-4 rounded-xl bg-slate-800/90 border border-slate-700">
+              <div class="text-brand-400 font-bold text-sm mb-1 flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-brand-400 fill-current" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
+                </svg>
+                Canal Independente
               </div>
-              <p class="text-xs text-slate-400 leading-tight">Não vendemos conta digital nem cartão global concorrente.</p>
+              <p class="text-xs text-slate-300 leading-relaxed">Não temos conta global nem produtos financeiros
+                concorrentes.</p>
             </div>
 
-            <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <div class="text-brand-400 font-extrabold text-sm flex items-center gap-1.5 mb-1">
-                <i data-lucide="lock" class="w-4 h-4 text-brand-400"></i>
-                Zero Custódia
+            <div class="p-4 rounded-xl bg-slate-800/90 border border-slate-700">
+              <div class="text-brand-400 font-bold text-sm mb-1 flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-brand-400 fill-current" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clip-rule="evenodd" />
+                </svg>
+                Sem Custódia
               </div>
-              <p class="text-xs text-slate-400 leading-tight">Cliente paga diretamente na sua conta. Não tocamos em Pix ou dinheiro.</p>
+              <p class="text-xs text-slate-300 leading-relaxed">Não recebemos dinheiro ou Pix. O cliente liquida
+                diretamente na sua instituição.</p>
             </div>
 
-            <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <div class="text-brand-400 font-extrabold text-sm flex items-center gap-1.5 mb-1">
-                <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
-                100% Gratuito
+            <div class="p-4 rounded-xl bg-slate-800/90 border border-slate-700">
+              <div class="text-brand-400 font-bold text-sm mb-1 flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z"
+                    clip-rule="evenodd" />
+                </svg>
+                Piloto Justo
               </div>
-              <p class="text-xs text-slate-400 leading-tight">Sem mensalidade, sem comissão por oferta e sem fidelidade no piloto.</p>
+              <p class="text-xs text-slate-300 leading-relaxed">90 dias gratuitos que só começam a contar quando você
+                receber seu 1º lead.</p>
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Card de Adesão da Casa -->
+        <!-- Right Column: Formulário de Adesão da Casa -->
         <div class="lg:col-span-5" id="cadastro-parceiro">
           <div class="bg-white text-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 relative">
-            <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold uppercase tracking-wider py-1 px-3.5 rounded-full shadow-sm">
-              Piloto SP &bull; RJ
-            </div>
-
             <div class="mb-5">
-              <h2 class="text-2xl font-black text-navy-950">Cadastre sua Mesa</h2>
-              <p class="text-xs text-slate-500 mt-1">Preencha os dados da sua instituição para receber ofertas de viajantes da sua praça.</p>
+              <span
+                class="text-[11px] font-extrabold uppercase tracking-wider text-brand-700 bg-brand-50 border border-brand-200 py-1 px-3 rounded-full">
+                Inscrição de Casa Fundadora
+              </span>
+              <h2 class="text-2xl font-black text-navy-950 mt-2">Cadastre sua Casa de Câmbio</h2>
+              <p class="text-xs text-slate-500 mt-1">Preencha os dados da sua instituição para participar da fase
+                piloto.</p>
             </div>
 
             <form id="partnerForm" class="space-y-3.5" onsubmit="handlePartnerSubmit(event)">
-              
-              <!-- Nome da Casa & CNPJ -->
+
+              <!-- Nome da Casa & CNPJ com Validação Real -->
               <div>
-                <label for="companyName" class="block text-xs font-bold text-slate-700 mb-1">Nome Fantasia / Razão Social *</label>
-                <input type="text" id="companyName" placeholder="Ex: Câmbio Brasil Turismo" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                <label for="companyName" class="block text-xs font-bold text-slate-700 mb-1">Razão Social ou Nome
+                  Fantasia *</label>
+                <input type="text" id="companyName" placeholder="Ex: Câmbio Brasil Turismo Ltda" required
+                  class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
               </div>
 
-              <!-- Praça & Bairro -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label for="city" class="block text-xs font-bold text-slate-700 mb-1">Cidade da Loja *</label>
-                  <select id="city" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition">
+                  <label for="cnpj" class="block text-xs font-bold text-slate-700 mb-1">CNPJ da Instituição *</label>
+                  <input type="text" id="cnpj" maxlength="18" placeholder="00.000.000/0001-00"
+                    oninput="formatAndValidateCNPJ(this)" required
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  <p id="cnpjLabel" class="text-[10px] text-slate-400 mt-0.5">Apenas dígitos ou formatado.</p>
+                </div>
+                <div>
+                  <label for="city" class="block text-xs font-bold text-slate-700 mb-1">Praça Principal *</label>
+                  <select id="city" required
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition">
                     <option value="São Paulo (SP)" selected>São Paulo (SP)</option>
                     <option value="Rio de Janeiro (RJ)">Rio de Janeiro (RJ)</option>
                   </select>
-                </div>
-                <div>
-                  <label for="neighborhood" class="block text-xs font-bold text-slate-700 mb-1">Bairro(s) da Loja *</label>
-                  <input type="text" id="neighborhood" placeholder="Ex: Jardins / Paulista" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
                 </div>
               </div>
 
               <!-- Responsável & Cargo -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label for="contactName" class="block text-xs font-bold text-slate-700 mb-1">Nome do Responsável *</label>
-                  <input type="text" id="contactName" placeholder="Ex: Roberto Mendes" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  <label for="contactName" class="block text-xs font-bold text-slate-700 mb-1">Nome do Contato Comercial
+                    *</label>
+                  <input type="text" id="contactName" placeholder="Ex: Roberto Mendes" required
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
                 </div>
                 <div>
-                  <label for="role" class="block text-xs font-bold text-slate-700 mb-1">Cargo / Mesa *</label>
-                  <select id="role" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition">
-                    <option value="Gerente Comercial" selected>Gerente Comercial</option>
-                    <option value="Operador de Mesa">Operador de Mesa</option>
-                    <option value="Diretor / Sócio">Diretor / Sócio</option>
-                    <option value="Atendimento / Balcão">Atendimento / Balcão</option>
-                  </select>
+                  <label for="role" class="block text-xs font-bold text-slate-700 mb-1">Cargo / Função *</label>
+                  <input type="text" id="role" placeholder="Ex: Gerente Comercial" required
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
                 </div>
               </div>
 
-              <!-- WhatsApp da Mesa & E-mail -->
+              <!-- WhatsApp & E-mail Corporativo -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label for="partnerWhatsApp" class="block text-xs font-bold text-slate-700 mb-1">WhatsApp de Atendimento *</label>
-                  <input type="tel" id="partnerWhatsApp" placeholder="(11) 98765-4321" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  <label for="partnerWhatsApp" class="block text-xs font-bold text-slate-700 mb-1">WhatsApp Comercial da Loja
+                    *</label>
+                  <input type="tel" id="partnerWhatsApp" placeholder="(11) 98765-4321" required
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
                 </div>
                 <div>
-                  <label for="partnerEmail" class="block text-xs font-bold text-slate-700 mb-1">E-mail Corporativo *</label>
-                  <input type="email" id="partnerEmail" placeholder="mesa@cambio.com.br" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  <label for="partnerEmail" class="block text-xs font-bold text-slate-700 mb-1">E-mail Corporativo
+                    *</label>
+                  <input type="email" id="partnerEmail" placeholder="contato@cambio.com.br" required
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
                 </div>
               </div>
 
-              <!-- Moedas que Opera -->
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">Moedas operadas em espécie na loja:</label>
-                <div class="grid grid-cols-3 gap-2 text-xs font-semibold text-slate-700">
-                  <label class="flex items-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-100">
-                    <input type="checkbox" name="currencies" value="USD" checked class="rounded text-brand-600 focus:ring-brand-500" />
-                    <span>Dólar (USD)</span>
-                  </label>
-                  <label class="flex items-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-100">
-                    <input type="checkbox" name="currencies" value="EUR" checked class="rounded text-brand-600 focus:ring-brand-500" />
-                    <span>Euro (EUR)</span>
-                  </label>
-                  <label class="flex items-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-100">
-                    <input type="checkbox" name="currencies" value="GBP" checked class="rounded text-brand-600 focus:ring-brand-500" />
-                    <span>Libra (GBP)</span>
+              <!-- Declarações & LGPD -->
+              <div class="space-y-2 pt-1">
+                <div class="flex items-start gap-2.5">
+                  <input type="checkbox" id="bacenConfirm" required
+                    class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                  <label for="bacenConfirm" class="text-xs text-slate-600 leading-tight">
+                    Declaro que a instituição é autorizada pelo Banco Central a operar câmbio turismo.
                   </label>
                 </div>
-              </div>
 
-              <!-- Checkbox de Autorização Bacen -->
-              <div class="flex items-start gap-2.5 pt-1">
-                <input type="checkbox" id="bacenConfirm" required class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
-                <label for="bacenConfirm" class="text-[11px] text-slate-500 leading-tight">
-                  Confirmo que a instituição é autorizada pelo Banco Central do Brasil a operar no mercado de câmbio e tem loja física na praça informada.
-                </label>
+                <div class="flex items-start gap-2.5">
+                  <input type="checkbox" id="lgpdConsent" required
+                    class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                  <label for="lgpdConsent" class="text-xs text-slate-600 leading-tight">
+                    Concordo com o tratamento dos dados institucionais informados para contato sobre o piloto, conforme
+                    nossa <a href="javascript:void(0)" onclick="openPrivacyModal()"
+                      class="text-brand-600 underline font-semibold">Política de Privacidade</a>.
+                  </label>
+                </div>
               </div>
 
               <!-- Submit Button -->
-              <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg shadow-brand-600/30 transition hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 text-base">
-                <i data-lucide="send" class="w-5 h-5"></i>
-                <span>Confirmar Interesse via WhatsApp</span>
+              <button type="submit" id="submitBtn"
+                class="w-full bg-brand-600 hover:bg-brand-700 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg shadow-brand-600/30 transition hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 text-base">
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                </svg>
+                <span>Inscrever Casa no Piloto Gratuito</span>
               </button>
 
               <div class="text-center">
-                <p class="text-[11px] text-slate-400">
-                  Piloto 100% gratuito. Sem fidelidade, sem cartão e sem mensalidade.
+                <p class="text-xs text-slate-500">
+                  Sem taxa de adesão, sem mensalidade e sem comissão sobre operações.
                 </p>
               </div>
             </form>
@@ -249,70 +345,78 @@
     </div>
   </section>
 
-  <!-- Section: O Problema do Mercado (Conflito Nomad) -->
-  <section id="comparativo" class="py-20 bg-white border-b border-slate-200">
+  <!-- Section: O Cenário de Mercado (Factual e Equilibrado) -->
+  <section id="cenario" class="py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 mb-2">Entenda o Cenário de Mercado</h2>
-        <h3 class="text-3xl sm:text-4xl font-extrabold text-navy-950 tracking-tight">O que mudou com a venda do Melhor Câmbio?</h3>
-        <p class="text-slate-600 mt-4 text-base">
-          Em junho de 2024, a fintech de conta internacional Nomad comprou o portal Melhor Câmbio por cerca de R$ 3 milhões. Essa aquisição criou um conflito estrutural para as casas de câmbio tradicionais:
+        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 mb-2">Contexto e Oportunidade</h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-navy-950 tracking-tight">O que mudou no mercado de cotações?
+        </h3>
+        <p class="text-slate-600 mt-4 text-base leading-relaxed">
+          Em julho de 2024, a fintech de conta internacional Nomad anunciou a aquisição do portal <em>Melhor Câmbio</em>
+          por valor divulgado de aproximadamente US$ 550 mil (<a
+            href="https://latamlist.com/nomad-acquires-melhor-cambio-for-550k/" target="_blank" rel="noopener"
+            class="text-brand-600 underline font-semibold hover:text-brand-700">fonte: LatamList</a>).
         </p>
       </div>
 
-      <!-- Tabela Comparativa Visual -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        
-        <!-- O Portal Antigo (Sob controle da Nomad) -->
-        <div class="p-8 rounded-3xl bg-slate-50 border-2 border-slate-200 relative space-y-5">
+
+        <!-- Bloco 1: O Portal sob controle de conta global -->
+        <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200 space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-extrabold uppercase tracking-wider text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
-              Canal Controlado por Concorrente
+            <span class="text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 px-3 py-1 rounded-full">
+              Fato Observável
             </span>
-            <i data-lucide="alert-triangle" class="w-6 h-6 text-rose-500"></i>
           </div>
 
-          <h4 class="text-2xl font-bold text-navy-950">Portal sob controle da Nomad</h4>
+          <h4 class="text-xl font-bold text-navy-950">Portal Integrado à Conta Proprietária</h4>
 
-          <ul class="space-y-4 text-sm text-slate-600">
+          <ul class="space-y-3.5 text-sm text-slate-700">
             <li class="flex items-start gap-3">
-              <i data-lucide="x" class="w-5 h-5 text-rose-500 shrink-0 mt-0.5"></i>
-              <span><strong>Conflito Direto de Interesse:</strong> O tráfego do portal é usado para promover a conta global e o spread promocional da própria proprietária.</span>
+              <span class="text-amber-600 font-bold text-base">&bull;</span>
+              <span><strong>Exibição da Conta Nomad:</strong> As páginas de cotação e oferta hoje exibem a opção da
+                conta Nomad em destaque ao lado das cotações das casas de câmbio participantes.</span>
             </li>
             <li class="flex items-start gap-3">
-              <i data-lucide="x" class="w-5 h-5 text-rose-500 shrink-0 mt-0.5"></i>
-              <span><strong>Desvalorização da Loja Física:</strong> A demanda que antes ia para o seu balcão físico é incentivada a migrar para cartões digitais.</span>
+              <span class="text-amber-600 font-bold text-base">&bull;</span>
+              <span><strong>Presença Institucional Concorrente:</strong> O rodapé do comparador traz a razão social da
+                própria empresa que comercializa a conta digital internacional.</span>
             </li>
             <li class="flex items-start gap-3">
-              <i data-lucide="x" class="w-5 h-5 text-rose-500 shrink-0 mt-0.5"></i>
-              <span><strong>Custo e Dependência:</strong> A casa paga para anunciar em um canal onde o dono compete diretamente com os seus produtos.</span>
+              <span class="text-amber-600 font-bold text-base">&bull;</span>
+              <span><strong>Canal Não Dedicado:</strong> O ambiente de captação divide a atenção do viajante entre
+                papel-moeda físico e cartões eletrônicos internacionais.</span>
             </li>
           </ul>
         </div>
 
-        <!-- Nossa Solução: Câmbio Direto -->
-        <div class="p-8 rounded-3xl bg-emerald-50/60 border-2 border-brand-500 shadow-xl shadow-brand-500/10 relative space-y-5">
+        <!-- Bloco 2: A Proposta do Câmbio Direto -->
+        <div class="p-8 rounded-3xl bg-emerald-50/70 border-2 border-brand-500 shadow-lg shadow-brand-500/10 space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-200 px-3 py-1 rounded-full">
-              Nossa Proposta de Neutralidade
+            <span
+              class="text-xs font-bold text-emerald-800 uppercase tracking-wider bg-emerald-200 px-3 py-1 rounded-full">
+              Nossa Proposta
             </span>
-            <i data-lucide="shield-check" class="w-6 h-6 text-brand-600"></i>
           </div>
 
-          <h4 class="text-2xl font-bold text-navy-950">Câmbio Direto (Canal Independente)</h4>
+          <h4 class="text-xl font-bold text-navy-950">Câmbio Direto: Canal Independente</h4>
 
-          <ul class="space-y-4 text-sm text-slate-700">
+          <ul class="space-y-3.5 text-sm text-slate-700">
             <li class="flex items-start gap-3">
-              <i data-lucide="check" class="w-5 h-5 text-brand-600 shrink-0 mt-0.5"></i>
-              <span><strong>100% Neutro:</strong> Não oferecemos conta global, não temos cartão digital e não competimos com o seu negócio.</span>
+              <span class="text-brand-600 font-bold text-base">&bull;</span>
+              <span><strong>Foco em Papel-Moeda:</strong> Canal dedicado ao viajante que busca papel-moeda físico (USD,
+                EUR, GBP) para despesas no exterior onde o cartão não atende.</span>
             </li>
             <li class="flex items-start gap-3">
-              <i data-lucide="check" class="w-5 h-5 text-brand-600 shrink-0 mt-0.5"></i>
-              <span><strong>Foco Exclusivo em Espécie:</strong> Atendemos o viajante que precisa de notas físicas (USD, EUR, GBP) e prefere a segurança da loja física.</span>
+              <span class="text-brand-600 font-bold text-base">&bull;</span>
+              <span><strong>Sem Produto Próprio:</strong> Não oferecemos conta global, não emitimos cartões e não
+                disputamos o cliente cambial.</span>
             </li>
             <li class="flex items-start gap-3">
-              <i data-lucide="check" class="w-5 h-5 text-brand-600 shrink-0 mt-0.5"></i>
-              <span><strong>Zero Intermediação:</strong> O cliente fecha com a sua mesa, transfere para a sua conta e retira no seu balcão com sua nota legal.</span>
+              <span class="text-brand-600 font-bold text-base">&bull;</span>
+              <span><strong>Alinhamento com a Loja Física:</strong> Nosso objetivo é conectar o viajante à loja
+                autorizada, valorizando a presença física da sua instituição.</span>
             </li>
           </ul>
         </div>
@@ -321,110 +425,181 @@
     </div>
   </section>
 
-  <!-- Section: Como Funciona para a Sua Mesa -->
-  <section id="como-funciona" class="py-20 bg-slate-50 border-b border-slate-200">
+  <!-- Section: De Onde Virá a Demanda? -->
+  <section id="proposta" class="py-20 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center mb-16">
+        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 mb-2">Transparência de Aquisição</h2>
+        <h3 class="text-3xl font-extrabold text-navy-950 tracking-tight">De onde virão os viajantes?</h3>
+        <p class="text-slate-600 mt-4 text-base">
+          Estamos montando a rede neste momento. As casas fundadoras garantem a oferta na praça enquanto ativamos nossos
+          canais de atração:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+          <div
+            class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center font-bold mb-4 text-lg">
+            🔍
+          </div>
+          <h4 class="text-base font-bold text-navy-950 mb-2">Busca Orgânica e Local (SEO)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Captação de demanda ativa no Google de usuários pesquisando especificamente compra de moeda física e
+            retirada em bairros de SP e RJ.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+          <div
+            class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center font-bold mb-4 text-lg">
+            ✈️
+          </div>
+          <h4 class="text-base font-bold text-navy-950 mb-2">Comunidades de Viagem</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Articulação com viajantes internacionais que precisam de dinheiro em espécie para destinos com baixa
+            aceitação de cartão ou exigências alfandegárias.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+          <div
+            class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center font-bold mb-4 text-lg">
+            🤝
+          </div>
+          <h4 class="text-base font-bold text-navy-950 mb-2">Construção com as Casas</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            As casas fundadoras participam da definição dos parâmetros de oferta e regras de atendimento para calibrar
+            um canal prático e viável.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Como Funciona no Piloto (Operação Assistida e Exclusividade Clara) -->
+  <section id="como-funciona" class="py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 mb-2">Operação Enxuta</h2>
-        <h3 class="text-3xl sm:text-4xl font-extrabold text-navy-950 tracking-tight">Como a sua mesa recebe e atende as ofertas?</h3>
+        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 mb-2">Operação Assistida no Piloto
+        </h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-navy-950 tracking-tight">Como sua casa de câmbio recebe e atende os
+          viajantes?</h3>
         <p class="text-slate-600 mt-4 text-base">
-          Desenhamos um fluxo assíncrono e objetivo que não atrapalha a rotina da sua mesa de operações.
+          Durante a fase piloto, a operação é assistida pela equipe do projeto para garantir agilidade e contato direto
+          com a sua loja.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <!-- Step 1 -->
-        <div class="p-6 rounded-2xl bg-white border border-slate-200">
-          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm mb-4">
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <div
+            class="w-8 h-8 rounded-lg bg-navy-900 text-white flex items-center justify-center font-bold text-xs mb-4">
             1
           </div>
-          <h4 class="text-base font-bold text-navy-950 mb-2">Viajante Cria Oferta</h4>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            O cliente informa a moeda, a quantia que precisa, a praça (SP ou RJ), a data da viagem e seu WhatsApp verificado.
+          <h4 class="text-sm font-bold text-navy-950 mb-2">Demanda Qualificada</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            O viajante informa moeda, quantia, praça (SP ou RJ), data da viagem e telefone para contato.
           </p>
         </div>
 
-        <!-- Step 2 -->
-        <div class="p-6 rounded-2xl bg-white border border-slate-200">
-          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm mb-4">
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <div
+            class="w-8 h-8 rounded-lg bg-navy-900 text-white flex items-center justify-center font-bold text-xs mb-4">
             2
           </div>
-          <h4 class="text-base font-bold text-navy-950 mb-2">Alerta na sua Mesa</h4>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            Sua mesa recebe a notificação da oferta com todos os detalhes da demanda para avaliar se tem estoque e taxa competitiva.
+          <h4 class="text-sm font-bold text-navy-950 mb-2">Encaminhamento à Loja</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            A oportunidade é repassada diretamente para o WhatsApp ou e-mail de atendimento das casas participantes da praça.
           </p>
         </div>
 
-        <!-- Step 3 -->
-        <div class="p-6 rounded-2xl bg-white border border-slate-200">
-          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm mb-4">
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <div
+            class="w-8 h-8 rounded-lg bg-navy-900 text-white flex items-center justify-center font-bold text-xs mb-4">
             3
           </div>
-          <h4 class="text-base font-bold text-navy-950 mb-2">Aceite Rápido</h4>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            A primeira casa que aceitar a demanda assume o cliente com exclusividade para evitar leilão predatório ou spam.
+          <h4 class="text-sm font-bold text-navy-950 mb-2">Atendimento Exclusivo</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            A primeira casa que confirmar taxa e disponibilidade assume o contato do cliente com exclusividade, evitando
+            leilão desgastante.
           </p>
         </div>
 
-        <!-- Step 4 -->
-        <div class="p-6 rounded-2xl bg-white border border-slate-200">
-          <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold text-sm mb-4">
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <div
+            class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-xs mb-4">
             4
           </div>
-          <h4 class="text-base font-bold text-navy-950 mb-2">Fechamento Direto</h4>
-          <p class="text-xs text-slate-500 leading-relaxed">
-            Liberamos o WhatsApp e telefone do cliente. A negociação, emissão do contrato cambial e entrega ocorrem direto na sua loja.
+          <h4 class="text-sm font-bold text-navy-950 mb-2">Liquidação na Loja</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Conferência documental cambial, emissão do contrato e entrega do numerário ocorrem diretamente na sua loja.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Section: Blindagem Regulatória e Compliance Bacen (ADR-001) -->
-  <section class="py-20 bg-navy-950 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-400 text-xs font-semibold border border-brand-500/30 mb-4">
-          <i data-lucide="shield" class="w-3.5 h-3.5"></i>
-          Segurança Jurídica para a sua Instituição
-        </div>
-        <h3 class="text-3xl font-extrabold tracking-tight">
-          Princípio Inviolável: Zero Custódia e Zero Intermediação Financeira
-        </h3>
-        <p class="text-slate-300 mt-4 text-base leading-relaxed">
-          Nossa arquitetura e modelo societário foram desenhados com rigorosa observância à regulamentação do Banco Central do Brasil para evitar qualquer sobreposição com as prerrogativas privativas de instituições autorizadas:
-        </p>
-      </div>
+  <!-- Section: Quem Somos / Kodly Tecnologia (Com a logo oficial da Kodly) -->
+  <section id="quem-somos" class="py-20 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-          <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-brand-400">
-            <i data-lucide="banknote" class="w-5 h-5"></i>
+          <!-- Logo Oficial da Kodly -->
+          <div class="md:col-span-4 text-center">
+            <div
+              class="relative w-28 h-28 mx-auto rounded-3xl overflow-hidden shadow-xl ring-4 ring-slate-100 bg-navy-900 flex items-center justify-center p-1">
+              <img src="kodly-logo.jpg" alt="Logo Kodly Tecnologia" class="w-full h-full object-cover rounded-2xl" />
+            </div>
+            <h4 class="text-lg font-bold text-navy-950 mt-4">Kodly Tecnologia</h4>
+            <p class="text-xs text-slate-500 font-medium">Inovação & Infraestrutura Cambial</p>
+            <div class="mt-3 flex justify-center gap-2">
+              <span
+                class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-[11px] font-semibold rounded-full border border-slate-200">São
+                Paulo &bull; Rio de Janeiro</span>
+            </div>
           </div>
-          <h4 class="text-base font-bold text-white">Não tocamos no dinheiro</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            NÃO recebemos pagamentos, NÃO operamos contas escrow e NÃO fazemos Pix. O viajante paga diretamente na conta jurídica da sua instituição autorizada.
-          </p>
-        </div>
 
-        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-          <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-brand-400">
-            <i data-lucide="file-text" class="w-5 h-5"></i>
-          </div>
-          <h4 class="text-base font-bold text-white">KYC e Sisbacen 100% da Casa</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            A qualificação do cliente, checagem documental cambial e registro da operação perante o Banco Central continuam sendo prerrogativa exclusiva da sua mesa.
-          </p>
-        </div>
+          <div class="md:col-span-8 space-y-4 text-slate-700 text-sm leading-relaxed">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+              <span>Tecnologia Desenvolvida pela Kodly</span>
+            </div>
+            <h3 class="text-2xl font-extrabold text-navy-950 tracking-tight">Por que estamos criando o Câmbio Direto?
+            </h3>
+            <p>
+              Acompanhamos a aquisição do principal comparador por uma empresa de conta internacional e percebemos a
+              oportunidade de criar uma alternativa dedicada exclusivamente às instituições autorizadas com loja física
+              que operam moeda em espécie.
+            </p>
+            <p>
+              O viajante que precisa de notas físicas para viagem merece um canal ágil, e as casas autorizadas merecem
+              uma <strong>ferramenta de aproximação independente</strong>, sem intermediários disputando spread ou
+              promovendo produtos concorrentes.
+            </p>
 
-        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-          <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-brand-400">
-            <i data-lucide="scale" class="w-5 h-5"></i>
+            <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-6 text-xs text-slate-600">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-brand-600 fill-current" viewBox="0 0 20 20">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+                <span><strong>E-mail:</strong> contato@kodly.com.br</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24">
+                  <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                <a href="https://wa.me/552139557496?text=Ol%C3%A1%21%20Gostaria%20de%20falar%20com%20a%20equipe%20do%20C%C3%A2mbio%20Direto."
+                  target="_blank" rel="noopener" class="text-brand-600 hover:underline font-semibold">
+                  <strong>WhatsApp Comercial:</strong> +55 21 3955-7496
+                </a>
+              </div>
+            </div>
           </div>
-          <h4 class="text-base font-bold text-white">Software de Mensageria Estrito</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Atuamos como provedores de tecnologia e comunicação neutra, aproximando quem quer comprar de quem tem autorização legal para vender.
-          </p>
+
         </div>
       </div>
     </div>
@@ -434,177 +609,461 @@
   <section id="faq" class="py-20 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
-        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 mb-2">Tire suas Dúvidas Comerciais</h2>
-        <h3 class="text-3xl font-extrabold text-navy-950 tracking-tight">Perguntas Frequentes dos Gerentes e Donos</h3>
+        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 mb-2">Esclarecimentos</h2>
+        <h3 class="text-3xl font-extrabold text-navy-950 tracking-tight">Perguntas Frequentes das Casas de Câmbio</h3>
       </div>
 
       <div class="space-y-4">
         <!-- Q1 -->
-        <details class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+        <details
+          class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
           <summary class="flex items-center justify-between cursor-pointer font-bold text-navy-950 text-base">
-            <span>Quanto custa participar do piloto de 90 dias? Existe alguma pegadinha?</span>
-            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition"></i>
+            <span>Quando começa a contar o período de 90 dias do piloto?</span>
+            <span class="text-slate-400 group-open:rotate-180 transition font-bold">&darr;</span>
           </summary>
-          <p class="text-slate-600 text-sm mt-4 leading-relaxed">
-            Zero pegadinha. O piloto inicial em São Paulo e Rio de Janeiro é <strong>100% gratuito</strong>. Não cobramos mensalidade, não cobramos taxa por lead recebido e não cobramos comissão sobre as operações fechadas. Nosso objetivo agora é validar a fluidez do canal junto às melhores casas físicas.
+          <p class="text-slate-700 text-sm mt-4 leading-relaxed">
+            O período do piloto gratuito de 90 dias <strong>só começa a ser contado a partir da entrega do primeiro lead
+              efetivo para a sua loja</strong>. Se demorar alguns dias ou semanas para surgir uma demanda na sua região,
+            o prazo da sua casa não corre.
           </p>
         </details>
 
         <!-- Q2 -->
-        <details class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+        <details
+          class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
           <summary class="flex items-center justify-between cursor-pointer font-bold text-navy-950 text-base">
-            <span>Como o cliente realiza o pagamento e a retirada do papel-moeda?</span>
-            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition"></i>
+            <span>Como o Câmbio Direto planeja se monetizar no futuro?</span>
+            <span class="text-slate-400 group-open:rotate-180 transition font-bold">&darr;</span>
           </summary>
-          <p class="text-slate-600 text-sm mt-4 leading-relaxed">
-            Exatamente da mesma forma que os clientes habituais do seu balcão operam: o cliente vai até a sua loja física para pagar e retirar, ou combina a transferência para a conta jurídica da sua casa com retirada / delivery próprio. A plataforma não participa do fluxo de liquidação.
+          <p class="text-slate-700 text-sm mt-4 leading-relaxed">
+            Após a validação do piloto com as casas fundadoras, planejamos oferecer uma <strong>assinatura mensal fixa
+              de software</strong> para conexão da sua casa ao canal. Não cobramos comissão nem percentual sobre suas
+            operações cambiais. A continuidade após os 90 dias será 100% opcional.
           </p>
         </details>
 
         <!-- Q3 -->
-        <details class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+        <details
+          class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
           <summary class="flex items-center justify-between cursor-pointer font-bold text-navy-950 text-base">
-            <span>Vocês têm intenção de vender conta digital ou cartão pré-pago no futuro?</span>
-            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition"></i>
+            <span>Como fica a conformidade regulatória e a liquidação das operações?</span>
+            <span class="text-slate-400 group-open:rotate-180 transition font-bold">&darr;</span>
           </summary>
-          <p class="text-slate-600 text-sm mt-4 leading-relaxed">
-            <strong>Não.</strong> Esse é o nosso diferencial e o motivo da nossa existência. Nosso posicionamento é de neutralidade absoluta: o viajante que usa nossa plataforma quer papel-moeda físico para viagem, segmento onde a conta global não atende plenamente.
+          <p class="text-slate-700 text-sm mt-4 leading-relaxed">
+            O modelo operacional prevê que a identificação documental do cliente (KYC), emissão do contrato cambial,
+            conferência no Sisbacen e recebimento dos valores são de responsabilidade exclusiva da instituição
+            autorizada. A estruturação jurídica da plataforma atua estritamente no escopo de comunicação e está em
+            acompanhamento contínuo.
           </p>
         </details>
 
         <!-- Q4 -->
-        <details class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+        <details
+          class="group bg-slate-50 rounded-2xl p-6 border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
           <summary class="flex items-center justify-between cursor-pointer font-bold text-navy-950 text-base">
-            <span>O que acontece após o término do piloto de 90 dias?</span>
-            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition"></i>
+            <span>Quem é responsável pelo tratamento dos dados cadastrais (LGPD)?</span>
+            <span class="text-slate-400 group-open:rotate-180 transition font-bold">&darr;</span>
           </summary>
-          <p class="text-slate-600 text-sm mt-4 leading-relaxed">
-            Quando a plataforma estiver entregando um fluxo constante e previsível de clientes qualificados para a sua loja, apresentaremos um plano de assinatura mensal simples e previsível (sem surpresas). A adesão futura será 100% opcional e você não terá nenhuma obrigação de continuar caso não queira.
+          <p class="text-slate-700 text-sm mt-4 leading-relaxed">
+            Os dados institucionais informados são tratados sob controle da Kodly exclusivamente para comunicação,
+            credenciamento no piloto e encaminhamento de demandas, em conformidade com a LGPD.
           </p>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- CTA Final Section -->
-  <section class="py-16 bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 text-white text-center border-t border-slate-800">
+  <!-- CTA Final com Bloco de WhatsApp para Dúvidas -->
+  <section class="py-16 bg-navy-950 text-white text-center border-t border-slate-800">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-      <h3 class="text-3xl sm:text-4xl font-black tracking-tight">
-        Garanta a vaga da sua loja no grupo piloto
+      <h3 class="text-3xl font-extrabold tracking-tight">
+        Faça parte do grupo de Casas Fundadoras
       </h3>
       <p class="text-slate-300 text-base max-w-2xl mx-auto">
-        Estamos selecionando apenas <strong>20 casas em São Paulo</strong> e <strong>20 no Rio de Janeiro</strong> para receber as ofertas iniciais dos viajantes.
+        Cadastre sua instituição para o piloto de 90 dias em São Paulo e no Rio de Janeiro.
       </p>
-      <div class="pt-2">
-        <a href="#cadastro-parceiro" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-extrabold text-base py-4 px-8 rounded-2xl shadow-xl shadow-brand-600/30 transition hover:scale-105">
-          <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-          <span>Cadastrar Minha Casa Agora</span>
+      <div class="pt-2 flex flex-wrap items-center justify-center gap-4">
+        <a href="#cadastro-parceiro"
+          class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-extrabold text-base py-3.5 px-8 rounded-2xl shadow-xl shadow-brand-600/30 transition hover:scale-105 whitespace-nowrap">
+          <span>Cadastrar Instituição no Piloto</span>
         </a>
+      </div>
+
+      <!-- Bloco de Dúvidas via WhatsApp no Final da Página -->
+      <div class="mt-8 pt-8 border-t border-slate-800/80 max-w-xl mx-auto">
+        <div
+          class="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 rounded-full bg-emerald-500/20 text-[#25D366] flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white">Dúvidas sobre o piloto?</h4>
+              <p class="text-xs text-slate-400">Fale diretamente com nossa equipe de parcerias.</p>
+            </div>
+          </div>
+          <a href="https://wa.me/552139557496?text=Ol%C3%A1%21%20Gostaria%20de%20tirar%20d%C3%BAvidas%20sobre%20o%20piloto%20do%20C%C3%A2mbio%20Direto."
+            target="_blank" rel="noopener"
+            class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-bold py-3 px-5 rounded-xl shadow-lg shadow-emerald-950/40 transition hover:scale-105 whitespace-nowrap">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            <span>WhatsApp: +55 21 3955-7496</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-navy-950 text-slate-400 text-xs py-12 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-800">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
-            <i data-lucide="building-2" class="w-4 h-4"></i>
+  <!-- Footer com Assinatura da Marca Kodly -->
+  <footer class="bg-navy-950 text-slate-300 text-xs py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-800">
+
+        <!-- Brand & Technology Attribution -->
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 rounded-2xl bg-navy-900 border border-slate-700/80 p-1 flex items-center justify-center shrink-0 shadow-md">
+            <img src="kodly-logo.jpg" alt="Logo Kodly" class="w-full h-full object-cover rounded-xl" />
           </div>
-          <span class="text-base font-bold text-white">Câmbio<span class="text-brand-400">Direto</span> &bull; Parcerias Institucionais</span>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-base font-bold text-white tracking-tight">Câmbio<span
+                  class="text-brand-400">Direto</span></span>
+              <span
+                class="text-[10px] uppercase font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">by
+                Kodly</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Infraestrutura tecnológica para aproximação cambial em espécie.</p>
+          </div>
         </div>
-        <p class="text-slate-400 text-[11px]">Canal de apoio às casas de câmbio físicas autorizadas pelo Banco Central.</p>
+
+        <!-- Links e Política -->
+        <div class="flex flex-wrap items-center gap-5 text-xs text-slate-400">
+          <a href="#proposta" class="hover:text-white transition">Proposta</a>
+          <a href="#cenario" class="hover:text-white transition">Mercado</a>
+          <a href="#como-funciona" class="hover:text-white transition">Como Funciona</a>
+          <a href="#faq" class="hover:text-white transition">FAQ</a>
+          <a href="javascript:void(0)" onclick="openPrivacyModal()"
+            class="hover:text-white transition underline">Política de Privacidade</a>
+        </div>
       </div>
 
-      <div class="text-[11px] text-slate-400 leading-relaxed space-y-2">
-        <p><strong>Aviso de Conformidade Regulatória (ADR-001):</strong> Esta plataforma atua estritamente como provedora de tecnologia e software de mensageria para aproximação de demandas cambiais. Não exercemos atividades privativas de instituições financeiras, não custodiamos numerário e não intermediamos liquidação financeira.</p>
-        <p>&copy; 2026 Câmbio Direto. Todos os direitos reservados. Piloto operacional em SP e RJ.</p>
+      <div class="text-xs text-slate-400 leading-relaxed space-y-2">
+        <p><strong>Aviso de Conformidade Regulatória:</strong> O Câmbio Direto atua estritamente como canal tecnológico
+          de comunicação e software de aproximação. A qualificação de clientes (KYC), emissão de contratos cambiais e
+          liquidação financeira são prerrogativas exclusivas de instituições autorizadas pelo Banco Central do Brasil.
+        </p>
+        <p>&copy; 2026 Câmbio Direto. Operação piloto em São Paulo e Rio de Janeiro. Desenvolvido e mantido por
+          <strong>Kodly Tecnologia</strong>.
+        </p>
       </div>
     </div>
   </footer>
 
+  <!-- WhatsApp Flutuante Fixo (Canto Inferior Direito) com Badge -->
+  <aside aria-label="Atendimento via WhatsApp" class="fixed bottom-6 right-6 z-50 flex items-center gap-2 group">
+    <span
+      class="hidden sm:inline-block bg-white text-navy-950 text-xs font-bold py-1.5 px-3 rounded-full shadow-lg border border-slate-200 transition group-hover:scale-105 whitespace-nowrap">
+      Dúvidas? Fale no WhatsApp
+    </span>
+    <a id="supportWhatsAppFab"
+      href="https://wa.me/552139557496?text=Ol%C3%A1%21%20Gostaria%20de%20tirar%20d%C3%BAvidas%20sobre%20o%20piloto%20do%20C%C3%A2mbio%20Direto."
+      target="_blank" rel="noopener noreferrer" aria-label="Tirar dúvidas no WhatsApp: +55 21 3955-7496"
+      class="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl shadow-emerald-950/40 ring-4 ring-white transition hover:scale-110 hover:bg-[#20BD5A] focus:outline-none">
+      <svg class="h-7 w-7 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+      </svg>
+    </a>
+  </aside>
+
   <!-- Modal de Confirmação B2B -->
-  <div id="partnerModal" class="fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+  <div id="partnerModal"
+    class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-4 shadow-2xl">
-      <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto">
-        <i data-lucide="check" class="w-8 h-8"></i>
+      <div id="modalIconContainer"
+        class="w-16 h-16 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center mx-auto">
+        <svg class="w-8 h-8 fill-current" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd" />
+        </svg>
       </div>
-      <h3 class="text-xl font-bold text-navy-950">Quase lá! Mensagem Pronta</h3>
-      <p class="text-sm text-slate-600">
-        Formatamos os dados da sua casa para envio direto ao Renato (fundador). Basta clicar no botão abaixo para confirmar no WhatsApp.
+
+      <h3 id="modalTitle" class="text-xl font-bold text-navy-950">Inscrição Enviada!</h3>
+      <p id="modalDescription" class="text-xs text-slate-600 leading-relaxed">
+        Seus dados foram registrados com sucesso. Para confirmar o recebimento direto com a nossa equipe de parcerias,
+        clique no botão abaixo para abrir o WhatsApp:
       </p>
+
       <div class="pt-2">
-        <a id="modalWhatsAppLink" href="#" target="_blank" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-xl inline-flex items-center justify-center gap-2 shadow-md">
-          <i data-lucide="message-circle" class="w-4 h-4"></i>
-          <span>Confirmar Adesão no WhatsApp</span>
+        <a id="modalWhatsAppLink" href="#" target="_blank" rel="noopener"
+          class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 px-4 rounded-xl inline-flex items-center justify-center gap-2 shadow-md text-sm transition whitespace-nowrap">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+          </svg>
+          <span id="modalBtnText">Abrir WhatsApp de Confirmação</span>
         </a>
       </div>
-      <button onclick="closePartnerModal()" class="text-xs text-slate-400 hover:text-slate-600 font-semibold block mx-auto pt-2">
-        Voltar à página
+
+      <button onclick="closePartnerModal()"
+        class="text-xs text-slate-500 hover:text-slate-800 font-semibold block mx-auto pt-2">
+        Fechar Janela
       </button>
     </div>
   </div>
 
-  <!-- Scripts -->
+  <!-- Modal Política de Privacidade (LGPD) -->
+  <div id="privacyModal"
+    class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div
+      class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full text-left space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <h3 class="text-lg font-bold text-navy-950">Política de Privacidade e LGPD</h3>
+        <button onclick="closePrivacyModal()"
+          class="text-slate-400 hover:text-slate-600 font-bold text-lg">&times;</button>
+      </div>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>Controlador dos Dados:</strong> Kodly Tecnologia, e-mail: <code>contato@kodly.com.br</code>.</p>
+        <p><strong>Dados Coletados:</strong> Razão Social/Nome Fantasia, CNPJ, praça de atendimento, bairros com loja
+          física, nome do contato comercial, cargo, WhatsApp de atendimento e e-mail corporativo.</p>
+        <p><strong>Finalidade do Tratamento:</strong> Avaliação cadastral junto ao Banco Central, contato institucional
+          para alinhamento operacional do piloto e encaminhamento de demandas de viajantes na praça de atuação da
+          instituição.</p>
+        <p><strong>Compartilhamento:</strong> Seus dados cadastrais não são vendidos ou compartilhados com terceiros. As
+          demandas cambiais dos viajantes são repassadas com base no consentimento e no modelo assistido do projeto.</p>
+        <p><strong>Direitos do Titular:</strong> Você pode solicitar a confirmação, correção ou exclusão dos seus dados
+          a qualquer momento enviando um e-mail para <code>contato@kodly.com.br</code>.</p>
+      </div>
+      <div class="pt-2 text-right">
+        <button onclick="closePrivacyModal()"
+          class="bg-slate-900 text-white text-xs font-bold py-2.5 px-5 rounded-xl">Entendi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lógica Javascript Completa: UTMs, Validação CNPJ, Webhook e WhatsApp -->
   <script>
     // =========================================================================
-    // CONFIGURAÇÃO DO SEU NÚMERO DE WHATSAPP (FUNDADOR):
-    // Digite apenas números: DDI (55) + DDD + Telefone
-    // Ex: '5511999999999'
+    // CONFIGURAÇÃO DO CANAL INSTITUCIONAL
     // =========================================================================
-    const FOUNDER_WHATSAPP_NUMBER = '5511999999999';
+    const FOUNDER_WHATSAPP_NUMBER = '552139557496';
+    const SUPPORT_WHATSAPP_NUMBER = '552139557496';
+    const SUPPORT_WHATSAPP_DISPLAY = '+55 21 3955-7496';
+    // Cole aqui o endpoint do Formspree (ex: https://formspree.io/f/xvgk...), Web3Forms, Supabase ou Google Apps Script
+    const WEBHOOK_URL = '';
 
-    // Inicializa Lucide Icons
-    lucide.createIcons();
+    // Captura parâmetros UTM da URL para inteligência de tráfego
+    function getUTMParams() {
+      const params = new URLSearchParams(window.location.search);
+      const utms = {};
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(key => {
+        if (params.has(key)) utms[key] = params.get(key);
+      });
+      return utms;
+    }
 
-    function handlePartnerSubmit(event) {
+    // Toggle menu mobile
+    function toggleMobileMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    // Modal de Privacidade
+    function openPrivacyModal() {
+      document.getElementById('privacyModal').classList.remove('hidden');
+      document.getElementById('privacyModal').classList.add('flex');
+    }
+    function closePrivacyModal() {
+      document.getElementById('privacyModal').classList.add('hidden');
+      document.getElementById('privacyModal').classList.remove('flex');
+    }
+
+    // =========================================================================
+    // VALIDAÇÃO REAL DE CNPJ (Algoritmo Oficial dos Dígitos Verificadores)
+    // =========================================================================
+    function isValidCNPJ(cnpj) {
+      cnpj = cnpj.replace(/[^\d]+/g, '');
+      if (cnpj.length !== 14) return false;
+      if (/^(\d)\1+$/.test(cnpj)) return false;
+
+      let tamanho = cnpj.length - 2;
+      let numeros = cnpj.substring(0, tamanho);
+      let digitos = cnpj.substring(tamanho);
+      let soma = 0;
+      let pos = tamanho - 7;
+
+      for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+      }
+      let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+      if (resultado != digitos.charAt(0)) return false;
+
+      tamanho = tamanho + 1;
+      numeros = cnpj.substring(0, tamanho);
+      soma = 0;
+      pos = tamanho - 7;
+      for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+      }
+      resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+      if (resultado != digitos.charAt(1)) return false;
+
+      return true;
+    }
+
+    // Máscara e validação visual de CNPJ
+    function formatAndValidateCNPJ(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 14) v = v.substring(0, 14);
+
+      if (v.length > 12) {
+        v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})$/, '$1.$2.$3/$4-$5');
+      } else if (v.length > 8) {
+        v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{1,4})$/, '$1.$2.$3/$4');
+      } else if (v.length > 5) {
+        v = v.replace(/^(\d{2})(\d{3})(\d{1,3})$/, '$1.$2.$3');
+      } else if (v.length > 2) {
+        v = v.replace(/^(\d{2})(\d{1,3})$/, '$1.$2');
+      }
+      input.value = v;
+
+      const raw = v.replace(/\D/g, '');
+      const label = document.getElementById('cnpjLabel');
+      if (raw.length === 14) {
+        if (isValidCNPJ(raw)) {
+          input.classList.remove('border-rose-400');
+          input.classList.add('border-brand-500');
+          label.textContent = '✓ CNPJ com dígitos válidos.';
+          label.className = 'text-[10px] text-brand-600 mt-0.5 font-semibold';
+        } else {
+          input.classList.remove('border-brand-500');
+          input.classList.add('border-rose-400');
+          label.textContent = '✕ CNPJ inválido. Verifique os números.';
+          label.className = 'text-[10px] text-rose-500 mt-0.5 font-semibold';
+        }
+      } else {
+        input.classList.remove('border-rose-400', 'border-brand-500');
+        label.textContent = 'Apenas dígitos ou formatado.';
+        label.className = 'text-[10px] text-slate-400 mt-0.5';
+      }
+    }
+
+    // =========================================================================
+    // PROCESSAMENTO DO FORMULÁRIO (Honesto, sem pop-up automático)
+    // =========================================================================
+    async function handlePartnerSubmit(event) {
       event.preventDefault();
 
-      const companyName = document.getElementById('companyName').value;
+      const cnpjInput = document.getElementById('cnpj');
+      const rawCNPJ = cnpjInput.value.replace(/\D/g, '');
+      if (!isValidCNPJ(rawCNPJ)) {
+        alert('Por favor, informe um CNPJ válido com dígitos verificadores corretos para prosseguir.');
+        cnpjInput.focus();
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+      const companyName = document.getElementById('companyName').value.trim();
+      const cnpj = cnpjInput.value.trim();
       const city = document.getElementById('city').value;
-      const neighborhood = document.getElementById('neighborhood').value;
-      const contactName = document.getElementById('contactName').value;
-      const role = document.getElementById('role').value;
-      const partnerWhatsApp = document.getElementById('partnerWhatsApp').value;
-      const partnerEmail = document.getElementById('partnerEmail').value;
+      const contactName = document.getElementById('contactName').value.trim();
+      const role = document.getElementById('role').value.trim();
+      const partnerWhatsApp = document.getElementById('partnerWhatsApp').value.trim();
+      const partnerEmail = document.getElementById('partnerEmail').value.trim();
 
-      // Moedas selecionadas
-      const currencyCheckboxes = document.querySelectorAll('input[name="currencies"]:checked');
-      const currencies = Array.from(currencyCheckboxes).map(cb => cb.value).join(', ') || 'Não especificado';
+      const utms = getUTMParams();
 
-      // Monta a mensagem estruturada de adesão da Casa de Câmbio
-      const message = 
-`🏢 *ADESÃO DE CASA DE CÂMBIO - PILOTO GRATUITO*
+      const leadPayload = {
+        companyName,
+        cnpj,
+        city,
+        contactName,
+        role,
+        partnerWhatsApp,
+        partnerEmail,
+        utms,
+        createdAt: new Date().toISOString()
+      };
 
-Olá, Renato! Gostaria de cadastrar nossa mesa para receber ofertas de viajantes durante o piloto gratuito.
+      // Disparo para o Webhook real (se configurado)
+      let saved = false;
+      if (WEBHOOK_URL && WEBHOOK_URL.trim() !== '') {
+        try {
+          const res = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(leadPayload)
+          });
+          saved = res.ok;
+        } catch (err) {
+          console.warn('Erro na comunicação com webhook', err);
+          saved = false;
+        }
+      }
+
+      // Monta a mensagem estruturada de WhatsApp
+      let utmText = '';
+      if (utms.utm_source) utmText = `\n📊 *Origem:* ${utms.utm_source} ${utms.utm_campaign ? '(' + utms.utm_campaign + ')' : ''}`;
+
+      const message =
+        `🏢 *ADESÃO DE CASA FUNDADORA - CÂMBIO DIRETO*
+
+Olá! Preenchi a inscrição da nossa instituição para o piloto de 90 dias sem custos:
 
 📋 *Instituição:* ${companyName}
+📑 *CNPJ:* ${cnpj}
 📍 *Praça:* ${city}
-🏘️ *Bairro(s) da Loja:* ${neighborhood}
-💵 *Moedas Operadas:* ${currencies}
 
-👤 *Responsável:* ${contactName} (${role})
-📱 *WhatsApp da Mesa:* ${partnerWhatsApp}
-✉️ *E-mail:* ${partnerEmail}
+👤 *Contato Comercial:* ${contactName} (${role})
+📱 *WhatsApp Comercial:* ${partnerWhatsApp}
+✉️ *E-mail:* ${partnerEmail}${utmText}
 
-_Confirmamos que somos autorizados pelo Banco Central._
-_Canal Câmbio Direto_`;
+_Confirmamos que a instituição é autorizada pelo Banco Central._`;
 
       const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://wa.me/${FOUNDER_WHATSAPP_NUMBER}?text=${encodedMessage}`;
 
-      // Configura o link no modal
+      // Configuração honesta dos textos do modal
+      const modal = document.getElementById('partnerModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalDescription = document.getElementById('modalDescription');
+      const modalBtnText = document.getElementById('modalBtnText');
       const modalLink = document.getElementById('modalWhatsAppLink');
+
       modalLink.href = whatsappUrl;
 
-      // Exibe modal
-      const modal = document.getElementById('partnerModal');
+      if (saved) {
+        modalTitle.textContent = 'Inscrição Recebida com Sucesso!';
+        modalDescription.textContent = 'Seus dados foram registrados com segurança em nossa base. Para agilizar seu credenciamento e tirar dúvidas diretamente com nossa equipe de parcerias, você também pode abrir a confirmação no WhatsApp.';
+        modalBtnText.textContent = 'Falar com a Equipe no WhatsApp (Opcional)';
+      } else {
+        modalTitle.textContent = 'Quase lá! Confirme pelo WhatsApp';
+        modalDescription.textContent = 'Para concluir o envio da sua inscrição diretamente à nossa equipe de parcerias, clique no botão abaixo. Seus dados já estão preenchidos na mensagem:';
+        modalBtnText.textContent = 'Confirmar Inscrição no WhatsApp';
+      }
+
+      // Abre o modal de forma elegante (SEM popup automático bloqueado)
       modal.classList.remove('hidden');
       modal.classList.add('flex');
 
-      // Tenta abrir direto
-      window.open(whatsappUrl, '_blank');
+      // Restaura o botão
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
     }
 
     function closePartnerModal() {
@@ -614,4 +1073,5 @@ _Canal Câmbio Direto_`;
     }
   </script>
 </body>
+
 </html>
