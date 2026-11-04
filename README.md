@@ -10,7 +10,7 @@ Em junho de 2024, a fintech de conta internacional Nomad adquiriu o portal Melho
 
 Nossa proposta é ocupar a lacuna de **canal neutro**:
 * **Não competimos com as casas de câmbio:** Não oferecemos conta internacional, cartão digital proprietário nem produtos financeiros concorrentes.
-* **Foco em Papel-Moeda:** Atendemos o viajante pessoa física que precisa de dinheiro em espécie (USD, EUR, GBP), segmento onde a conta global não atende plenamente.
+* **Foco em Câmbio Turismo (Papel-Moeda & Cartão Pré-Pago):** Atendemos o viajante pessoa física que precisa de dinheiro em espécie ou cartão pré-pago internacional (USD, EUR, GBP), direcionando 100% da demanda para a sua loja.
 * **Piloto Gratuito:** O piloto inicial em SP e RJ é 100% gratuito para viajantes e casas de câmbio.
 
 ---

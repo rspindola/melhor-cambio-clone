@@ -16,9 +16,9 @@ Donos e gerentes de casas de câmbio físicas, autorizadas pelo Banco Central, e
 
 ### Who is affected?
 
-Dono ou gerente comercial de casa de câmbio com loja física em São Paulo ou no Rio de Janeiro, autorizada a operar câmbio pelo Banco Central, que dependia de um comparador público para receber viajantes em busca de papel-moeda.
+Dono ou gerente comercial de casa de câmbio com loja física em São Paulo ou no Rio de Janeiro, autorizada a operar câmbio pelo Banco Central, que dependia de um comparador público para receber viajantes em busca de papel-moeda e cartão pré-pago.
 
-O lado da demanda é a pessoa física, com viagem internacional, que precisa comprar papel-moeda na mesma praça. Cartão pré-pago fica em segundo plano: a dor prioritária é papel-moeda, modalidade em que a conta global da Nomad atende mal o viajante que precisa de espécie.
+O lado da demanda é a pessoa física, com viagem internacional, que precisa comprar papel-moeda físico (espécie) ou carregar cartão pré-pago internacional na mesma praça, modalidades onde a loja física atende com segurança e agilidade.
 
 ### How are they affected?
 
@@ -38,7 +38,7 @@ Referência de mercado, não medição nossa. Em 17 e 18 de junho de 2024, Estad
 
 ### Strategic Alignment
 
-A empresa existe para ser o canal neutro das casas autorizadas pelo Banco Central. O sucesso é a casa receber a demanda de papel-moeda e o viajante pessoa física chegar numa casa autorizada. Conta internacional própria, custódia e contrato cambial ficam fora do negócio.
+A empresa existe para ser o canal neutro das casas autorizadas pelo Banco Central. O sucesso é a casa receber a demanda de papel-moeda e cartão pré-pago e o viajante pessoa física chegar numa casa autorizada. Conta internacional própria, custódia e contrato cambial ficam fora do negócio.
 
 ### Business Impact
 
@@ -58,7 +58,7 @@ Quem construir o substituto neutro enquanto essas casas ainda procuram para onde
 
 Baselines nossos são zero porque o canal ainda não existe. Os alvos abaixo foram cravados para o piloto de 90 dias em SP e RJ.
 
-Casa ativa, neste piloto: casa credenciada que aceitou ao menos uma oferta no período. Ela é autorizada pelo Banco Central, com loja em São Paulo ou no Rio de Janeiro, e recebe de graça ofertas de papel-moeda de viajante pessoa física.
+Casa ativa, neste piloto: casa credenciada que aceitou ao menos uma oferta no período. Ela é autorizada pelo Banco Central, com loja em São Paulo ou no Rio de Janeiro, e recebe de graça ofertas de papel-moeda e cartão pré-pago de viajante pessoa física.
 
 | Métrica | Baseline atual | Alvo | Prazo |
 | --- | --- | --- | --- |
@@ -76,8 +76,8 @@ Os limiares menores que antecedem o código estão na hipótese do piloto. Eles 
 - A plataforma aproxima. Quem liquida é a casa autorizada, com o viajante, fora da plataforma.
 - Não há Pix, saldo, entrega de numerário nem cálculo de IOF do nosso lado. O valor final com encargos é informado pela casa.
 - Só entra casa autorizada pelo Banco Central. A lista oficial é dependência de cadastro.
-- O piloto cobre São Paulo e Rio de Janeiro. A dor prioritária é papel-moeda. Cartão pré-pago fica em segundo plano e fora da validação inicial.
-- O cliente do piloto é somente pessoa física que precisa de papel-moeda para viagem internacional.
+- O piloto cobre São Paulo e Rio de Janeiro nas modalidades de papel-moeda físico e cartão pré-pago internacional (USD, EUR, GBP).
+- O cliente do piloto é somente pessoa física que precisa de papel-moeda ou cartão pré-pago para viagem internacional.
 - O piloto é gratuito para casas e para viajantes.
 - Não há produto próprio de conta internacional.
 - A arquitetura do piloto, quando houver código, é assíncrona e simples. Pregão e leilão contínuos ficam fora desta fase, assim como KYB automatizado complexo. Um som curto e pontual de nova oferta no painel web, só quando o operador habilita o alerta, faz parte do MVP.

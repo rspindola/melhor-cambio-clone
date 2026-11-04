@@ -15,7 +15,7 @@ Aqui é da equipe do **Câmbio Direto**. Estou entrando em contato direto porque
 
 Desde que o Melhor Câmbio foi comprado pela Nomad, percebemos que muitas casas tradicionais e autorizadas ficaram sem um canal neutro de captação — já que hoje o portal pertence a uma fintech que concorre diretamente com vocês promovendo a conta global deles.
 
-Estamos lançando o **Câmbio Direto**, um canal 100% neutro feito exclusivamente para direcionar viajantes que precisam de papel-moeda (espécie) para lojas físicas credenciadas da nossa região.
+Estamos lançando o **Câmbio Direto**, um canal 100% neutro feito exclusivamente para direcionar viajantes que precisam de papel-moeda (espécie) e cartão pré-pago internacional para lojas físicas credenciadas da nossa região.
 
 - Zero custódia / zero intermediação: O cliente fecha e paga diretamente com a sua loja, fora da plataforma, exatamente como vocês já operam no balcão.
 - Não competimos com vocês: Não vendemos conta digital nem cartão próprio.
@@ -59,7 +59,7 @@ Contexto de Mercado:
 Historicamente, as casas de câmbio físicas contavam com portais de comparação para captar clientes prontos para fechar. Desde a aquisição do Melhor Câmbio pela Nomad, o mercado independente perdeu seu principal canal neutro, já que o portal passou a priorizar a conversão de usuários para a conta digital da proprietária.
 
 Nossa Proposta (Câmbio Direto):
-Estamos estruturando o Câmbio Direto, um canal tecnológico de aproximação que conecta viajantes pessoa física precisando de papel-moeda (USD, EUR, GBP) diretamente às casas de câmbio autorizadas pelo Banco Central.
+Estamos estruturando o Câmbio Direto, um canal tecnológico de aproximação que conecta viajantes pessoa física precisando de papel-moeda físico e cartão pré-pago (USD, EUR, GBP) diretamente às casas de câmbio autorizadas pelo Banco Central.
 
 Como funciona para a sua instituição:
 1. Sem Intermediação Financeira: Nossa plataforma atua puramente como canal de comunicação. Não recebemos valores, não operamos Pix e não cobramos taxas do cliente.

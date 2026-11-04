@@ -22,14 +22,14 @@ Problema completo em [`docs/01-discovery/problem-statement.md`](../01-discovery/
 
 Uma aplicação web responsiva com dois lados, que só aproxima:
 
-1. **Viajante:** consulta a vitrine pública de cotações de papel-moeda por cidade e moeda. A vitrine mostra só nome da casa, cidade e cotação de balcão. O viajante cria uma oferta com quantia, taxa desejada ou "quero a melhor taxa", bairro de preferência, nome, e-mail e WhatsApp. Recebe o link de acompanhamento por e-mail e o alerta de aceite por WhatsApp.
+1. **Viajante:** consulta a vitrine pública de cotações de papel-moeda e cartão pré-pago por cidade e moeda. A vitrine mostra só nome da casa, cidade e cotação de balcão. O viajante cria uma oferta com modalidade (papel-moeda ou cartão pré-pago), quantia, taxa desejada ou "quero a melhor taxa", bairro de preferência, nome, e-mail e WhatsApp. Recebe o link de acompanhamento por e-mail e o alerta de aceite por WhatsApp.
 2. **Casa de câmbio:** acessa um painel com login e senha. Recebe alerta por e-mail e no painel quando surge oferta na sua cidade, vê a oferta sem os dados pessoais do viajante e aceita. A primeira casa que aceita fecha a reserva. Os contatos são revelados só entre o viajante e essa casa.
 
-Contrato cambial, IOF, tarifas, pagamento e entrega do numerário acontecem fora da plataforma, entre a casa e o viajante.
+Contrato cambial, IOF, tarifas, pagamento e entrega do numerário ou carga de cartão acontecem fora da plataforma, entre a casa e o viajante.
 
 ### Target Users
 
-- **Viajante:** pessoa física com viagem internacional que precisa comprar papel-moeda (USD, EUR ou GBP) em São Paulo ou no Rio de Janeiro.
+- **Viajante:** pessoa física com viagem internacional que precisa comprar papel-moeda ou cartão pré-pago (USD, EUR ou GBP) em São Paulo ou no Rio de Janeiro.
 - **Operador da casa:** dono, gerente ou atendente de casa de câmbio com loja física em SP ou RJ, autorizada pelo Banco Central e credenciada manualmente por nós.
 - **Operação interna:** o fundador, que credencia e desativa casas. Não há tela de autoatendimento para isso no MVP.
 
@@ -37,7 +37,7 @@ Contrato cambial, IOF, tarifas, pagamento e entrega do numerário acontecem fora
 
 ### Goals
 
-1. Fazer ofertas de papel-moeda de viajantes chegarem a casas autorizadas e terminarem em aceite com troca de contato.
+1. Fazer ofertas de papel-moeda e cartão pré-pago de viajantes chegarem a casas autorizadas e terminarem em aceite com troca de contato.
 2. Garantir que cada oferta tenha no máximo uma casa vencedora e que os dados do viajante só cheguem a ela.
 3. Operar sem tocar em dinheiro, contrato cambial ou cálculo de IOF.
 
@@ -69,8 +69,8 @@ Histórias resumidas. O detalhe está em [`user-stories.md`](user-stories.md) e 
 
 | ID | User Story | Priority |
 | --- | --- | --- |
-| US-1 | Como viajante, quero ver as cotações de papel-moeda das casas da minha cidade para a moeda escolhida, para saber se vale a pena fazer uma oferta | P0 |
-| US-2 | Como viajante, quero criar uma oferta com quantia, taxa desejada ou "melhor taxa", bairro, nome e WhatsApp, para que casas autorizadas me atendam | P0 |
+| US-1 | Como viajante, quero ver as cotações de papel-moeda e cartão pré-pago das casas da minha cidade para a moeda escolhida, para saber se vale a pena fazer uma oferta | P0 |
+| US-2 | Como viajante, quero criar uma oferta com modalidade, quantia, taxa desejada ou "melhor taxa", bairro, nome e WhatsApp, para que casas autorizadas me atendam | P0 |
 | US-3 | Como viajante, quero ver o status e o prazo da minha oferta, para saber se ainda estou esperando | P0 |
 | US-4 | Como viajante, quero receber os dados da casa que aceitou, para fechar a compra diretamente com ela | P0 |
 | US-5 | Como viajante, quero cancelar minha oferta enquanto nenhuma casa aceitou, para não ser contatado se desistir | P0 |
@@ -79,7 +79,7 @@ Histórias resumidas. O detalhe está em [`user-stories.md`](user-stories.md) e 
 | US-8 | Como operador da casa, quero ser alertado por e-mail e no painel quando surgir oferta na minha cidade, para responder antes das outras casas | P0 |
 | US-9 | Como operador da casa, quero aceitar uma oferta e saber na hora se ganhei ou se outra casa chegou antes, para não atender cliente que não é meu | P0 |
 | US-10 | Como operador da casa, quero ver nome e WhatsApp do viajante depois de ganhar o aceite, para iniciar o contato imediatamente | P0 |
-| US-11 | Como operador da casa, quero publicar minha cotação de venda por moeda, para aparecer na vitrine | P0 |
+| US-11 | Como operador da casa, quero publicar minha cotação de venda por moeda e modalidade, para aparecer na vitrine | P0 |
 | US-12 | Como operação interna, quero credenciar e desativar casas autorizadas, para que só casas conferidas recebam ofertas | P0 |
 | US-13 | Como operador da casa, quero ver o histórico das ofertas que minha casa aceitou, para recuperar o contato depois | P1 |
 
@@ -90,7 +90,7 @@ Histórias resumidas. O detalhe está em [`user-stories.md`](user-stories.md) e 
 - Web responsiva para o viajante: vitrine, criação de oferta, página de status com cancelamento.
 - Web responsiva para a casa: login, cotações, fila de ofertas abertas, aceite, histórico de aceites.
 - Cidades: São Paulo e Rio de Janeiro.
-- Moedas: USD, EUR, GBP, somente papel-moeda.
+- Moedas e Modalidades: USD, EUR, GBP (papel-moeda físico e cartão pré-pago internacional).
 - E-mail transacional ao viajante com o link de acompanhamento e com o aviso de expiração. WhatsApp ao viajante apenas no alerta de aceite. A página de status é a fonte de verdade.
 - Notificação à casa por e-mail e por alerta visual e sonoro no painel aberto.
 - Regra do primeiro aceite com garantia atômica de vencedor único.
@@ -99,20 +99,20 @@ Histórias resumidas. O detalhe está em [`user-stories.md`](user-stories.md) e 
 
 ### Out of Scope
 
-- Qualquer pagamento: Pix, TED, boleto, cartão, custódia, escrow, sinal.
+- Qualquer pagamento: Pix, TED, boleto, cartão de crédito, custódia, escrow, sinal.
 - Pregão em tempo real, WebSocket, contraproposta ou leilão entre casas.
 - Chat dentro da plataforma. A conversa acontece no WhatsApp dos envolvidos.
 - Cálculo de IOF, VET, tarifas ou preço final.
 - App nativo iOS ou Android.
-- Cartão pré-pago, outras moedas, outras cidades, pessoa jurídica.
-- Gestão de entrega ou logística de numerário. O campo é só "Bairro de preferência". A retirada, ou qualquer entrega, é combinada diretamente com a casa depois do aceite.
+- Outras moedas além de USD/EUR/GBP, outras cidades além de SP/RJ, pessoa jurídica.
+- Gestão de entrega ou logística de numerário/cartões. O campo é só "Bairro de preferência". A retirada, ou qualquer entrega, é combinada diretamente com a casa depois do aceite.
 - Autocadastro de casas, KYB automatizado, MFA.
 - Avaliação, ranking de atendimento, cupom, programa de fidelidade.
 - Cobrança das casas ou dos viajantes.
 
 ### Future Considerations
 
-- Cartão pré-pago: entra só com evidência de dor separada da do papel-moeda.
+- Novas praças: depois de a meta de 90 dias em SP e RJ ser atingida.
 - Novas praças: depois de a meta de 90 dias em SP e RJ ser atingida.
 - Verificação do WhatsApp do viajante por código: depende do volume de ofertas com número inválido observado no piloto.
 - Modelo de receita: depois de provar que a aproximação acontece de graça.
@@ -124,15 +124,15 @@ Histórias resumidas. O detalhe está em [`user-stories.md`](user-stories.md) e 
 
 #### Vitrine pública
 
-- FR-1: A vitrine exige a escolha de cidade (São Paulo ou Rio de Janeiro) e de moeda (USD, EUR ou GBP) e lista as casas credenciadas e ativas daquela cidade que publicaram cotação de venda de papel-moeda para aquela moeda.
-- FR-2: Cada item da vitrine mostra apenas o nome da casa, a cidade e a cotação de venda de balcão em reais por unidade, com até 4 casas decimais. A lista vem ordenada da menor para a maior cotação. Bairro, telefone, WhatsApp, endereço e horário da cotação não aparecem na vitrine.
+- FR-1: A vitrine exige a escolha de cidade (São Paulo ou Rio de Janeiro), modalidade (papel-moeda ou cartão pré-pago) e de moeda (USD, EUR ou GBP) e lista as casas credenciadas e ativas daquela cidade que publicaram cotação de venda para aquela moeda e modalidade.
+- FR-2: Cada item da vitrine mostra apenas o nome da casa, a cidade, a modalidade e a cotação de venda de balcão em reais por unidade, com até 4 casas decimais. A lista vem ordenada da menor para a maior cotação. Bairro, telefone, WhatsApp, endereço e horário da cotação não aparecem na vitrine.
 - FR-3: Cotação atualizada há mais de 24 horas não aparece na vitrine. Se nenhuma casa tiver cotação válida, a vitrine informa isso e continua permitindo criar a oferta, desde que FR-8 seja atendido.
 - FR-4: Telefone, WhatsApp e endereço da casa só aparecem para o viajante depois do aceite (FR-25). A vitrine pública não os contém.
 - FR-5: A vitrine e a página da oferta informam, em texto visível, que a cotação é referência da casa, que o valor final com IOF e tarifas é informado pela casa, e que pagamento e contrato acontecem diretamente com ela.
 
 #### Oferta do viajante
 
-- FR-6: O formulário de oferta pede cidade, moeda, quantia, taxa desejada ou a opção "quero a melhor taxa disponível", bairro de preferência, nome, e-mail e WhatsApp. O rótulo do campo é "Bairro de preferência". O texto de ajuda diz que a retirada, ou qualquer entrega, é combinada diretamente com a casa depois do aceite. Todos são obrigatórios, exceto a taxa quando "melhor taxa" estiver marcada.
+- FR-6: O formulário de oferta pede cidade, modalidade (papel-moeda ou cartão pré-pago), moeda, quantia, taxa desejada ou a opção "quero a melhor taxa disponível", bairro de preferência, nome, e-mail e WhatsApp. O rótulo do campo é "Bairro de preferência". O texto de ajuda diz que a retirada, entrega ou carga do cartão é combinada diretamente com a casa depois do aceite. Todos são obrigatórios, exceto a taxa quando "melhor taxa" estiver marcada.
 - FR-7: A quantia é um número inteiro de unidades da moeda, de 100 a 10.000 inclusive, para USD, EUR e GBP. A taxa desejada é positiva, em reais por unidade, com até 4 casas decimais. O e-mail tem formato válido. O WhatsApp é um celular brasileiro válido, armazenado em E.164.
 - FR-8: A criação é recusada com mensagem clara se não houver nenhuma casa credenciada e ativa que opere aquela moeda naquela cidade.
 - FR-9: Antes de enviar, o viajante marca um aceite explícito informando que nome e WhatsApp serão compartilhados apenas com a casa que aceitar a oferta, para contato sobre essa compra.
